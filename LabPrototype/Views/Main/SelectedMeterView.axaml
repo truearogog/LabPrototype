@@ -1,0 +1,56 @@
+<UserControl	xmlns="https://github.com/avaloniaui"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:local="clr-namespace:LabPrototype.Views.Main;assembly=LabPrototype"
+				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+				x:Class="LabPrototype.Views.Main.SelectedMeterView">
+
+	<Grid RowDefinitions="auto,*">
+		<ExperimentalAcrylicBorder Grid.Row="0">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.7" />
+			</ExperimentalAcrylicBorder.Material>
+
+			<Grid ColumnDefinitions="auto,*,auto" Margin="20 10">
+				<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
+					<TextBlock Text="{Binding SelectedMeter.Name}" FontSize="24" VerticalAlignment="Center" />
+					<Button Classes="topButton">
+						<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
+					</Button>
+					<Button Classes="topButton">
+						<material:MaterialIcon Kind="Delete" Width="20" Height="20" />
+					</Button>
+				</StackPanel>
+
+				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Classes="topButton">
+						<material:MaterialIcon Kind="GraphAreaspline" Width="20" Height="20" />
+					</Button>
+					<Button Classes="topButton">
+						<material:MaterialIcon Kind="Table" Width="20" Height="20" />
+					</Button>
+				</StackPanel>
+			</Grid>
+		</ExperimentalAcrylicBorder>
+
+		<Grid Grid.Row="1" ColumnDefinitions="*,1,3*">
+			<ScrollViewer Grid.Column="0">
+				<StackPanel Orientation="Vertical">
+					<local:MeterDetailsView DataContext="{Binding MeterDetailsViewModel}" />
+					<local:FlowMeasurementsView />
+					<local:HistoricMeasurementsView />
+				</StackPanel>
+			</ScrollViewer>
+
+			<GridSplitter Grid.Column="1" MinWidth="3" Background="#2b2d2e" ResizeDirection="Columns" />
+			
+			<Rectangle Grid.Column="2" />
+		</Grid>
+	</Grid>
+</UserControl>

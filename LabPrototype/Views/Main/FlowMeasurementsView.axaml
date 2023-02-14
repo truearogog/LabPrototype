@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="LabPrototype.Views.Main.FlowMeasurementsView">
+	<Expander>
+		<Expander.Header>
+			<TextBlock Text="Flow" />
+		</Expander.Header>
+		<StackPanel Orientation="Vertical" Spacing="16">
+			<Grid ColumnDefinitions="auto,*,auto">
+				<TextBlock Grid.Column="0" Text="Name" />
+				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+					<TextBlock Text="{Binding Measurement.P}" />
+					<TextBlock Text="" />
+				</StackPanel>
+			</Grid>
+		</StackPanel>
+	</Expander>
+</UserControl>

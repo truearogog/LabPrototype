@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="LabPrototype.Views.Main.MeterDetailsView">
+	<Expander>
+		<Expander.Header>
+			<TextBlock Text="Details" />
+		</Expander.Header>
+		<StackPanel Orientation="Vertical" Spacing="16">
+			<Grid ColumnDefinitions="auto,*,auto">
+				<TextBlock Grid.Column="0" Text="Name" />
+				<TextBlock Grid.Column="2" Text="{Binding Meter.Name}" />
+			</Grid>
+			<Grid ColumnDefinitions="auto,*,auto">
+				<TextBlock Grid.Column="0" Text="Serial code" />
+				<TextBlock Grid.Column="2" Text="{Binding Meter.SerialCode}" />
+			</Grid>
+			<Grid ColumnDefinitions="auto,*,auto">
+				<TextBlock Grid.Column="0" Text="Address" />
+				<TextBlock Grid.Column="2" Text="{Binding Meter.Address}" />
+			</Grid>
+		</StackPanel>
+	</Expander>
+</UserControl>

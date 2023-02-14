@@ -1,0 +1,55 @@
+<UserControl    xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:local="using:LabPrototype.Views.Main"
+				xmlns:vm="using:LabPrototype.ViewModels.MainWindow"
+				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                x:Class="LabPrototype.Views.Main.MainView"
+				x:DataType="vm:MainViewModel"
+				x:CompileBindings="True">
+	<Grid RowDefinitions="auto,*">
+		<ExperimentalAcrylicBorder Grid.Row="0">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.9" />
+			</ExperimentalAcrylicBorder.Material>
+
+			<StackPanel Orientation="Horizontal" Margin="10" Spacing="10">
+				<Button Classes="navButton">
+					<StackPanel>
+						<material:MaterialIcon Kind="Menu" Width="20" Height="20" />
+						<TextBlock VerticalAlignment="Center" Text="Meters" />
+					</StackPanel>
+				</Button>
+				<Button Classes="navButton">
+					<StackPanel>
+						<material:MaterialIcon Kind="ChartBar" Width="20" Height="20" />
+						<TextBlock VerticalAlignment="Center" Text="Reports" />
+					</StackPanel>
+				</Button>
+				<Button Classes="navButton">
+					<StackPanel>
+						<material:MaterialIcon Kind="Settings" Width="20" Height="20" />
+						<TextBlock VerticalAlignment="Center" Text="Settings" />
+					</StackPanel>
+				</Button>
+			</StackPanel>
+		</ExperimentalAcrylicBorder>
+
+		<ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+			<ContentControl.DataTemplates>
+				<DataTemplate DataType="{x:Type vm:MeterListingViewModel}">
+					<local:MeterListingView />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type vm:SelectedMeterViewModel}">
+					<local:SelectedMeterView />
+				</DataTemplate>
+			</ContentControl.DataTemplates>
+		</ContentControl>
+	</Grid>
+</UserControl>

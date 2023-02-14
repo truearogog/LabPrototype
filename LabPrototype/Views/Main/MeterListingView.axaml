@@ -1,0 +1,59 @@
+<UserControl	xmlns="https://github.com/avaloniaui"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:local="clr-namespace:LabPrototype.Views.Main;assembly=LabPrototype"
+				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+				x:Class="LabPrototype.Views.Main.MeterListingView">
+	<Grid RowDefinitions="auto,*">
+		<ExperimentalAcrylicBorder Grid.Row="0">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.7" />
+			</ExperimentalAcrylicBorder.Material>
+
+			<Grid ColumnDefinitions="auto,*,auto" Margin="20 10">
+				<TextBlock Grid.Column="0" Text="Your meters" FontSize="24" VerticalAlignment="Center" />
+				
+				<Button Grid.Column="2" Classes="topButton" Padding="10 5" Command="{Binding OpenCreateMeterCommand}">
+					<StackPanel>
+						<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
+						<TextBlock VerticalAlignment="Center" Text="Add" />
+					</StackPanel>
+				</Button>
+			</Grid>
+		</ExperimentalAcrylicBorder>
+		
+		<ListBox 
+			Grid.Row="1" 
+			Items="{Binding MeterListingItemViewModels}" 
+			SelectedItem="{Binding SelectedMeterListingItemViewModel}" 
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+			Background="Transparent"
+			HorizontalAlignment="Stretch"
+			SelectionMode="Single">
+			
+			<ListBox.Styles>
+				<Style Selector="ListBoxItem">
+					<Setter Property="Padding" Value="0" />
+					<Setter Property="Margin" Value="10 8" />
+					<Setter Property="CornerRadius" Value="5" />
+				</Style>
+			</ListBox.Styles>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel HorizontalAlignment="Center" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<local:MeterListingItemView />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</Grid>
+</UserControl>

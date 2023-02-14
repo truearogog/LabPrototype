@@ -1,0 +1,23 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Style Selector="Button.navButton StackPanel">
+		<Setter Property="Orientation" Value="Horizontal" />
+		<Setter Property="Spacing" Value="5" />
+	</Style>
+	<Style Selector="Button.topButton">
+		<Setter Property="Padding" Value="5" />
+	</Style>
+	<Style Selector="Button.topButton StackPanel">
+		<Setter Property="Orientation" Value="Horizontal" />
+		<Setter Property="Spacing" Value="5" />
+	</Style>
+	<Style Selector=":is(Expander)">
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="CornerRadius" Value="0" />
+	</Style>
+	<Style Selector="Grid#OverlayGrid">
+		<Setter Property="ZIndex" Value="-1" />
+		<Setter Property="Background" Value="Black" />
+		<Setter Property="Opacity" Value="0.2" />
+	</Style>
+</Styles>
