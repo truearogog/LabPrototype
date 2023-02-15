@@ -20,10 +20,10 @@
 			<Grid ColumnDefinitions="auto,*,auto" Margin="20 10">
 				<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
 					<TextBlock Text="{Binding SelectedMeter.Name}" FontSize="24" VerticalAlignment="Center" />
-					<Button Classes="topButton">
+					<Button Classes="topButton" Command="{Binding OpenUpdateMeterCommand}">
 						<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
 					</Button>
-					<Button Classes="topButton">
+					<Button Classes="topButton" Command="{Binding OpenDeleteMeterCommand}">
 						<material:MaterialIcon Kind="Delete" Width="20" Height="20" />
 					</Button>
 				</StackPanel>

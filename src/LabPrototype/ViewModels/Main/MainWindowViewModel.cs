@@ -1,4 +1,4 @@
-﻿namespace LabPrototype.ViewModels.MainWindow
+﻿namespace LabPrototype.ViewModels.Main
 {
     public class MainWindowViewModel : ViewModelBase
     {

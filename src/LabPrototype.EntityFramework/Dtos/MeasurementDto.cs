@@ -18,6 +18,9 @@ namespace LabPrototype.EntityFramework.Dtos
         public float p1 { get; }
         public float p2 { get; }
 
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+
         public Guid MeterId { get; set; }
         public MeterDto Meter { get; set; }
     }

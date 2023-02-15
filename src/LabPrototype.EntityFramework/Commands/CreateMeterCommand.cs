@@ -22,6 +22,8 @@ namespace LabPrototype.EntityFramework.Commands
                     SerialCode = meter.SerialCode,
                     Name = meter.Name,
                     Address = meter.Address,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
                 };
 
                 context.Meters.Add(meterDto);

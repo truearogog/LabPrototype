@@ -1,4 +1,4 @@
-﻿using LabPrototype.Services;
+﻿using LabPrototype.Services.Models;
 using System.Threading;
 using System.Threading.Tasks;
 

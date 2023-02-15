@@ -2,9 +2,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using LabPrototype.DependencyInjection;
-using LabPrototype.ViewModels.MainWindow;
+using LabPrototype.ViewModels.Main;
 using LabPrototype.Views;
-using LiveChartsCore;
 using Microsoft.Extensions.DependencyInjection;
 using Splat;
 

@@ -6,7 +6,7 @@ namespace LabPrototype.Services.Implementations
 {
     public class SelectedMeterService : ISelectedMeterService
     {
-        private readonly IMeterService _meterStore;
+        private readonly IMeterService _meterService;
 
         private Meter _selectedMeter;
         public Meter SelectedMeter
@@ -21,11 +21,11 @@ namespace LabPrototype.Services.Implementations
 
         private event Action _selectedMeterChanged;
 
-        public SelectedMeterService(IMeterService meterStore)
+        public SelectedMeterService(IMeterService meterService)
         {
-            _meterStore = meterStore;
-            _meterStore.SubscribeMeterCreated((meter) => SelectedMeter = meter);
-            _meterStore.SubscribeMeterUpdated((meter) => SelectedMeter = meter);
+            _meterService = meterService;
+            _meterService.SubscribeMeterCreated((meter) => SelectedMeter = meter);
+            _meterService.SubscribeMeterUpdated((meter) => SelectedMeter = meter);
         }
 
         public void SubscribeSelectedMeterChanged(Action handler) => _selectedMeterChanged += handler;

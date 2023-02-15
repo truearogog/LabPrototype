@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LabPrototype.Commands
@@ -43,6 +40,6 @@ namespace LabPrototype.Commands
             IsExecuting = false;
         }
 
-        protected abstract Task ExecuteAsync(object? parameter);
+        public abstract Task ExecuteAsync(object? parameter);
     }
 }

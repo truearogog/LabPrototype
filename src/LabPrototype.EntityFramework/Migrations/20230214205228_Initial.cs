@@ -16,7 +16,9 @@ namespace LabPrototype.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    MeterGuid = table.Column<Guid>(type: "TEXT", nullable: true)
+                    MeterGuid = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Updated = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +32,9 @@ namespace LabPrototype.EntityFramework.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     SerialCode = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: false)
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Updated = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,6 +46,8 @@ namespace LabPrototype.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Updated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     MeterId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

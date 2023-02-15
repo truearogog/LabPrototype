@@ -12,6 +12,9 @@ namespace LabPrototype.EntityFramework.Dtos
         public string Name { get; set; }
         public string Address { get; set; }
 
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+
         public IEnumerable<MeasurementDto> Measurements { get; set; }
     }
 }

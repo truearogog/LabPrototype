@@ -1,4 +1,4 @@
-﻿namespace LabPrototype.Services
+﻿namespace LabPrototype.Services.Models
 {
     public class NavigationParameterBase
     {

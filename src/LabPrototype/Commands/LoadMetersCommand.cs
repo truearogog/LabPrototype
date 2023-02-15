@@ -6,18 +6,18 @@ namespace LabPrototype.Commands
 {
     public class LoadMetersCommand : AsyncCommandBase
     {
-        private readonly IMeterService _meterStore;
+        private readonly IMeterService _meterService;
 
-        public LoadMetersCommand(IMeterService meterStore)
+        public LoadMetersCommand(IMeterService meterService)
         {
-            _meterStore = meterStore;
+            _meterService = meterService;
         }
 
-        protected override async Task ExecuteAsync(object? parameter)
+        public override async Task ExecuteAsync(object? parameter)
         {
             try
             {
-                await _meterStore.Load();
+                await _meterService.Load();
             }
             catch (Exception)
             {

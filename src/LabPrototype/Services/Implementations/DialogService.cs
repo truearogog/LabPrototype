@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using LabPrototype.DependencyInjection;
+using LabPrototype.Services.Models;
 
 namespace LabPrototype.Services.Implementations
 {

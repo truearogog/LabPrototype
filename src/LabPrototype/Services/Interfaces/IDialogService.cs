@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LabPrototype.Services.Models;
 
 namespace LabPrototype.Services.Interfaces
 {

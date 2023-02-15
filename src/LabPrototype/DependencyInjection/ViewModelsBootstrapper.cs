@@ -1,6 +1,6 @@
 ﻿using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Dialogs;
-using LabPrototype.ViewModels.MainWindow;
+using LabPrototype.ViewModels.Main;
 using Splat;
 
 namespace LabPrototype.DependencyInjection
@@ -9,7 +9,17 @@ namespace LabPrototype.DependencyInjection
     {
         public static void RegisterViewModels(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.Register(() => new CreateMeterDialogViewModel());
+            services.Register(() => new CreateMeterDialogViewModel(
+                resolver.GetRequiredService<IMeterService>()
+            ));
+
+            services.Register(() => new UpdateMeterDialogViewModel(
+                resolver.GetRequiredService<IMeterService>()
+            ));
+            
+            services.Register(() => new DeleteMeterDialogViewModel(
+                resolver.GetRequiredService<IMeterService>()
+            ));
 
             services.RegisterLazySingleton(() => new MainWindowViewModel(
                 resolver.GetRequiredService<MainViewModel>()

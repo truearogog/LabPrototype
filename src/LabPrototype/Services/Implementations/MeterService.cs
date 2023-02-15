@@ -36,29 +36,7 @@ namespace LabPrototype.Services.Implementations
 
             _meters = new List<Meter>();
         }
-
-        public async Task Load()
-        {
-            _meters.Clear();
-            _meters.AddRange(new List<Meter>()
-            {
-                new Meter(Guid.NewGuid(), "A123", "Meter1", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter2", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter3", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter4", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter5", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter6", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter7", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter8", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter9", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter10", "Address"),
-                new Meter(Guid.NewGuid(), "A123", "Meter11", "Address"),
-            });
-
-            _metersLoaded?.Invoke();
-        }
         
-        /*
         public async Task Load()
         {
             IEnumerable<Meter> meters = await _getAllMetersQuery.Execute();
@@ -66,9 +44,8 @@ namespace LabPrototype.Services.Implementations
             _meters.Clear();
             _meters.AddRange(meters);
 
-            MetersLoaded?.Invoke();
+            _metersLoaded?.Invoke();
         }
-        */
 
         public async Task Create(Meter meter)
         {

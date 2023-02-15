@@ -29,14 +29,13 @@
 		</ExperimentalAcrylicBorder>
 		
 		<ListBox 
-			Grid.Row="1" 
-			Items="{Binding MeterListingItemViewModels}" 
-			SelectedItem="{Binding SelectedMeterListingItemViewModel}" 
-			ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+			Grid.Row="1"
+			Items="{Binding MeterListingItemViewModels}"
+			SelectedItem="{Binding SelectedMeterListingItemViewModel}"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 			Background="Transparent"
 			HorizontalAlignment="Stretch"
 			SelectionMode="Single">
-			
 			<ListBox.Styles>
 				<Style Selector="ListBoxItem">
 					<Setter Property="Padding" Value="0" />

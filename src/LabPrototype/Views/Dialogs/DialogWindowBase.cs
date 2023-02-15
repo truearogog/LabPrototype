@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using LabPrototype.Services;
+using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
