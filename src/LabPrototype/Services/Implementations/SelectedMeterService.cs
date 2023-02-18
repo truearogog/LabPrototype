@@ -28,7 +28,7 @@ namespace LabPrototype.Services.Implementations
             _meterService.SubscribeMeterUpdated((meter) => SelectedMeter = meter);
         }
 
-        public void SubscribeSelectedMeterChanged(Action handler) => _selectedMeterChanged += handler;
-        public void UnsubscribeSelectedMeterChanged(Action handler) => _selectedMeterChanged -= handler;
+        public void SubscribeSelectedMeterUpdated(Action handler) => _selectedMeterChanged += handler;
+        public void UnsubscribeSelectedMeterUpdated(Action handler) => _selectedMeterChanged -= handler;
     }
 }

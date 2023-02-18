@@ -10,7 +10,7 @@ namespace LabPrototype.Services.Interfaces
     public interface ISelectedMeterService
     {
         Meter SelectedMeter { get; set; }
-        void SubscribeSelectedMeterChanged(Action handler);
-        void UnsubscribeSelectedMeterChanged(Action handler);
+        void SubscribeSelectedMeterUpdated(Action handler);
+        void UnsubscribeSelectedMeterUpdated(Action handler);
     }
 }

@@ -44,11 +44,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Main\FlowMeasurementsView.axaml.cs">
-      <DependentUpon>FlowMeasurementsView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Main\HistoricMeasurementsView.axaml.cs">
-      <DependentUpon>HistoricMeasurementsView.axaml</DependentUpon>
+    <Compile Update="Views\Components\DetailView.axaml.cs">
+      <DependentUpon>DetailView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Main\MeterListingItemView.axaml.cs">
       <DependentUpon>MeterListingItemView.axaml</DependentUpon>

@@ -6,17 +6,17 @@ namespace LabPrototype.EntityFramework.Dtos
     {
         [Key]
         public Guid Id { get; set; }
-        public float Q1 { get; }
-        public float Q2 { get; }
-        public float DeltaQ { get; }
-        public float P1 { get; }
-        public float P2 { get; }
-        public float P { get; }
-        public float t1 { get; }
-        public float t2 { get; }
-        public float t3 { get; }
-        public float p1 { get; }
-        public float p2 { get; }
+        public double Q1 { get; }
+        public double Q2 { get; }
+        public double DeltaQ { get; }
+        public double P1 { get; }
+        public double P2 { get; }
+        public double P { get; }
+        public double t1 { get; }
+        public double t2 { get; }
+        public double t3 { get; }
+        public double p1 { get; }
+        public double p2 { get; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }

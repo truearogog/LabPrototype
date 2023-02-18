@@ -3,10 +3,11 @@
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:LabPrototype.Views.Main;assembly=LabPrototype"
+				xmlns:components="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Main.SelectedMeterView">
-
+	
 	<Grid RowDefinitions="auto,*">
 		<ExperimentalAcrylicBorder Grid.Row="0">
 			<ExperimentalAcrylicBorder.Material>
@@ -42,15 +43,14 @@
 		<Grid Grid.Row="1" ColumnDefinitions="*,1,3*">
 			<ScrollViewer Grid.Column="0">
 				<StackPanel Orientation="Vertical">
-					<local:MeterDetailsView DataContext="{Binding MeterDetailsViewModel}" />
-					<local:FlowMeasurementsView />
-					<local:HistoricMeasurementsView />
+					<components:MeterDetailsView DataContext="{Binding MeterDetailsViewModel}" />
+					<components:FlowMeasurementsView DataContext="{Binding FlowMeasurementsViewModel}" />
 				</StackPanel>
 			</ScrollViewer>
 
 			<GridSplitter Grid.Column="1" MinWidth="3" Background="#2b2d2e" ResizeDirection="Columns" />
-			
-			<Rectangle Grid.Column="2" />
+
+			<local:HistoricMeasurementsChartView Grid.Column="2" />
 		</Grid>
 	</Grid>
 </UserControl>

@@ -1,6 +1,8 @@
 ﻿using LabPrototype.Domain.Models;
+using LabPrototype.Services.Implementations;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.Services.Models;
+using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using ReactiveUI;
 using System.Threading.Tasks;
@@ -16,21 +18,30 @@ namespace LabPrototype.ViewModels.Main
         public Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
         public MeterDetailsViewModel MeterDetailsViewModel { get; }
+        public HistoricMeasurementsChartViewModel HistoricMeasurementsChartViewModel { get; }
+        public FlowMeasurementsViewModel FlowMeasurementsViewModel { get; }
 
         public ICommand OpenUpdateMeterCommand { get; }
         public ICommand OpenDeleteMeterCommand { get; }
 
-        public SelectedMeterViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedmeterService)
+        public SelectedMeterViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedMeterService, IFlowMeasurementProvider flowMeasurementProvider)
         {
             _dialogService = dialogService;
             _meterService = meterService;
-            _selectedMeterService = selectedmeterService;
-            _selectedMeterService.SubscribeSelectedMeterChanged(SelectedmeterService_SelectedMeterChanged);
+            _selectedMeterService = selectedMeterService;
+            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
 
-            MeterDetailsViewModel = new MeterDetailsViewModel();
+            MeterDetailsViewModel = new MeterDetailsViewModel(selectedMeterService);
+            HistoricMeasurementsChartViewModel = new HistoricMeasurementsChartViewModel();
+            FlowMeasurementsViewModel = new FlowMeasurementsViewModel(selectedMeterService, flowMeasurementProvider);
 
             OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(ShowUpdateMeterDialogAsync);
             OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(ShowDeleteMeterDialogAsync);
+
+            if (!flowMeasurementProvider.IsRunning)
+            {
+                flowMeasurementProvider.Start();
+            }
         }
 
         private async Task ShowUpdateMeterDialogAsync()
@@ -45,11 +56,9 @@ namespace LabPrototype.ViewModels.Main
             await _dialogService.ShowDialogAsync(nameof(DeleteMeterDialogViewModel), parameter);
         }
 
-        private void SelectedmeterService_SelectedMeterChanged()
+        private void SelectedMeterService_SelectedMeterUpdated()
         {
             this.RaisePropertyChanged(nameof(SelectedMeter));
-
-            MeterDetailsViewModel.Meter = SelectedMeter;
         }
     }
 }

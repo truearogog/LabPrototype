@@ -4,8 +4,10 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:LabPrototype.Views.Main;assembly=LabPrototype"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+				xmlns:vms="using:LabPrototype.ViewModels.Main"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Main.MeterListingView">
+	
 	<Grid RowDefinitions="auto,*">
 		<ExperimentalAcrylicBorder Grid.Row="0">
 			<ExperimentalAcrylicBorder.Material>
@@ -35,7 +37,7 @@
 			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 			Background="Transparent"
 			HorizontalAlignment="Stretch"
-			SelectionMode="Single">
+			SelectionMode="Single,Toggle">
 			<ListBox.Styles>
 				<Style Selector="ListBoxItem">
 					<Setter Property="Padding" Value="0" />

@@ -30,9 +30,11 @@ namespace LabPrototype.DependencyInjection
             services.Register<ICreateMeterCommand>(() => new CreateMeterCommand(
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
+
             services.Register<IUpdateMeterCommand>(() => new UpdateMeterCommand(
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
+
             services.Register<IDeleteMeterCommand>(() => new DeleteMeterCommand(
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
@@ -50,9 +52,12 @@ namespace LabPrototype.DependencyInjection
                 resolver.GetRequiredService<IUpdateMeterCommand>(),
                 resolver.GetRequiredService<IDeleteMeterCommand>()
             ));
+
             services.RegisterLazySingleton<ISelectedMeterService>(() => new SelectedMeterService(
                 resolver.GetRequiredService<IMeterService>()
             ));
+
+            services.RegisterLazySingleton<IFlowMeasurementProvider>(() => new TestFlowMeasurementProvider());
         }
     }
 }

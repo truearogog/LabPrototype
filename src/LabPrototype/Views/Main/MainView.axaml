@@ -3,11 +3,11 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="using:LabPrototype.Views.Main"
-				xmlns:vm="using:LabPrototype.ViewModels.Main"
+				xmlns:vms="using:LabPrototype.ViewModels.Main"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                 x:Class="LabPrototype.Views.Main.MainView"
-				x:DataType="vm:MainViewModel"
+				x:DataType="vms:MainViewModel"
 				x:CompileBindings="True">
 	<Grid RowDefinitions="auto,*">
 		<ExperimentalAcrylicBorder Grid.Row="0">
@@ -49,10 +49,10 @@
 
 		<ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
 			<ContentControl.DataTemplates>
-				<DataTemplate DataType="{x:Type vm:MeterListingViewModel}">
+				<DataTemplate DataType="{x:Type vms:MeterListingViewModel}">
 					<local:MeterListingView />
 				</DataTemplate>
-				<DataTemplate DataType="{x:Type vm:SelectedMeterViewModel}">
+				<DataTemplate DataType="{x:Type vms:SelectedMeterViewModel}">
 					<local:SelectedMeterView />
 				</DataTemplate>
 			</ContentControl.DataTemplates>

@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace LabPrototype.Views.Main
 {
-    public partial class FlowMeasurementsView : UserControl
+    public partial class HistoricMeasurementsChartView : UserControl
     {
-        public FlowMeasurementsView()
+        public HistoricMeasurementsChartView()
         {
             InitializeComponent();
         }

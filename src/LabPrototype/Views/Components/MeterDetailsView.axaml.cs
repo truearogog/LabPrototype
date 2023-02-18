@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace LabPrototype.Views.Main
+namespace LabPrototype.Views.Components
 {
     public partial class MeterDetailsView : UserControl
     {

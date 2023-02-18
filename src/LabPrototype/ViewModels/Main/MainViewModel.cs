@@ -18,27 +18,35 @@ namespace LabPrototype.ViewModels.Main
         public ICommand LoadMetersCommand { get; }
         public ICommand DeselectMeterCommand { get; }
 
-        public MainViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedmeterService)
+        public MainViewModel(
+            IDialogService dialogService, 
+            IMeterService meterService, 
+            ISelectedMeterService selectedmeterService, 
+            IFlowMeasurementProvider flowMeasurementProvider)
         {
             _selectedMeterService = selectedmeterService;
-            _selectedMeterService.SubscribeSelectedMeterChanged(SelectedmeterService_SelectedMeterChanged);
+            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
 
             MeterListingViewModel = new MeterListingViewModel(dialogService, meterService, selectedmeterService);
-            SelectedMeterViewModel = new SelectedMeterViewModel(dialogService, meterService, selectedmeterService);
+            SelectedMeterViewModel = new SelectedMeterViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider);
 
             LoadMetersCommand = new LoadMetersCommand(meterService);
             DeselectMeterCommand = new DeselectMeterCommand(selectedmeterService);
         }
 
-        private void SelectedmeterService_SelectedMeterChanged()
+        private void SelectedMeterService_SelectedMeterUpdated()
         {
             this.RaisePropertyChanged(nameof(HasSelectedMeter));
             this.RaisePropertyChanged(nameof(CurrentViewModel));
         }
 
-        public static MainViewModel LoadViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedmeterService)
+        public static MainViewModel LoadViewModel(
+            IDialogService dialogService, 
+            IMeterService meterService, 
+            ISelectedMeterService selectedmeterService, 
+            IFlowMeasurementProvider flowMeasurementProvider)
         {
-            var viewModel = new MainViewModel(dialogService, meterService, selectedmeterService);
+            var viewModel = new MainViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider);
             viewModel.LoadMetersCommand.Execute(null);
             return viewModel;
         }

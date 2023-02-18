@@ -1,4 +1,5 @@
-﻿using LabPrototype.Services.Interfaces;
+﻿using LabPrototype.Services.Implementations;
+using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Dialogs;
 using LabPrototype.ViewModels.Main;
 using Splat;
@@ -28,7 +29,8 @@ namespace LabPrototype.DependencyInjection
             services.RegisterLazySingleton(() => MainViewModel.LoadViewModel(
                 resolver.GetRequiredService<IDialogService>(),
                 resolver.GetRequiredService<IMeterService>(),
-                resolver.GetRequiredService<ISelectedMeterService>()
+                resolver.GetRequiredService<ISelectedMeterService>(),
+                resolver.GetRequiredService<IFlowMeasurementProvider>()
             ));
         }
     }

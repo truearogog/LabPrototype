@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LabPrototype.Domain.Models
+﻿namespace LabPrototype.Domain.Models
 {
     public class Measurement
     {
-        public DateTime DateTime { get; }
-        public float Q1 { get; }
-        public float Q2 { get; }
-        public float DeltaQ { get; }
-        public float P1 { get; }
-        public float P2 { get; }
-        public float P { get; }
-        public float t1 { get; }
-        public float t2 { get; }
-        public float t3 { get; }
-        public float p1 { get; }
-        public float p2 { get; }
+        public DateTime DateTime { get; set; }
+        public double Q1 { get;}
+        public double Q2 { get; }
+        public double DeltaQ => Math.Abs(Q1 - Q2);
+        public double P { get; }
+        public double T { get; }
+
+        public Measurement()
+        {
+
+        }
+
+        public Measurement(double q1, double q2, double p, double t)
+        {
+            Q1 = q1;
+            Q2 = q2;
+            P = p;
+            T = t;
+        }
     }
 }
