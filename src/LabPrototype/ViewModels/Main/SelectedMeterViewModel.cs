@@ -17,23 +17,28 @@ namespace LabPrototype.ViewModels.Main
         private readonly ISelectedMeterService _selectedMeterService;
         public Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
-        public MeterDetailsViewModel MeterDetailsViewModel { get; }
-        public HistoricMeasurementsChartViewModel HistoricMeasurementsChartViewModel { get; }
-        public FlowMeasurementsViewModel FlowMeasurementsViewModel { get; }
+        public MeterDetailListingViewModel MeterDetailListingViewModel { get; }
+        public HistoricMeasurementChartViewModel HistoricMeasurementChartViewModel { get; }
+        public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
 
         public ICommand OpenUpdateMeterCommand { get; }
         public ICommand OpenDeleteMeterCommand { get; }
 
-        public SelectedMeterViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedMeterService, IFlowMeasurementProvider flowMeasurementProvider)
+        public SelectedMeterViewModel(
+            IDialogService dialogService, 
+            IMeterService meterService, 
+            ISelectedMeterService selectedMeterService, 
+            IFlowMeasurementProvider flowMeasurementProvider,
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
         {
             _dialogService = dialogService;
             _meterService = meterService;
             _selectedMeterService = selectedMeterService;
             _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
 
-            MeterDetailsViewModel = new MeterDetailsViewModel(selectedMeterService);
-            HistoricMeasurementsChartViewModel = new HistoricMeasurementsChartViewModel();
-            FlowMeasurementsViewModel = new FlowMeasurementsViewModel(selectedMeterService, flowMeasurementProvider);
+            MeterDetailListingViewModel = new MeterDetailListingViewModel(selectedMeterService);
+            FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel(selectedMeterService, flowMeasurementProvider);
+            HistoricMeasurementChartViewModel = new HistoricMeasurementChartViewModel(selectedMeterService, flowMeasurementProvider, enabledMeasurementAttributeService);
 
             OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(ShowUpdateMeterDialogAsync);
             OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(ShowDeleteMeterDialogAsync);

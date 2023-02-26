@@ -7,50 +7,63 @@
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Main.SelectedMeterView">
-	
-	<Grid RowDefinitions="auto,*">
-		<ExperimentalAcrylicBorder Grid.Row="0">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.7" />
-			</ExperimentalAcrylicBorder.Material>
 
-			<Grid ColumnDefinitions="auto,*,auto" Margin="20 10">
-				<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
-					<TextBlock Text="{Binding SelectedMeter.Name}" FontSize="24" VerticalAlignment="Center" />
-					<Button Classes="topButton" Command="{Binding OpenUpdateMeterCommand}">
-						<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
-					</Button>
-					<Button Classes="topButton" Command="{Binding OpenDeleteMeterCommand}">
-						<material:MaterialIcon Kind="Delete" Width="20" Height="20" />
-					</Button>
-				</StackPanel>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MinWidth="250" />
+			<ColumnDefinition Width="4*" />
+		</Grid.ColumnDefinitions>
 
-				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+		<Grid Grid.Column="0" RowDefinitions="auto,auto,*">
+
+			<Border Background="Black" Padding="10 5">
+				<TextBlock
+					Grid.Row="0"
+					Text="{Binding SelectedMeter.Name}"
+					FontSize="24"
+					VerticalAlignment="Center"
+					TextTrimming="CharacterEllipsis"
+					ToolTip.Tip="{Binding SelectedMeter.Name}" />
+			</Border>
+
+			<Border Grid.Row="1" Padding="5">
+				<WrapPanel HorizontalAlignment="Center">
+					<WrapPanel.Styles>
+						<Style Selector=":is(Button)">
+							<Setter Property="Margin" Value="2" />
+						</Style>
+					</WrapPanel.Styles>
+
 					<Button Classes="topButton">
 						<material:MaterialIcon Kind="GraphAreaspline" Width="20" Height="20" />
 					</Button>
 					<Button Classes="topButton">
 						<material:MaterialIcon Kind="Table" Width="20" Height="20" />
 					</Button>
-				</StackPanel>
-			</Grid>
-		</ExperimentalAcrylicBorder>
+					
+					<!-- TODO: REMOVE BUTTONS -->
+					<Button Classes="topButton" Command="{Binding OpenUpdateMeterCommand}">
+						<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
+					</Button>
+					<Button Classes="topButton" Command="{Binding OpenDeleteMeterCommand}">
+						<material:MaterialIcon Kind="Delete" Width="20" Height="20" />
+					</Button>
+				</WrapPanel>
+			</Border>
 
-		<Grid Grid.Row="1" ColumnDefinitions="*,1,3*">
-			<ScrollViewer Grid.Column="0">
-				<StackPanel Orientation="Vertical">
-					<components:MeterDetailsView DataContext="{Binding MeterDetailsViewModel}" />
-					<components:FlowMeasurementsView DataContext="{Binding FlowMeasurementsViewModel}" />
+			<ScrollViewer Grid.Row="2">
+				<StackPanel>
+					<components:MeterDetailListing DataContext="{Binding MeterDetailListingViewModel}" />
+					<components:FlowMeasurementListing DataContext="{Binding FlowMeasurementListingViewModel}" />
 				</StackPanel>
 			</ScrollViewer>
-
-			<GridSplitter Grid.Column="1" MinWidth="3" Background="#2b2d2e" ResizeDirection="Columns" />
-
-			<local:HistoricMeasurementsChartView Grid.Column="2" />
 		</Grid>
+
+		<local:HistoricMeasurementChartView Grid.Column="1" DataContext="{Binding HistoricMeasurementChartViewModel}" />
 	</Grid>
 </UserControl>
+
+<!--
+
+
+-->

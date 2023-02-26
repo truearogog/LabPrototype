@@ -1,5 +1,6 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
+using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using ReactiveUI;
 using System;
@@ -19,7 +20,7 @@ namespace LabPrototype.ViewModels.Main
 
         public ICommand OpenCreateMeterCommand { get; }
 
-        public ObservableCollection<MeterListingItemViewModel> MeterListingItemViewModels { get; } = new();
+        public ObservableCollection<MeterListingItemViewModel> Items { get; } = new();
 
         private MeterListingItemViewModel _selectedMeterListingItemViewModel;
         public MeterListingItemViewModel SelectedMeterListingItemViewModel
@@ -32,7 +33,10 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        public MeterListingViewModel(IDialogService dialogService, IMeterService meterService, ISelectedMeterService selectedmeterService)
+        public MeterListingViewModel(
+            IDialogService dialogService, 
+            IMeterService meterService, 
+            ISelectedMeterService selectedmeterService)
         {
             _dialogService = dialogService;
             _meterService = meterService;
@@ -50,7 +54,7 @@ namespace LabPrototype.ViewModels.Main
 
         private void MeterService_MetersLoaded()
         {
-            MeterListingItemViewModels.Clear();
+            Items.Clear();
 
             foreach (var meter in _meterService.Meters)
             {
@@ -65,7 +69,7 @@ namespace LabPrototype.ViewModels.Main
 
         private void MeterService_MeterUpdated(Meter meter)
         {
-            var meterViewModel = MeterListingItemViewModels.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
+            var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
             if (meterViewModel != null)
             {
                 meterViewModel.Meter = meter;
@@ -74,10 +78,10 @@ namespace LabPrototype.ViewModels.Main
 
         private void MeterService_MeterDeleted(Guid id)
         {
-            var meterViewModel = MeterListingItemViewModels.FirstOrDefault(x => x.Meter.Id.Equals(id));
+            var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(id));
             if (meterViewModel != null)
             {
-                MeterListingItemViewModels.Remove(meterViewModel);
+                Items.Remove(meterViewModel);
                 _selectedMeterService.SelectedMeter = null;
             }
         }
@@ -85,7 +89,7 @@ namespace LabPrototype.ViewModels.Main
         private void AddMeter(Meter meter)
         {
             MeterListingItemViewModel meterListingItemViewModel = new MeterListingItemViewModel(meter);
-            MeterListingItemViewModels.Add(meterListingItemViewModel);
+            Items.Add(meterListingItemViewModel);
         }
     }
 }

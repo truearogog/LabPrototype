@@ -2,13 +2,7 @@
 using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.Services.Models;
-using LabPrototype.ViewModels.Components;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Dialogs

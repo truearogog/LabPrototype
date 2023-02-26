@@ -1,4 +1,5 @@
 ﻿using LabPrototype.DependencyInjection;
+using LabPrototype.Domain.Factories;
 using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Components;
@@ -23,15 +24,16 @@ namespace LabPrototype.Commands
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            MeterDetailsFormViewModel formViewModel = _updateMeterDialogViewModel.MeterDetailsFormViewModel;
+            MeterDetailFormViewModel formViewModel = _updateMeterDialogViewModel.MeterDetailFormViewModel;
 
             try
             {
-                Meter meter = new Meter(
+                Meter meter = MeterFactory.CreateMeter(
                     formViewModel.Id,
                     formViewModel.SerialCode,
                     formViewModel.Name,
-                    formViewModel.Address
+                    formViewModel.Address,
+                    MeterType.All[formViewModel.SelectedMeterTypeIndex].Id
                 );
 
                 await _meterService.Update(meter);

@@ -1,0 +1,33 @@
+<UserControl	xmlns="https://github.com/avaloniaui"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:vms="using:LabPrototype.ViewModels.Main"
+				xmlns:lvcore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
+				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+				xmlns:components="using:LabPrototype.Views.Components"
+				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+				x:Class="LabPrototype.Views.Main.HistoricMeasurementChartView">
+	
+	<Grid RowDefinitions="auto,*,auto">
+
+		<components:ToggleMeasurementListing
+			Grid.Row="0"
+			DataContext="{Binding ToggleMeasurementListingViewModel}" />
+		
+		<components:MeasurementChart
+			Grid.Row="1"
+			DataContext="{Binding MeasurementChartViewModel}" />
+
+		<Border Grid.Row="2" Padding="5">
+			<StackPanel Orientation="Horizontal" Spacing="5">
+				<Button Classes="topButton" Command="{Binding PlusLimitCommand}">
+					<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
+				</Button>
+				<Button Classes="topButton" Command="{Binding MinusLimitCommand}">
+					<material:MaterialIcon Kind="Minus" Width="20" Height="20" />
+				</Button>
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

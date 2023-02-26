@@ -21,9 +21,13 @@
 			</ExperimentalAcrylicBorder.Material>
 		</ExperimentalAcrylicBorder>
 
-		<Grid RowDefinitions="*, auto">
-			<TextBlock Grid.Row="0" Text="{Binding Meter.Name, StringFormat='Are you sure you want to delete meter {0}?'}" />
-			<StackPanel Grid.Row="1" Orientation="Horizontal">
+		<Grid RowDefinitions="*, auto" Margin="20">
+			<TextBlock Grid.Row="0">
+				<Run Text="Are you sure you want to delete" />
+				<Run FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Meter.Name}" />
+				<Run Text="?" />
+			</TextBlock>
+			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
 				<Button Content="Delete" Command="{Binding DeleteCommand}" />
 				<Button Content="Cancel" Command="{Binding CancelCommand}" />
 			</StackPanel>

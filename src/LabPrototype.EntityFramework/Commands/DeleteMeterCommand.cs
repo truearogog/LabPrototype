@@ -16,9 +16,9 @@ namespace LabPrototype.EntityFramework.Commands
         {
             using (var context = _contextFactory.Create())
             {
-                MeterDto meter = new MeterDto()
+                MeterDto meter = new MeterDto
                 {
-                    Id = id
+                    Id = id,
                 };
 
                 context.Meters.Remove(meter);

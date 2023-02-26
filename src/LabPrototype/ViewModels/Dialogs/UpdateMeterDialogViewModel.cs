@@ -9,18 +9,18 @@ namespace LabPrototype.ViewModels.Dialogs
 {
     public class UpdateMeterDialogViewModel : ParameterizedDialogViewModelBase<MeterNavigationParameter>
     {
-        public MeterDetailsFormViewModel MeterDetailsFormViewModel { get; }
+        public MeterDetailFormViewModel MeterDetailFormViewModel { get; }
 
         public UpdateMeterDialogViewModel(IMeterService meterService)
         {
             ICommand updateCommand = new UpdateMeterCommand(this, meterService);
 
-            MeterDetailsFormViewModel = new MeterDetailsFormViewModel(updateCommand, CloseCommand);
+            MeterDetailFormViewModel = new MeterDetailFormViewModel(updateCommand, CloseCommand);
         }
 
         public override void Activate(MeterNavigationParameter parameter)
         {
-            MeterDetailsFormViewModel.Update(parameter.Meter);
+            MeterDetailFormViewModel.Update(parameter.Meter);
         }
     }
 }

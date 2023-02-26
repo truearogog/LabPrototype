@@ -22,13 +22,14 @@ namespace LabPrototype.ViewModels.Main
             IDialogService dialogService, 
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
-            IFlowMeasurementProvider flowMeasurementProvider)
+            IFlowMeasurementProvider flowMeasurementProvider,
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
         {
             _selectedMeterService = selectedmeterService;
             _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
 
             MeterListingViewModel = new MeterListingViewModel(dialogService, meterService, selectedmeterService);
-            SelectedMeterViewModel = new SelectedMeterViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider);
+            SelectedMeterViewModel = new SelectedMeterViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider, enabledMeasurementAttributeService);
 
             LoadMetersCommand = new LoadMetersCommand(meterService);
             DeselectMeterCommand = new DeselectMeterCommand(selectedmeterService);
@@ -44,9 +45,10 @@ namespace LabPrototype.ViewModels.Main
             IDialogService dialogService, 
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
-            IFlowMeasurementProvider flowMeasurementProvider)
+            IFlowMeasurementProvider flowMeasurementProvider,
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
         {
-            var viewModel = new MainViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider);
+            var viewModel = new MainViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider, enabledMeasurementAttributeService);
             viewModel.LoadMetersCommand.Execute(null);
             return viewModel;
         }

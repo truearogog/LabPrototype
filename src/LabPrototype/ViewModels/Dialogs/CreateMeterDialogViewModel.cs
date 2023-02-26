@@ -7,13 +7,13 @@ namespace LabPrototype.ViewModels.Dialogs
 {
     public class CreateMeterDialogViewModel : DialogViewModelBase
     {
-        public MeterDetailsFormViewModel MeterDetailsFormViewModel { get; }
+        public MeterDetailFormViewModel MeterDetailFormViewModel { get; }
 
         public CreateMeterDialogViewModel(IMeterService meterService)
         {
             ICommand createCommand = new CreateMeterCommand(this, meterService);
 
-            MeterDetailsFormViewModel = new MeterDetailsFormViewModel(createCommand, CloseCommand);
+            MeterDetailFormViewModel = new MeterDetailFormViewModel(createCommand, CloseCommand);
         }
     }
 }

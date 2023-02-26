@@ -26,7 +26,7 @@
 
 		<Grid Margin="20" RowDefinitions="auto,*">
 			<TextBlock Grid.Row="0" Text="New meter" FontSize="20" />
-			<components:MeterDetailsFormView Grid.Row="1" DataContext="{Binding MeterDetailsFormViewModel}" />
+			<components:MeterDetailForm Grid.Row="1" DataContext="{Binding MeterDetailFormViewModel}" />
 		</Grid>
 	</Panel>
 </Window>

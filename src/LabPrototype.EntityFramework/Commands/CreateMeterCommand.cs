@@ -19,9 +19,11 @@ namespace LabPrototype.EntityFramework.Commands
             {
                 MeterDto meterDto = new MeterDto()
                 {
+                    Id = meter.Id,
                     SerialCode = meter.SerialCode,
                     Name = meter.Name,
                     Address = meter.Address,
+                    TypeId = meter.TypeId,
                     Created = DateTime.Now,
                     Updated = DateTime.Now,
                 };

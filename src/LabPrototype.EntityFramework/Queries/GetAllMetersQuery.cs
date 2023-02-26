@@ -1,4 +1,5 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.Factories;
+using LabPrototype.Domain.Models;
 using LabPrototype.Domain.Queries;
 using LabPrototype.EntityFramework.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace LabPrototype.EntityFramework.Queries
             using (var context = _contextFactory.Create())
             {
                 IEnumerable<MeterDto> meterDtos = await context.Meters.ToListAsync();
-                return meterDtos.Select(x => new Meter(x.Id, x.SerialCode, x.Name, x.Address));
+                return meterDtos.Select(x => MeterFactory.CreateMeter(x.Id, x.SerialCode, x.Name, x.Address, x.TypeId));
             }
         }
     }

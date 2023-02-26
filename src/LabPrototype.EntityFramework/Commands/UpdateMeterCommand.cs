@@ -22,13 +22,14 @@ namespace LabPrototype.EntityFramework.Commands
         {
             using (var context = _contextFactory.Create())
             {
-                MeterDto meterDto = new MeterDto()
+                MeterDto meterDto = new MeterDto
                 {
                     Id = meter.Id,
                     SerialCode = meter.SerialCode,
                     Name = meter.Name,
                     Address = meter.Address,
-                    Updated = DateTime.Now,
+                    TypeId = meter.TypeId,
+                    Updated = DateTime.Now
                 };
 
                 context.Meters.Update(meterDto);

@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LabPrototype.Domain.Models
+﻿namespace LabPrototype.Domain.Models
 {
-    public class Meter
+    public abstract class Meter
     {
         public Guid Id { get; set; }
         public string SerialCode { get; }
         public string Name { get; }
         public string Address { get; }
+        public int TypeId { get; }
 
-        public Meter()
-        {
+        protected abstract List<MeasurementAttribute> _measurementAttributes { get; }
+        public List<MeasurementAttribute> MeasurementAttributes => _measurementAttributes;
 
-        }
-
-        public Meter(Guid id, string serialCode, string name, string address)
+        public Meter(Guid id, string serialCode, string name, string address, int typeId)
         {
             Id = id;
             SerialCode = serialCode;
             Name = name;
             Address = address;
+            TypeId = typeId;
         }
     }
 }

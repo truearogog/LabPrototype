@@ -3,10 +3,6 @@ using Avalonia.Controls;
 using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LabPrototype.Views.Dialogs
 {
