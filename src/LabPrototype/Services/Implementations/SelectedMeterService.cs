@@ -8,6 +8,8 @@ namespace LabPrototype.Services.Implementations
     {
         private readonly IMeterService _meterService;
 
+        public event Action<Meter> SelectedMeterUpdated;
+
         private Meter _selectedMeter;
         public Meter SelectedMeter
         {
@@ -15,20 +17,15 @@ namespace LabPrototype.Services.Implementations
             set
             {
                 _selectedMeter = value;
-                _selectedMeterChanged?.Invoke();
+                SelectedMeterUpdated?.Invoke(_selectedMeter);
             }
         }
-
-        private event Action _selectedMeterChanged;
 
         public SelectedMeterService(IMeterService meterService)
         {
             _meterService = meterService;
-            _meterService.SubscribeMeterCreated((meter) => SelectedMeter = meter);
-            _meterService.SubscribeMeterUpdated((meter) => SelectedMeter = meter);
+            _meterService.MeterCreated += meter => SelectedMeter = meter;
+            _meterService.MeterUpdated += meter => SelectedMeter = meter;
         }
-
-        public void SubscribeSelectedMeterUpdated(Action handler) => _selectedMeterChanged += handler;
-        public void UnsubscribeSelectedMeterUpdated(Action handler) => _selectedMeterChanged -= handler;
     }
 }

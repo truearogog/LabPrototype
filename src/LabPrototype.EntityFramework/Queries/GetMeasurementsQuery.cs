@@ -1,8 +1,5 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Domain.Queries;
-using LabPrototype.EntityFramework.Dtos;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace LabPrototype.EntityFramework.Queries
 {
@@ -32,13 +29,13 @@ namespace LabPrototype.EntityFramework.Queries
         {
             var date = DateTime.UtcNow.Date;
             var _measurement = new Measurement(0, 0, 0, 0);
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 500_000; ++i)
             {
                 Measurement measurement = new Measurement(
-                    _measurement.Q1 + Random.Shared.Next(-10, 11),
-                    _measurement.Q2 + Random.Shared.Next(-10, 11),
-                    _measurement.P + Random.Shared.Next(-10, 11),
-                    _measurement.T + Random.Shared.Next(-10, 11)
+                    _measurement.Q1 + Random.Shared.Next(-2, 3),
+                    _measurement.Q2 + Random.Shared.Next(-2, 3),
+                    _measurement.P  + Random.Shared.Next(-2, 3),
+                    _measurement.T  + Random.Shared.Next(-2, 3)
                 );
                 measurement.DateTime = date;
                 _measurement = measurement;

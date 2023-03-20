@@ -14,14 +14,14 @@ namespace LabPrototype.ViewModels.Components
 
         public ToggleMeasurementListingViewModel(
             ISelectedMeterService selectedMeterService, 
-            IMeasurementProvider measurementProvider, 
+            IChartMeasurementProvider measurementProvider, 
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
         {
             _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             _measurementProvider = measurementProvider;
-            _measurementProvider.SubscribeMeasurementUpdated(MeasurementUpdated);
+            _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
 
             _enabledMeasurementAttributeService = enabledMeasurementAttributeService;
 
@@ -30,8 +30,8 @@ namespace LabPrototype.ViewModels.Components
 
         public override void Dispose()
         {
-            _selectedMeterService.UnsubscribeSelectedMeterUpdated(SelectedMeterUpdated);
-            _measurementProvider.UnsubscribeMeasurementUpdated(MeasurementUpdated);
+            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
+            _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
             base.Dispose();
         }
 
@@ -43,7 +43,7 @@ namespace LabPrototype.ViewModels.Components
             {
                 Items.Add(new ToggleMeasurementListingItemViewModel(
                     new MeasurementAttribute(
-                        "Date/time", 
+                        "Time", 
                         string.Empty, 
                         x => x.DateTime.ToString("dd/MM/yyyy HH:mm"), 
                         ColorScheme.Midnight))
@@ -63,14 +63,14 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void SelectedMeterUpdated()
+        private void _SelectedMeterUpdated(Meter meter)
         {
-            CreateMeasurements(_selectedMeterService.SelectedMeter);
+            CreateMeasurements(meter);
         }
 
-        private void MeasurementUpdated(Measurement measurement)
+        private void _MeasurementUpdated(Measurement measurement)
         {
-            //UpdateMeasurements(measurement);
+            UpdateMeasurements(measurement);
         }
     }
 }

@@ -14,18 +14,18 @@ namespace LabPrototype.ViewModels.Components
         public FlowMeasurementListingViewModel(ISelectedMeterService selectedMeterService, IMeasurementProvider measurementProvider)
         {
             _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             _measurementProvider = measurementProvider;
-            _measurementProvider.SubscribeMeasurementUpdated(MeasurementUpdated);
+            _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
 
             CreateMeasurements(_selectedMeterService.SelectedMeter);
         }
 
         public override void Dispose()
         {
-            _selectedMeterService.UnsubscribeSelectedMeterUpdated(SelectedMeterUpdated);
-            _measurementProvider.UnsubscribeMeasurementUpdated(MeasurementUpdated);
+            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
+            _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
             base.Dispose();
         }
 
@@ -43,22 +43,17 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void UpdateMeasurements(Measurement measurement)
+        private void _SelectedMeterUpdated(Meter meter)
+        {
+            CreateMeasurements(meter);
+        }
+
+        private void _MeasurementUpdated(Measurement measurement)
         {
             foreach (var measurementViewModel in Items)
             {
                 measurementViewModel.Update(measurement);
             }
-        }
-
-        private void SelectedMeterUpdated()
-        {
-            CreateMeasurements(_selectedMeterService.SelectedMeter);
-        }
-
-        private void MeasurementUpdated(Measurement measurement)
-        {
-            UpdateMeasurements(measurement);
         }
     }
 }

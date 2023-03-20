@@ -9,7 +9,7 @@
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Main.HistoricMeasurementChartView">
 	
-	<Grid RowDefinitions="auto,*,auto">
+	<Grid RowDefinitions="auto,*">
 
 		<components:ToggleMeasurementListing
 			Grid.Row="0"
@@ -18,16 +18,5 @@
 		<components:MeasurementChart
 			Grid.Row="1"
 			DataContext="{Binding MeasurementChartViewModel}" />
-
-		<Border Grid.Row="2" Padding="5">
-			<StackPanel Orientation="Horizontal" Spacing="5" >
-				<TextBlock 
-					Text="{Binding MeasurementChartViewModel.MinSelectedLimit}" 
-					IsVisible="{Binding MeasurementChartViewModel.HasSelectedLimit}" />
-				<TextBlock 
-					Text="{Binding MeasurementChartViewModel.MaxSelectedLimit}" 
-					IsVisible="{Binding MeasurementChartViewModel.HasSelectedLimit}"/>
-			</StackPanel>
-		</Border>
 	</Grid>
 </UserControl>

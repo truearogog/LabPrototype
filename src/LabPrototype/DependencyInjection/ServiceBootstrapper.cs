@@ -67,6 +67,8 @@ namespace LabPrototype.DependencyInjection
 
             services.RegisterLazySingleton<IFlowMeasurementProvider>(() => new TestFlowMeasurementProvider());
 
+            services.RegisterLazySingleton<IChartMeasurementProvider>(() => new ChartMeasurementProvider());
+
             services.RegisterLazySingleton<IEnabledMeasurementAttributeService>(() => new EnabledMeasurementAttributeService());
         }
     }

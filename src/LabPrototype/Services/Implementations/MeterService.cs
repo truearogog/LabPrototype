@@ -10,6 +10,11 @@ namespace LabPrototype.Services.Implementations
 {
     public class MeterService : IMeterService
     {
+        public event Action MetersLoaded;
+        public event Action<Meter> MeterCreated;
+        public event Action<Meter> MeterUpdated;
+        public event Action<Guid> MeterDeleted;
+
         private readonly IGetAllMetersQuery _getAllMetersQuery;
         private readonly ICreateMeterCommand _createMeterCommand;
         private readonly IUpdateMeterCommand _updateMeterCommand;
@@ -17,11 +22,6 @@ namespace LabPrototype.Services.Implementations
 
         private readonly List<Meter> _meters;
         public IEnumerable<Meter> Meters => _meters;
-
-        private event Action _metersLoaded;
-        private event Action<Meter> _meterCreated;
-        private event Action<Meter> _meterUpdated;
-        private event Action<Guid> _meterDeleted;
 
         public MeterService(
             IGetAllMetersQuery getAllMetersQuery, 
@@ -44,14 +44,14 @@ namespace LabPrototype.Services.Implementations
             _meters.Clear();
             _meters.AddRange(meters);
 
-            _metersLoaded?.Invoke();
+            MetersLoaded?.Invoke();
         }
 
         public async Task Create(Meter meter)
         {
             await _createMeterCommand.Execute(meter);
             _meters.Add(meter);
-            _meterCreated?.Invoke(meter);
+            MeterCreated?.Invoke(meter);
         }
 
         public async Task Update(Meter meter)
@@ -66,23 +66,14 @@ namespace LabPrototype.Services.Implementations
             {
                 _meters.Add(meter);
             }
-            _meterUpdated?.Invoke(meter);
+            MeterUpdated?.Invoke(meter);
         }
 
         public async Task Delete(Guid id)
         {
             await _deleteMeterCommand.Execute(id);
             _meters.RemoveAll(x => x.Id.Equals(id));
-            _meterDeleted?.Invoke(id);
+            MeterDeleted?.Invoke(id);
         }
-
-        public void SubscribeMetersLoaded(Action handler) => _metersLoaded += handler;
-        public void UnsubscribeMetersLoaded(Action handler) => _metersLoaded -= handler;
-        public void SubscribeMeterCreated(Action<Meter> handler) => _meterCreated += handler;
-        public void UnsubscribeMeterCreated(Action<Meter> handler) => _meterCreated -= handler;
-        public void SubscribeMeterUpdated(Action<Meter> handler) => _meterUpdated += handler;
-        public void UnsubscribeMeterUpdated(Action<Meter> handler) => _meterUpdated -= handler;
-        public void SubscribeMeterDeleted(Action<Guid> handler) => _meterDeleted += handler;
-        public void UnsubscribeMeterDeleted(Action<Guid> handler) => _meterDeleted -= handler;
     }
 }

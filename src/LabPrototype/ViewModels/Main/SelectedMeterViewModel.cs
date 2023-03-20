@@ -15,6 +15,7 @@ namespace LabPrototype.ViewModels.Main
         private readonly IDialogService _dialogService;
         private readonly IMeterService _meterService;
         private readonly ISelectedMeterService _selectedMeterService;
+
         public Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
         public MeterDetailListingViewModel MeterDetailListingViewModel { get; }
@@ -29,19 +30,20 @@ namespace LabPrototype.ViewModels.Main
             IMeterService meterService, 
             ISelectedMeterService selectedMeterService, 
             IFlowMeasurementProvider flowMeasurementProvider,
+            IChartMeasurementProvider chartMeasurementProvider,
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService)
         {
             _dialogService = dialogService;
             _meterService = meterService;
             _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             MeterDetailListingViewModel = new MeterDetailListingViewModel(selectedMeterService);
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel(selectedMeterService, flowMeasurementProvider);
             HistoricMeasurementChartViewModel = new HistoricMeasurementChartViewModel(
-                selectedMeterService, 
-                flowMeasurementProvider, 
+                selectedMeterService,
+                chartMeasurementProvider, 
                 enabledMeasurementAttributeService,
                 measurementService);
 
@@ -56,7 +58,7 @@ namespace LabPrototype.ViewModels.Main
 
         public override void Dispose()
         {
-            _selectedMeterService.UnsubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
             base.Dispose();
         }
 
@@ -72,7 +74,7 @@ namespace LabPrototype.ViewModels.Main
             await _dialogService.ShowDialogAsync(nameof(DeleteMeterDialogViewModel), parameter);
         }
 
-        private void SelectedMeterUpdated()
+        private void _SelectedMeterUpdated(Meter meter)
         {
             this.RaisePropertyChanged(nameof(SelectedMeter));
         }

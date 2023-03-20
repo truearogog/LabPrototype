@@ -42,26 +42,26 @@ namespace LabPrototype.ViewModels.Main
             _meterService = meterService;
             _selectedMeterService = selectedmeterService;
 
-            _meterService.SubscribeMetersLoaded(MetersLoaded);
-            _meterService.SubscribeMeterCreated(MeterCreated);
-            _meterService.SubscribeMeterUpdated(MeterUpdated);
-            _meterService.SubscribeMeterDeleted(MeterDeleted);
+            _meterService.MetersLoaded += _MetersLoaded;
+            _meterService.MeterCreated += _MeterCreated;
+            _meterService.MeterUpdated += _MeterUpdated;
+            _meterService.MeterDeleted += _MeterDeleted;
 
             OpenCreateMeterCommand = ReactiveCommand.CreateFromTask(ShowCreateMeterDialogAsync);
         }
 
         public override void Dispose()
         {
-            _meterService.UnsubscribeMetersLoaded(MetersLoaded);
-            _meterService.UnsubscribeMeterCreated(MeterCreated);
-            _meterService.UnsubscribeMeterUpdated(MeterUpdated);
-            _meterService.UnsubscribeMeterDeleted(MeterDeleted);
+            _meterService.MetersLoaded -= _MetersLoaded;
+            _meterService.MeterCreated -= _MeterCreated;
+            _meterService.MeterUpdated -= _MeterUpdated;
+            _meterService.MeterDeleted -= _MeterDeleted;
             base.Dispose();
         }
 
         private async Task ShowCreateMeterDialogAsync() => await _dialogService.ShowDialogAsync(nameof(CreateMeterDialogViewModel));
 
-        private void MetersLoaded()
+        private void _MetersLoaded()
         {
             Items.Clear();
 
@@ -71,12 +71,12 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void MeterCreated(Meter meter)
+        private void _MeterCreated(Meter meter)
         {
             AddMeter(meter);
         }
 
-        private void MeterUpdated(Meter meter)
+        private void _MeterUpdated(Meter meter)
         {
             var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
             if (meterViewModel != null)
@@ -85,7 +85,7 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void MeterDeleted(Guid id)
+        private void _MeterDeleted(Guid id)
         {
             var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(id));
             if (meterViewModel != null)

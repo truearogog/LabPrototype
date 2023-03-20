@@ -8,21 +8,17 @@ namespace LabPrototype.Services.Implementations
     {
         private IDictionary<Guid, bool> _attributeEnabled = new Dictionary<Guid, bool>();
 
-        private event Action<Guid, bool> _attributeEnabledChanged;
+        public event Action<Guid, bool> AttributeEnabledChanged;
 
         public void Update(Guid attributeId, bool enabled)
         {
             _attributeEnabled[attributeId] = enabled;
-            _attributeEnabledChanged?.Invoke(attributeId, enabled);
+            AttributeEnabledChanged?.Invoke(attributeId, enabled);
         }
 
         public void Clear()
         {
             _attributeEnabled.Clear();
         }
-
-        public void SubscribeAttributeEnabledChanged(Action<Guid, bool> handler) => _attributeEnabledChanged += handler;
-
-        public void UnsubscribeAttributeEnabledChanged(Action<Guid, bool> handler) => _attributeEnabledChanged -= handler;
     }
 }

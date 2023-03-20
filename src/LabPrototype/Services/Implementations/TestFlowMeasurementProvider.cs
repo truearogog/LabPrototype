@@ -5,10 +5,11 @@ using System.Timers;
 
 namespace LabPrototype.Services.Implementations
 {
-    public class TestFlowMeasurementProvider : IFlowMeasurementProvider
+    public class TestFlowMeasurementProvider : IFlowMeasurementProvider, IDisposable
     {
+        public event Action<Measurement> MeasurementUpdated;
+
         private readonly Timer _timer;
-        private event Action<Measurement> _measurementUpdated;
         public bool IsRunning => _timer.Enabled;
 
         private Measurement _measurement;
@@ -33,7 +34,7 @@ namespace LabPrototype.Services.Implementations
                 _measurement.T + _random.Next(-10, 11)
             );
             _measurement = measurement;
-            _measurementUpdated?.Invoke(_measurement);
+            MeasurementUpdated?.Invoke(_measurement);
         }
 
         public void Start()
@@ -45,10 +46,6 @@ namespace LabPrototype.Services.Implementations
         {
             _timer.Stop();
         }
-
-        public void SubscribeMeasurementUpdated(Action<Measurement> handler) => _measurementUpdated += handler;
-
-        public void UnsubscribeMeasurementUpdated(Action<Measurement> handler) => _measurementUpdated -= handler;
 
         public void Dispose()
         {

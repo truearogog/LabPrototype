@@ -5,8 +5,8 @@ namespace LabPrototype.Services.Interfaces
 {
     public interface ISelectedMeterService
     {
+        event Action<Meter> SelectedMeterUpdated;
+
         Meter SelectedMeter { get; set; }
-        void SubscribeSelectedMeterUpdated(Action handler);
-        void UnsubscribeSelectedMeterUpdated(Action handler);
     }
 }

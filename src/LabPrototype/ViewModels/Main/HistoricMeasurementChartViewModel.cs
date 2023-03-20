@@ -13,12 +13,12 @@ namespace LabPrototype.ViewModels.Main
 
         public HistoricMeasurementChartViewModel(
             ISelectedMeterService selectedMeterService, 
-            IMeasurementProvider measurementProvider, 
+            IChartMeasurementProvider measurementProvider, 
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService)
         {
             ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(selectedMeterService, measurementProvider, enabledMeasurementAttributeService);
-            MeasurementChartViewModel = new MeasurementChartViewModel(selectedMeterService, enabledMeasurementAttributeService, measurementService);
+            MeasurementChartViewModel = new MeasurementChartViewModel(selectedMeterService, enabledMeasurementAttributeService, measurementService, measurementProvider);
         }
     }
 }

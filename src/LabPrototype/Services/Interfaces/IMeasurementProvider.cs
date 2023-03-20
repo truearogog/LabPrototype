@@ -3,9 +3,8 @@ using System;
 
 namespace LabPrototype.Services.Interfaces
 {
-    public interface IMeasurementProvider : IDisposable
+    public interface IMeasurementProvider
     {
-        void SubscribeMeasurementUpdated(Action<Measurement> handler);
-        void UnsubscribeMeasurementUpdated(Action<Measurement> handler);
+        event Action<Measurement> MeasurementUpdated;
     }
 }

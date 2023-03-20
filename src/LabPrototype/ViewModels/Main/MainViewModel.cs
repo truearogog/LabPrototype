@@ -1,4 +1,5 @@
 ﻿using LabPrototype.Commands;
+using LabPrototype.Domain.Models;
 using LabPrototype.Services.Implementations;
 using LabPrototype.Services.Interfaces;
 using ReactiveUI;
@@ -23,18 +24,20 @@ namespace LabPrototype.ViewModels.Main
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
             IFlowMeasurementProvider flowMeasurementProvider,
+            IChartMeasurementProvider chartMeasurementProvider,
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService)
         {
             _selectedMeterService = selectedmeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             MeterListingViewModel = new MeterListingViewModel(dialogService, meterService, selectedmeterService);
             SelectedMeterViewModel = new SelectedMeterViewModel(
                 dialogService, 
                 meterService, 
                 selectedmeterService, 
-                flowMeasurementProvider, 
+                flowMeasurementProvider,
+                chartMeasurementProvider,
                 enabledMeasurementAttributeService,
                 measurementService);
 
@@ -42,7 +45,13 @@ namespace LabPrototype.ViewModels.Main
             DeselectMeterCommand = new DeselectMeterCommand(selectedmeterService);
         }
 
-        private void SelectedMeterUpdated()
+        public override void Dispose()
+        {
+            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
+            base.Dispose();
+        }
+
+        private void _SelectedMeterUpdated(Meter meter)
         {
             this.RaisePropertyChanged(nameof(HasSelectedMeter));
             this.RaisePropertyChanged(nameof(CurrentViewModel));
@@ -53,6 +62,7 @@ namespace LabPrototype.ViewModels.Main
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
             IFlowMeasurementProvider flowMeasurementProvider,
+            IChartMeasurementProvider chartMeasurementProvider,
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService)
         {
@@ -60,7 +70,8 @@ namespace LabPrototype.ViewModels.Main
                 dialogService, 
                 meterService, 
                 selectedmeterService, 
-                flowMeasurementProvider, 
+                flowMeasurementProvider,
+                chartMeasurementProvider,
                 enabledMeasurementAttributeService,
                 measurementService);
             viewModel.LoadMetersCommand.Execute(null);

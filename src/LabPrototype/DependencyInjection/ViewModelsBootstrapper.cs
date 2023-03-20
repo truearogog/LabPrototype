@@ -31,6 +31,7 @@ namespace LabPrototype.DependencyInjection
                 resolver.GetRequiredService<IMeterService>(),
                 resolver.GetRequiredService<ISelectedMeterService>(),
                 resolver.GetRequiredService<IFlowMeasurementProvider>(),
+                resolver.GetRequiredService<IChartMeasurementProvider>(),
                 resolver.GetRequiredService<IEnabledMeasurementAttributeService>(),
                 resolver.GetRequiredService<IMeasurementService>()
             ));
