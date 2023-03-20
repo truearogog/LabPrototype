@@ -11,19 +11,14 @@ namespace LabPrototype.ViewModels.Main
         public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
         public MeasurementChartViewModel MeasurementChartViewModel { get; }
 
-        public ICommand MinusLimitCommand { get; set; }
-        public ICommand PlusLimitCommand { get; set; }
-
         public HistoricMeasurementChartViewModel(
             ISelectedMeterService selectedMeterService, 
             IMeasurementProvider measurementProvider, 
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
+            IMeasurementService measurementService)
         {
             ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(selectedMeterService, measurementProvider, enabledMeasurementAttributeService);
-            MeasurementChartViewModel = new MeasurementChartViewModel(selectedMeterService, enabledMeasurementAttributeService);
-
-            MinusLimitCommand = ReactiveCommand.Create(MeasurementChartViewModel.MinusLimit);
-            PlusLimitCommand = ReactiveCommand.Create(MeasurementChartViewModel.PlusLimit);
+            MeasurementChartViewModel = new MeasurementChartViewModel(selectedMeterService, enabledMeasurementAttributeService, measurementService);
         }
     }
 }

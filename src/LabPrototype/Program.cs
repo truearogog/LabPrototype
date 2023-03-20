@@ -57,7 +57,7 @@ namespace LabPrototype
         };
 
         private static void RegisterDependencies() =>
-            Bootstrapper.Register(Locator.CurrentMutable, Locator.Current);
+            DependencyBootstrapper.Register(Locator.CurrentMutable, Locator.Current);
 
         private static AppBuilder BuildAvaloniaApp() =>
             AppBuilder

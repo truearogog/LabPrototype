@@ -20,7 +20,7 @@ namespace LabPrototype.Services.Implementations
             _timer = new Timer(1000) { AutoReset = true };
             _timer.Elapsed += GetNewMeasurement;
 
-            _measurement = new Measurement();
+            _measurement = new Measurement(0, 0, 0, 0);
             _random = new Random();
         }
 

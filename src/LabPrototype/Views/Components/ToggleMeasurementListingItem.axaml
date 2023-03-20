@@ -12,15 +12,15 @@
 			<Setter Property="Margin" Value="1" />
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
 			<Setter Property="VerticalAlignment" Value="Stretch" />
-			<Style Selector="^:unchecked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="#444444" />
-			</Style>
-			<Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Primary}" />
-			</Style>
-			<Style Selector="^:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Secondary}" />
-			</Style>
+		</Style>
+		<Style Selector="ToggleButton:unchecked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#444444" />
+		</Style>
+		<Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Primary}" />
+		</Style>
+		<Style Selector="ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Secondary}" />
 		</Style>
 	</UserControl.Styles>
 	<ToggleButton 

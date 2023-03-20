@@ -1,6 +1,6 @@
 ﻿namespace LabPrototype.Domain.Models
 {
-    public class Measurement
+    public class Measurement : IComparable<Measurement>
     {
         public DateTime DateTime { get; set; }
         public double Q1 { get;}
@@ -9,11 +9,6 @@
         public double P { get; }
         public double T { get; }
 
-        public Measurement()
-        {
-
-        }
-
         public Measurement(double q1, double q2, double p, double t)
         {
             Q1 = q1;
@@ -21,5 +16,7 @@
             P = p;
             T = t;
         }
+
+        public int CompareTo(Measurement? other) => other?.DateTime.CompareTo(DateTime) ?? 0;
     }
 }

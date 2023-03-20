@@ -18,25 +18,37 @@ namespace LabPrototype.ViewModels.Components
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
         {
             _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
+            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
 
             _measurementProvider = measurementProvider;
-            _measurementProvider.SubscribeMeasurementUpdated(MeasurementProvider_MeasurementUpdated);
+            _measurementProvider.SubscribeMeasurementUpdated(MeasurementUpdated);
 
             _enabledMeasurementAttributeService = enabledMeasurementAttributeService;
 
             CreateMeasurements(_selectedMeterService.SelectedMeter);
         }
 
+        public override void Dispose()
+        {
+            _selectedMeterService.UnsubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            _measurementProvider.UnsubscribeMeasurementUpdated(MeasurementUpdated);
+            base.Dispose();
+        }
+
         private void CreateMeasurements(Meter meter)
         {
-            Items.Clear();
             _enabledMeasurementAttributeService.Clear();
+            Items.Clear();
             if (meter != null)
             {
-                var measurementAttributes = meter.MeasurementAttributes;
-
-                foreach (var measurementAttribute in measurementAttributes)
+                Items.Add(new ToggleMeasurementListingItemViewModel(
+                    new MeasurementAttribute(
+                        "Date/time", 
+                        string.Empty, 
+                        x => x.DateTime.ToString("dd/MM/yyyy HH:mm"), 
+                        ColorScheme.Midnight))
+                );
+                foreach (var measurementAttribute in meter.MeasurementAttributes)
                 {
                     Items.Add(new ToggleMeasurementListingItemViewModel(measurementAttribute, _enabledMeasurementAttributeService));
                 }
@@ -51,12 +63,12 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void SelectedMeterService_SelectedMeterUpdated()
+        private void SelectedMeterUpdated()
         {
             CreateMeasurements(_selectedMeterService.SelectedMeter);
         }
 
-        private void MeasurementProvider_MeasurementUpdated(Measurement measurement)
+        private void MeasurementUpdated(Measurement measurement)
         {
             //UpdateMeasurements(measurement);
         }

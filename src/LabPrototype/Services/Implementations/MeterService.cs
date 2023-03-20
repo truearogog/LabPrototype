@@ -81,7 +81,7 @@ namespace LabPrototype.Services.Implementations
         public void SubscribeMeterCreated(Action<Meter> handler) => _meterCreated += handler;
         public void UnsubscribeMeterCreated(Action<Meter> handler) => _meterCreated -= handler;
         public void SubscribeMeterUpdated(Action<Meter> handler) => _meterUpdated += handler;
-        public void UnsubscribeMetersLoaded(Action<Meter> handler) => _meterUpdated -= handler;
+        public void UnsubscribeMeterUpdated(Action<Meter> handler) => _meterUpdated -= handler;
         public void SubscribeMeterDeleted(Action<Guid> handler) => _meterDeleted += handler;
         public void UnsubscribeMeterDeleted(Action<Guid> handler) => _meterDeleted -= handler;
     }

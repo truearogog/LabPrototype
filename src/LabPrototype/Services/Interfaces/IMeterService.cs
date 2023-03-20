@@ -8,6 +8,7 @@ namespace LabPrototype.Services.Interfaces
     public interface IMeterService
     {
         IEnumerable<Meter> Meters { get; }
+        
         Task Load();
         Task Create(Meter meter);
         Task Update(Meter meter);
@@ -18,7 +19,7 @@ namespace LabPrototype.Services.Interfaces
         void SubscribeMeterCreated(Action<Meter> handler);
         void UnsubscribeMeterCreated(Action<Meter> handler);
         void SubscribeMeterUpdated(Action<Meter> handler);
-        void UnsubscribeMetersLoaded(Action<Meter> handler);
+        void UnsubscribeMeterUpdated(Action<Meter> handler);
         void SubscribeMeterDeleted(Action<Guid> handler);
         void UnsubscribeMeterDeleted(Action<Guid> handler);
     }

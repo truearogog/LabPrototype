@@ -25,10 +25,16 @@ namespace LabPrototype.ViewModels.Components
         public MeterDetailListingViewModel(ISelectedMeterService selectedMeterService)
         {
             _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
+            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
 
             CreateDetails();
             UpdateDetails();
+        }
+
+        public override void Dispose()
+        {
+            _selectedMeterService.UnsubscribeSelectedMeterUpdated(SelectedMeterUpdated);
+            base.Dispose();
         }
 
         private void CreateDetails()
@@ -47,7 +53,7 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void SelectedMeterService_SelectedMeterUpdated()
+        private void SelectedMeterUpdated()
         {
             Meter = _selectedMeterService.SelectedMeter;
         }

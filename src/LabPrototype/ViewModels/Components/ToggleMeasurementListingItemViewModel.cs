@@ -1,19 +1,20 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
 using ReactiveUI;
-using System;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class ToggleMeasurementListingItemViewModel : MeasurementListingItemViewModel
     {
-        private readonly IEnabledMeasurementAttributeService _enabledMeasurementAttributeService;
+        private readonly IEnabledMeasurementAttributeService? _enabledMeasurementAttributeService;
 
         public bool IsChecked { get; set; } = true;
         public ICommand ToggledCommand { get; }
 
-        public ToggleMeasurementListingItemViewModel(MeasurementAttribute measurementAttribute, IEnabledMeasurementAttributeService enabledMeasurementAttributeService) : base(measurementAttribute)
+        public ToggleMeasurementListingItemViewModel(
+            MeasurementAttribute measurementAttribute, 
+            IEnabledMeasurementAttributeService? enabledMeasurementAttributeService = null) : base(measurementAttribute)
         {
             _enabledMeasurementAttributeService = enabledMeasurementAttributeService;
 
@@ -23,7 +24,7 @@ namespace LabPrototype.ViewModels.Components
 
         private void Toggled()
         {
-            _enabledMeasurementAttributeService.Update(MeasurementAttribute.Id, IsChecked);
+            _enabledMeasurementAttributeService?.Update(MeasurementAttribute.Id, IsChecked);
         }
     }
 }

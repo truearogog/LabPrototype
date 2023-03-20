@@ -23,6 +23,10 @@ namespace LabPrototype.DependencyInjection
             services.Register<IGetAllMetersQuery>(() => new GetAllMetersQuery(
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
+
+            services.Register<IGetMeasurementsQuery>(() => new GetMeasurementsQuery(
+                resolver.GetRequiredService<LabDbContextFactory>()
+            ));
         }
 
         private static void RegisterCommands(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
@@ -51,6 +55,10 @@ namespace LabPrototype.DependencyInjection
                 resolver.GetRequiredService<ICreateMeterCommand>(),
                 resolver.GetRequiredService<IUpdateMeterCommand>(),
                 resolver.GetRequiredService<IDeleteMeterCommand>()
+            ));
+
+            services.RegisterLazySingleton<IMeasurementService>(() => new MeasurementService(
+                resolver.GetRequiredService<IGetMeasurementsQuery>()
             ));
 
             services.RegisterLazySingleton<ISelectedMeterService>(() => new SelectedMeterService(

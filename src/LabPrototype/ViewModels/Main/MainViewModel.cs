@@ -23,19 +23,26 @@ namespace LabPrototype.ViewModels.Main
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
             IFlowMeasurementProvider flowMeasurementProvider,
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
+            IMeasurementService measurementService)
         {
             _selectedMeterService = selectedmeterService;
-            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterService_SelectedMeterUpdated);
+            _selectedMeterService.SubscribeSelectedMeterUpdated(SelectedMeterUpdated);
 
             MeterListingViewModel = new MeterListingViewModel(dialogService, meterService, selectedmeterService);
-            SelectedMeterViewModel = new SelectedMeterViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider, enabledMeasurementAttributeService);
+            SelectedMeterViewModel = new SelectedMeterViewModel(
+                dialogService, 
+                meterService, 
+                selectedmeterService, 
+                flowMeasurementProvider, 
+                enabledMeasurementAttributeService,
+                measurementService);
 
             LoadMetersCommand = new LoadMetersCommand(meterService);
             DeselectMeterCommand = new DeselectMeterCommand(selectedmeterService);
         }
 
-        private void SelectedMeterService_SelectedMeterUpdated()
+        private void SelectedMeterUpdated()
         {
             this.RaisePropertyChanged(nameof(HasSelectedMeter));
             this.RaisePropertyChanged(nameof(CurrentViewModel));
@@ -46,9 +53,16 @@ namespace LabPrototype.ViewModels.Main
             IMeterService meterService, 
             ISelectedMeterService selectedmeterService, 
             IFlowMeasurementProvider flowMeasurementProvider,
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
+            IMeasurementService measurementService)
         {
-            var viewModel = new MainViewModel(dialogService, meterService, selectedmeterService, flowMeasurementProvider, enabledMeasurementAttributeService);
+            var viewModel = new MainViewModel(
+                dialogService, 
+                meterService, 
+                selectedmeterService, 
+                flowMeasurementProvider, 
+                enabledMeasurementAttributeService,
+                measurementService);
             viewModel.LoadMetersCommand.Execute(null);
             return viewModel;
         }

@@ -1,4 +1,6 @@
-﻿namespace LabPrototype.Domain.Models
+﻿using System.Runtime.CompilerServices;
+
+namespace LabPrototype.Domain.Models
 {
     public abstract class Meter
     {

@@ -20,13 +20,13 @@
 			DataContext="{Binding MeasurementChartViewModel}" />
 
 		<Border Grid.Row="2" Padding="5">
-			<StackPanel Orientation="Horizontal" Spacing="5">
-				<Button Classes="topButton" Command="{Binding PlusLimitCommand}">
-					<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
-				</Button>
-				<Button Classes="topButton" Command="{Binding MinusLimitCommand}">
-					<material:MaterialIcon Kind="Minus" Width="20" Height="20" />
-				</Button>
+			<StackPanel Orientation="Horizontal" Spacing="5" >
+				<TextBlock 
+					Text="{Binding MeasurementChartViewModel.MinSelectedLimit}" 
+					IsVisible="{Binding MeasurementChartViewModel.HasSelectedLimit}" />
+				<TextBlock 
+					Text="{Binding MeasurementChartViewModel.MaxSelectedLimit}" 
+					IsVisible="{Binding MeasurementChartViewModel.HasSelectedLimit}"/>
 			</StackPanel>
 		</Border>
 	</Grid>
