@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using LabPrototype.ViewModels.Components;
 using System;
+using ScottPlot;
 
 namespace LabPrototype.Views.Components
 {
@@ -17,11 +18,9 @@ namespace LabPrototype.Views.Components
 
             DataContextChanged += (s, e) => vm = DataContext as MeasurementChartViewModel;
 
-            PointerMoved += _PointerMoved;
-            PointerEnter += _PointerEnter;
-            PointerLeave += _PointerLeave;
-            PointerPressed += _PointerPressed;
-            PointerReleased += _PointerReleased;
+            ChartControl.Plot.Style(Style.Gray2);
+            ChartControl.Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+            ChartControl.Plot.Style(dataBackground: System.Drawing.Color.Transparent);
         }
 
         private void _PointerMoved(object? sender, PointerEventArgs e)

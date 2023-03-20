@@ -5,5 +5,5 @@
 				xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Components.MeasurementChart">
-	<ScottPlot:AvaPlot Name="avaPlot1" />
+	<ScottPlot:AvaPlot x:Name="ChartControl" />
 </UserControl>
