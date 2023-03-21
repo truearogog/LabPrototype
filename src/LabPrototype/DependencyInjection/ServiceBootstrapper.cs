@@ -24,7 +24,7 @@ namespace LabPrototype.DependencyInjection
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
 
-            services.Register<IGetMeasurementsQuery>(() => new GetMeasurementsQuery(
+            services.Register<IGetMeasurementsQuery>(() => new TestGetMeasurementsQuery(
                 resolver.GetRequiredService<LabDbContextFactory>()
             ));
         }

@@ -45,7 +45,7 @@ namespace LabPrototype.ViewModels.Components
                     new MeasurementAttribute(
                         "Time", 
                         string.Empty, 
-                        x => x.DateTime.ToString("dd/MM/yyyy HH:mm"), 
+                        x => x.DateTime.ToString(), 
                         ColorScheme.Midnight))
                 );
                 foreach (var measurementAttribute in meter.MeasurementAttributes)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using LabPrototype.Models.Interfaces;
 using System.Linq;
+using System.Globalization;
 
 namespace LabPrototype.Models.Implementations
 {

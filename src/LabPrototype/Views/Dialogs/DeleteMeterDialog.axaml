@@ -29,8 +29,10 @@
 					</Style>
 				</WrapPanel.Styles>
 				<TextBlock Text="Are you sure you want to delete" />
-				<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Meter.Name}" />
-				<TextBlock Text="?" />
+				<StackPanel Orientation="Horizontal">
+					<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Meter.Name}" />
+					<TextBlock Text="?" />
+				</StackPanel>
 			</WrapPanel>
 			
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">

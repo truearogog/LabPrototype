@@ -20,4 +20,12 @@
 		<Setter Property="Background" Value="Black" />
 		<Setter Property="Opacity" Value="0.2" />
 	</Style>
+	<Style Selector="Border.DetailHeader">
+		<Setter Property="Background" Value="Black" />
+		<Setter Property="Padding" Value="10 5" />
+		<Setter Property="Height" Value="30" />
+	</Style>
+	<Style Selector="Border.DetailHeader TextBlock">
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
 </Styles>

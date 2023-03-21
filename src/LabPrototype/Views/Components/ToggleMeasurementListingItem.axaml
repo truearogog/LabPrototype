@@ -10,6 +10,7 @@
 			<Setter Property="BorderThickness" Value="0" />
 			<Setter Property="CornerRadius" Value="0" />
 			<Setter Property="Margin" Value="1" />
+			<Setter Property="MinHeight" Value="38" />
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
 			<Setter Property="VerticalAlignment" Value="Stretch" />
 		</Style>
@@ -26,26 +27,25 @@
 	<ToggleButton 
 		IsChecked="{Binding IsChecked}"
 		Command="{Binding ToggledCommand}">
-		<Grid 
-			ColumnDefinitions="*, auto" 
-			HorizontalAlignment="Stretch">
-			<TextBlock 
-				Grid.Column="0" 
-				Text="{Binding MeasurementAttribute.Name}" 
-				VerticalAlignment="Center" />
-			<StackPanel 
-				Grid.Column="1" 
-				Orientation="Horizontal" 
-				Spacing="5">
-				<TextBlock 
-					Text="{Binding Value}" 
-					FontSize="20" 
-					IsVisible="{Binding HasValue}" 
-					VerticalAlignment="Center" />
-				<TextBlock 
-					Text="{Binding MeasurementAttribute.Unit}" 
-					VerticalAlignment="Center" />
-			</StackPanel>
+		<Grid RowDefinitions="auto,*">
+			<TextBlock
+				Grid.Row="0"
+				VerticalAlignment="Center"
+				Text="{Binding MeasurementAttribute.Name}" />
+			<Grid
+				Grid.Row="1"
+				ColumnDefinitions="*, auto">
+				<TextBlock
+					Grid.Column="0"
+					VerticalAlignment="Center"
+					Text="{Binding Value}"
+					TextWrapping="WrapWithOverflow"
+					IsVisible="{Binding HasValue}" />
+				<TextBlock
+					Grid.Column="1"
+					VerticalAlignment="Center" 
+					Text="{Binding MeasurementAttribute.Unit}" />
+			</Grid>
 		</Grid>
 	</ToggleButton>
 </UserControl>

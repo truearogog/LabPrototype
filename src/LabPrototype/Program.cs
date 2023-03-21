@@ -8,6 +8,7 @@ using LabPrototype.DependencyInjection;
 using Serilog.Core;
 using LabPrototype.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace LabPrototype
 {
@@ -26,6 +27,9 @@ namespace LabPrototype
                 {
                     return;
                 }
+
+                // set culture
+                CultureInfo.CurrentCulture = new CultureInfo("lv-LV", false);
 
                 SubscribeToDomainUnhandledEvents();
                 RegisterDependencies();

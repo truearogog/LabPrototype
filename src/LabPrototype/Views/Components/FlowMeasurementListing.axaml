@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="LabPrototype.Views.Components.FlowMeasurementListing">
 	<StackPanel Orientation="Vertical">
-		<Border Background="Black" Padding="10">
+		<Border Classes="DetailHeader">
 			<TextBlock Text="Flow" />
 		</Border>
 		<ItemsRepeater Items="{Binding Items}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10">

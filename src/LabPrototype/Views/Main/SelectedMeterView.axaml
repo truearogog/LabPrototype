@@ -16,12 +16,10 @@
 
 		<Grid Grid.Column="0" RowDefinitions="auto,auto,*">
 
-			<Border Background="Black" Padding="10 5">
+			<Border Grid.Row="0" Classes="DetailHeader">
 				<TextBlock
-					Grid.Row="0"
 					Text="{Binding SelectedMeter.Name}"
 					FontSize="24"
-					VerticalAlignment="Center"
 					TextTrimming="CharacterEllipsis"
 					ToolTip.Tip="{Binding SelectedMeter.Name}" />
 			</Border>
