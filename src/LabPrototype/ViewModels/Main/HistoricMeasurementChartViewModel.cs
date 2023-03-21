@@ -1,8 +1,5 @@
 ﻿using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Components;
-using ReactiveUI;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Main
 {
@@ -17,8 +14,15 @@ namespace LabPrototype.ViewModels.Main
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService)
         {
-            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(selectedMeterService, measurementProvider, enabledMeasurementAttributeService);
-            MeasurementChartViewModel = new MeasurementChartViewModel(selectedMeterService, enabledMeasurementAttributeService, measurementService, measurementProvider);
+            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(
+                selectedMeterService, 
+                measurementProvider, 
+                enabledMeasurementAttributeService);
+            MeasurementChartViewModel = new MeasurementChartViewModel(
+                selectedMeterService, 
+                enabledMeasurementAttributeService, 
+                measurementService, 
+                measurementProvider);
         }
     }
 }

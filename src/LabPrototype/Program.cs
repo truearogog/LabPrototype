@@ -29,7 +29,7 @@ namespace LabPrototype
                 }
 
                 // set culture
-                CultureInfo.CurrentCulture = new CultureInfo("lv-LV", false);
+                CultureInfo.CurrentCulture = new CultureInfo("en-GB", false);
 
                 SubscribeToDomainUnhandledEvents();
                 RegisterDependencies();

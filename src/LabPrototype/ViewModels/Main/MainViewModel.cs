@@ -1,6 +1,5 @@
 ﻿using LabPrototype.Commands;
 using LabPrototype.Domain.Models;
-using LabPrototype.Services.Implementations;
 using LabPrototype.Services.Interfaces;
 using ReactiveUI;
 using System.Windows.Input;

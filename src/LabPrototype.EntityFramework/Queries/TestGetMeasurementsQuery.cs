@@ -26,7 +26,7 @@ namespace LabPrototype.EntityFramework.Queries
         {
             var date = DateTime.UtcNow.Date;
             var _measurement = new Measurement(0, 0, 0, 0);
-            for (int i = 0; i < 5_000; ++i)
+            for (int i = 0; i < 500_000; ++i)
             {
                 Measurement measurement = new Measurement(
                     _measurement.Q1 + Random.Shared.Next(-2, 3),

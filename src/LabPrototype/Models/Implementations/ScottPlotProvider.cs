@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using LabPrototype.Models.Interfaces;
 using System.Linq;
-using System.Globalization;
 
 namespace LabPrototype.Models.Implementations
 {
@@ -37,6 +36,7 @@ namespace LabPrototype.Models.Implementations
             plot.LineWidth = 2;
             _signalPlotsXY[plotId] = plot;
             _plot.Plot.AxisAuto();
+            _plot.Plot.SetOuterViewLimits(xs.Min(), xs.Max());
             _plot.Refresh();
         }
 
