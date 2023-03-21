@@ -5,8 +5,8 @@ namespace LabPrototype.Models.Interfaces
 {
     public interface IPlotProvider
     {
+        void AddPlots(Guid[] plotIds, double[] xs, double[][] ys, Color[] colors);
         void ClearPlots();
-        void AddPlot(Guid plotId, double[] xs, double[] ys, Color color);
         void SetPlotVisibility(Guid plotId, bool visible);
 
         void AddCrosshair();

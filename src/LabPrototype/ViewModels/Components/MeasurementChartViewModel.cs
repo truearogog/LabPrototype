@@ -58,13 +58,13 @@ namespace LabPrototype.ViewModels.Components
             if (SelectedMeter != null)
             {
                 var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
+
+                var plotIds = SelectedMeter.MeasurementAttributes.Select(a => a.Id).ToArray();
                 var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
-                foreach (var measurementAttribute in SelectedMeter.MeasurementAttributes)
-                {
-                    var ys = measurements.Select(x => (double)measurementAttribute.ValueGetter(x)).ToArray();
-                    var color = measurementAttribute.ColorScheme.Primary.ToColor();
-                    PlotProvider.AddPlot(measurementAttribute.Id, xs, ys, color);
-                }
+                var ys = SelectedMeter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
+                var colors = SelectedMeter.MeasurementAttributes.Select(a => a.ColorScheme.Primary.ToColor()).ToArray();
+
+                PlotProvider.AddPlots(plotIds, xs, ys, colors);
             }
         }
 

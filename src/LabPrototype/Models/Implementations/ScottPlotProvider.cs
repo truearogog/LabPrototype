@@ -23,20 +23,24 @@ namespace LabPrototype.Models.Implementations
             _plot.ContextMenu = null;
 
             _plot.Plot.Style(Style.Gray2);
-            _plot.Plot.Style(figureBackground: Color.Transparent);
-            _plot.Plot.Style(dataBackground: Color.Transparent);
+            _plot.Plot.Style(Color.Transparent, Color.Transparent);
 
+            _plot.Configuration.LockVerticalAxis = true;
             _plot.Plot.XAxis.DateTimeFormat(true);
         }
 
-        public void AddPlot(Guid plotId, double[] xs, double[] ys, Color color)
+        public void AddPlots(Guid[] plotIds, double[] xs, double[][] ys, Color[] colors)
         {
-            var plot = _plot.Plot.AddSignalXY(xs, ys, color);
-            plot.MarkerShape = MarkerShape.openCircle;
-            plot.LineWidth = 2;
-            _signalPlotsXY[plotId] = plot;
-            _plot.Plot.AxisAuto();
+            var plotCount = plotIds.Length;
+            for (int i = 0; i < plotCount; ++i)
+            {
+                var plot = _plot.Plot.AddSignalXY(xs, ys[i], colors[i]);
+                plot.MarkerShape = MarkerShape.openCircle;
+                plot.LineWidth = 2;
+                _signalPlotsXY[plotIds[i]] = plot;
+            }
             _plot.Plot.SetOuterViewLimits(xs.Min(), xs.Max());
+            _plot.Plot.AxisAuto();
             _plot.Refresh();
         }
 
