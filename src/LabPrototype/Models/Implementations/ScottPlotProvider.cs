@@ -91,7 +91,11 @@ namespace LabPrototype.Models.Implementations
 
         public (double, double, int) GetPointNearestX(double x)
         {
-            return _signalPlotsXY.First().Value.GetPointNearestX(x);
+            var plot = _signalPlotsXY.FirstOrDefault().Value;
+            if (plot == null)
+                return (0, 0, 0);
+            else
+                return _signalPlotsXY.First().Value.GetPointNearestX(x);
         }
     }
 }

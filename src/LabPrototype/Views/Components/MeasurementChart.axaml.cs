@@ -35,15 +35,8 @@ namespace LabPrototype.Views.Components
             (double coordinateX, double coordinateY) = ChartControl.GetMouseCoordinates();
             _plotProvider.SetCrosshairPosition(coordinateX, coordinateY);
 
-            try
-            {
-                (double nearestX, double nearestY, int nearestIndex) = _plotProvider.GetPointNearestX(coordinateX);
-                _vm?.UpdateNearestMeasurement(nearestIndex);
-            }
-            catch
-            {
-
-            }
+            (double nearestX, double nearestY, int nearestIndex) = _plotProvider.GetPointNearestX(coordinateX);
+            _vm?.UpdateNearestMeasurement(nearestIndex);
         }
 
         private void _PointerEnter(object? sender, Avalonia.Input.PointerEventArgs e)

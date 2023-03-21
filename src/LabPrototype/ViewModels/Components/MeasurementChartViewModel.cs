@@ -32,12 +32,14 @@ namespace LabPrototype.ViewModels.Components
             _enabledMeasurementAttributeService.AttributeEnabledChanged += _AttributeEnabledChanged;
 
             _measurementService = measurementService;
+
             _chartMeasurementProvider = chartMeasurementProvider;
         }
 
         public override void Dispose()
         {
             _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
+            _enabledMeasurementAttributeService.AttributeEnabledChanged -= _AttributeEnabledChanged;
             base.Dispose();
         }
 
@@ -50,14 +52,14 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void CreateSeries(Meter meter)
+        private void CreateSeries()
         {
             PlotProvider.ClearPlots();
-            if (meter != null)
+            if (SelectedMeter != null)
             {
-                var measurements = _measurementService.LoadedMeasurements[meter.Id];
+                var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
                 var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
-                foreach (var measurementAttribute in meter.MeasurementAttributes)
+                foreach (var measurementAttribute in SelectedMeter.MeasurementAttributes)
                 {
                     var ys = measurements.Select(x => (double)measurementAttribute.ValueGetter(x)).ToArray();
                     var color = measurementAttribute.ColorScheme.Primary.ToColor();
@@ -72,9 +74,9 @@ namespace LabPrototype.ViewModels.Components
             {
                 Task.Run(async () => {
                     await _measurementService.LoadMeter(meter.Id);
-                    CreateSeries(meter);
+                    CreateSeries();
                     PlotProvider.AddCrosshair();
-                });
+                }).Wait();
             }
         }
 
