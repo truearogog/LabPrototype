@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace LabPrototype.Views.Components;
 
-public partial class MeasurementTable : UserControl
+public partial class MeasurementHistoryTable : UserControl
 {
-    public MeasurementTable()
+    public MeasurementHistoryTable()
     {
         InitializeComponent();
     }

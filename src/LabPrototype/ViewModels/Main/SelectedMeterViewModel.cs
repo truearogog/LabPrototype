@@ -24,15 +24,11 @@ namespace LabPrototype.ViewModels.Main
         public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
 
         public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
-        
-        private Dictionary<Type, ViewModelBase> _measurementPresentationViewModels = new Dictionary<Type, ViewModelBase>();
+        public MeasurementHistoryChartViewModel MeasurementHistoryChartViewModel { get; }
+        public MeasurementHistoryTableViewModel MeasurementHistoryTableViewModel { get; }
 
-        public MeasurementChartViewModel MeasurementChartViewModel
-            => _measurementPresentationViewModels[typeof(MeasurementChartViewModel)] as MeasurementChartViewModel;
-        public MeasurementTableViewModel MeasurementTableViewModel { get; }
-
-        public ICommand SelectMeasurementChartCommand { get; }
-        public ICommand SelectMeasurementTableCommand { get; }
+        public ICommand SelectChartCommand { get; }
+        public ICommand SelectTableCommand { get; }
         public ICommand OpenUpdateMeterCommand { get; }
         public ICommand OpenDeleteMeterCommand { get; }
 
@@ -40,9 +36,9 @@ namespace LabPrototype.ViewModels.Main
             IDialogService dialogService, 
             IMeterService meterService, 
             ISelectedMeterService selectedMeterService, 
-            IFlowMeasurementProvider flowMeasurementProvider,
-            IChartMeasurementProvider chartMeasurementProvider,
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
+            IFlowMeasurementProvider flowMeasurementProvider, 
+            IChartMeasurementProvider chartMeasurementProvider, 
+            IEnabledMeasurementAttributeService enabledMeasurementAttributeService, 
             IMeasurementService measurementService)
         {
             _dialogService = dialogService;
@@ -58,18 +54,18 @@ namespace LabPrototype.ViewModels.Main
                 chartMeasurementProvider,
                 enabledMeasurementAttributeService);
 
-            MeasurementChartViewModel = new MeasurementChartViewModel(
+            MeasurementHistoryChartViewModel = new MeasurementHistoryChartViewModel(
                 selectedMeterService,
                 enabledMeasurementAttributeService,
                 measurementService,
                 chartMeasurementProvider);
 
-            MeasurementTableViewModel = new MeasurementTableViewModel(
+            MeasurementHistoryTableViewModel = new MeasurementHistoryTableViewModel(
                 selectedMeterService,
                 measurementService);
 
-            SelectMeasurementChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
-            SelectMeasurementTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
+            SelectChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
+            SelectTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
 
             OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(OpenUpdateMeterDialogAsync);
             OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(OpenDeleteMeterDialogAsync);
@@ -88,12 +84,14 @@ namespace LabPrototype.ViewModels.Main
 
         private void SelectMeasurementChart()
         {
-            CurrentMeasurementViewModel = MeasurementChartViewModel;
+            MeasurementHistoryChartViewModel.IsVisible = true;
+            MeasurementHistoryTableViewModel.IsVisible = false;
         }
 
         private void SelectMeasurementTable()
         {
-            CurrentMeasurementViewModel = MeasurementTableViewModel;
+            MeasurementHistoryChartViewModel.IsVisible = false;
+            MeasurementHistoryTableViewModel.IsVisible = true;
         }
 
         private async Task OpenUpdateMeterDialogAsync()

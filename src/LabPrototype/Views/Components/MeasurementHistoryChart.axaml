@@ -5,8 +5,8 @@
 				xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-				x:Class="LabPrototype.Views.Components.MeasurementChart">
-	<Grid RowDefinitions="*, auto">
+				x:Class="LabPrototype.Views.Components.MeasurementHistoryChart">
+	<Grid RowDefinitions="*, auto" IsVisible="">
 		<ScottPlot:AvaPlot Grid.Row="0" x:Name="ChartControl" />
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Classes="smallButtonPanel">
 			<Button Classes="smallButton" Command="{Binding ToggleLockXAxisCommand}">

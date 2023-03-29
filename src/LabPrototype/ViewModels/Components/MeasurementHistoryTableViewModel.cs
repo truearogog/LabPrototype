@@ -1,19 +1,16 @@
 ﻿using LabPrototype.Domain.Models;
-using LabPrototype.Services.Implementations;
 using LabPrototype.Services.Interfaces;
-using ReactiveUI;
-using System.Threading.Tasks;
 
 namespace LabPrototype.ViewModels.Components
 {
-    public class MeasurementTableViewModel : ViewModelBase
+    public class MeasurementHistoryTableViewModel : MeasurementHistoryViewModelBase
     {
         private readonly ISelectedMeterService _selectedMeterService;
         private readonly IMeasurementService _measurementService;
 
         private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
-        public MeasurementTableViewModel(
+        public MeasurementHistoryTableViewModel(
             ISelectedMeterService selectedMeterService,
             IMeasurementService measurementService)
         {

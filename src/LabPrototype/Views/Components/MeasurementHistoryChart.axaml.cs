@@ -5,12 +5,12 @@ using LabPrototype.Models.Interfaces;
 
 namespace LabPrototype.Views.Components
 {
-    public partial class MeasurementChart : UserControl
+    public partial class MeasurementHistoryChart : UserControl
     {
-        private MeasurementChartViewModel? _vm;
+        private MeasurementHistoryChartViewModel? _vm;
         private IPlotProvider _plotProvider;
 
-        public MeasurementChart()
+        public MeasurementHistoryChart()
         {
             InitializeComponent();
 
@@ -22,7 +22,7 @@ namespace LabPrototype.Views.Components
 
             DataContextChanged += (s, e) =>
             {
-                _vm = DataContext as MeasurementChartViewModel;
+                _vm = DataContext as MeasurementHistoryChartViewModel;
                 if (_vm != null)
                 {
                     _vm.PlotProvider = _plotProvider;

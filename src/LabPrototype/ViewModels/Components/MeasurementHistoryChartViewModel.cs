@@ -7,11 +7,10 @@ using LabPrototype.Models.Interfaces;
 using LabPrototype.Services.Interfaces;
 using System.Windows.Input;
 using ReactiveUI;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LabPrototype.ViewModels.Components
 {
-    public class MeasurementChartViewModel : ViewModelBase
+    public class MeasurementHistoryChartViewModel : MeasurementHistoryViewModelBase
     {
         private readonly ISelectedMeterService _selectedMeterService;
         private readonly IEnabledMeasurementAttributeService _enabledMeasurementAttributeService;
@@ -47,7 +46,7 @@ namespace LabPrototype.ViewModels.Components
         public ICommand ToggleLockXAxisCommand { get; }
         public ICommand ToggleLockYAxisCommand { get; }
 
-        public MeasurementChartViewModel(
+        public MeasurementHistoryChartViewModel(
             ISelectedMeterService selectedMeterService,
             IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
             IMeasurementService measurementService,
@@ -104,7 +103,6 @@ namespace LabPrototype.ViewModels.Components
             if (SelectedMeter != null)
             {
                 Task.Run(async () => {
-                    return;
                     await _measurementService.LoadMeter(meter.Id);
                     CreateSeries();
                     PlotProvider.AddCrosshair();
