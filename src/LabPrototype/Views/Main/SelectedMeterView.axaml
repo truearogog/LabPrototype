@@ -3,6 +3,7 @@
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:LabPrototype.Views.Main;assembly=LabPrototype"
+				xmlns:component-vms="using:LabPrototype.ViewModels.Components"
 				xmlns:components="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -16,7 +17,7 @@
 
 		<Grid Grid.Column="0" RowDefinitions="auto,auto,*">
 
-			<Border Grid.Row="0" Classes="DetailHeader">
+			<Border Grid.Row="0" Classes="detailHeader">
 				<TextBlock
 					Text="{Binding SelectedMeter.Name}"
 					FontSize="24"
@@ -24,30 +25,26 @@
 					ToolTip.Tip="{Binding SelectedMeter.Name}" />
 			</Border>
 
-			<Border Grid.Row="1" Padding="5">
-				<WrapPanel HorizontalAlignment="Center">
-					<WrapPanel.Styles>
-						<Style Selector=":is(Button)">
-							<Setter Property="Margin" Value="2" />
-						</Style>
-					</WrapPanel.Styles>
-
-					<Button Classes="topButton">
-						<material:MaterialIcon Kind="GraphAreaspline" Width="20" Height="20" />
-					</Button>
-					<Button Classes="topButton">
-						<material:MaterialIcon Kind="Table" Width="20" Height="20" />
-					</Button>
+			<WrapPanel 
+				Grid.Row="1" 
+				Classes="smallButtonPanel" 
+				HorizontalAlignment="Left">
+				
+				<Button Classes="smallButton" Command="{Binding SelectMeasurementChartCommand}">
+					<material:MaterialIcon Kind="GraphAreaspline" />
+				</Button>
+				<Button Classes="smallButton" Command="{Binding SelectMeasurementTableCommand}">
+					<material:MaterialIcon Kind="Table" />
+				</Button>
 					
-					<!-- TODO: REMOVE BUTTONS -->
-					<Button Classes="topButton" Command="{Binding OpenUpdateMeterCommand}">
-						<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
-					</Button>
-					<Button Classes="topButton" Command="{Binding OpenDeleteMeterCommand}">
-						<material:MaterialIcon Kind="Delete" Width="20" Height="20" />
-					</Button>
-				</WrapPanel>
-			</Border>
+				<!-- TODO: REMOVE BUTTONS -->
+				<Button Classes="smallButton" Command="{Binding OpenUpdateMeterCommand}">
+					<material:MaterialIcon Kind="Edit" />
+				</Button>
+				<Button Classes="smallButton" Command="{Binding OpenDeleteMeterCommand}">
+					<material:MaterialIcon Kind="Delete" />
+				</Button>
+			</WrapPanel>
 
 			<ScrollViewer Grid.Row="2">
 				<StackPanel>
@@ -57,11 +54,22 @@
 			</ScrollViewer>
 		</Grid>
 
-		<local:HistoricMeasurementChartView Grid.Column="1" DataContext="{Binding HistoricMeasurementChartViewModel}" />
+		<Grid Grid.Column="1" RowDefinitions="auto,*">
+
+			<components:ToggleMeasurementListing
+				Grid.Row="0"
+				DataContext="{Binding ToggleMeasurementListingViewModel}" />
+
+			<ContentControl Grid.Row="1" Content="{Binding CurrentMeasurementViewModel}">
+				<ContentControl.DataTemplates>
+					<DataTemplate DataType="{x:Type component-vms:MeasurementChartViewModel}">
+						<components:MeasurementChart />
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type component-vms:MeasurementTableViewModel}">
+						<components:MeasurementTable />
+					</DataTemplate>
+				</ContentControl.DataTemplates>
+			</ContentControl>
+		</Grid>
 	</Grid>
 </UserControl>
-
-<!--
-
-
--->

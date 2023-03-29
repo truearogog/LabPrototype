@@ -5,6 +5,9 @@ using LabPrototype.Extensions;
 using LabPrototype.Domain.Models;
 using LabPrototype.Models.Interfaces;
 using LabPrototype.Services.Interfaces;
+using System.Windows.Input;
+using ReactiveUI;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -18,6 +21,31 @@ namespace LabPrototype.ViewModels.Components
         private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
         public IPlotProvider PlotProvider { get; set; }
+
+        private bool _lockXAxis;
+        public bool LockXAxis
+        {
+            get => _lockXAxis;
+            set
+            {
+                PlotProvider.LockXAxis = value;
+                this.RaiseAndSetIfChanged(ref _lockXAxis, value);
+            }
+        }
+
+        private bool _lockYAxis;
+        public bool LockYAxis
+        {
+            get => _lockYAxis;
+            set
+            {
+                PlotProvider.LockYAxis = value;
+                this.RaiseAndSetIfChanged(ref _lockYAxis, value);
+            }
+        }
+
+        public ICommand ToggleLockXAxisCommand { get; }
+        public ICommand ToggleLockYAxisCommand { get; }
 
         public MeasurementChartViewModel(
             ISelectedMeterService selectedMeterService,
@@ -34,6 +62,9 @@ namespace LabPrototype.ViewModels.Components
             _measurementService = measurementService;
 
             _chartMeasurementProvider = chartMeasurementProvider;
+
+            ToggleLockXAxisCommand = ReactiveCommand.Create(() => LockXAxis = !LockXAxis);
+            ToggleLockYAxisCommand = ReactiveCommand.Create(() => LockYAxis = !LockYAxis);
         }
 
         public override void Dispose()
@@ -73,6 +104,7 @@ namespace LabPrototype.ViewModels.Components
             if (SelectedMeter != null)
             {
                 Task.Run(async () => {
+                    return;
                     await _measurementService.LoadMeter(meter.Id);
                     CreateSeries();
                     PlotProvider.AddCrosshair();
@@ -82,7 +114,7 @@ namespace LabPrototype.ViewModels.Components
 
         private void _AttributeEnabledChanged(Guid attributeId, bool enabled)
         {
-            PlotProvider.SetPlotVisibility(attributeId, enabled);
+            PlotProvider?.SetPlotVisibility(attributeId, enabled);
         }
     }
 }

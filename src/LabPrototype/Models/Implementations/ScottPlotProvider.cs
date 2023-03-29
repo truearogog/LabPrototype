@@ -16,6 +16,18 @@ namespace LabPrototype.Models.Implementations
 
         private Crosshair? _crosshair;
 
+        public bool LockXAxis 
+        { 
+            get => _plot.Configuration.LockHorizontalAxis;
+            set => _plot.Configuration.LockHorizontalAxis = value;
+        }
+
+        public bool LockYAxis 
+        { 
+            get => _plot.Configuration.LockVerticalAxis; 
+            set => _plot.Configuration.LockVerticalAxis = value;
+        }
+
         public ScottPlotProvider(AvaPlot plot)
         {
             _plot = plot;
@@ -57,6 +69,16 @@ namespace LabPrototype.Models.Implementations
                 _signalPlotsXY[plotId].IsVisible = visible;
                 _plot.Refresh();
             }
+        }
+
+        public void ToggleLockXAxis()
+        {
+            _plot.Configuration.LockHorizontalAxis = !_plot.Configuration.LockHorizontalAxis;
+        }
+
+        public void ToggleLockYAxis()
+        {
+            _plot.Configuration.LockVerticalAxis = !_plot.Configuration.LockVerticalAxis;
         }
 
         public void AddCrosshair()

@@ -21,7 +21,7 @@
 			<Grid ColumnDefinitions="auto,*,auto" Margin="20 10">
 				<TextBlock Grid.Column="0" Text="Your meters" FontSize="24" VerticalAlignment="Center" />
 				
-				<Button Grid.Column="2" Classes="topButton" Padding="10 5" Command="{Binding OpenCreateMeterCommand}">
+				<Button Grid.Column="2" Classes="smallButton" Padding="10 5" Command="{Binding OpenCreateMeterCommand}">
 					<StackPanel>
 						<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
 						<TextBlock VerticalAlignment="Center" Text="Add" />

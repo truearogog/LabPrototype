@@ -5,6 +5,8 @@ using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -19,9 +21,18 @@ namespace LabPrototype.ViewModels.Main
         public Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
         public MeterDetailListingViewModel MeterDetailListingViewModel { get; }
-        public HistoricMeasurementChartViewModel HistoricMeasurementChartViewModel { get; }
         public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
 
+        public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
+        
+        private Dictionary<Type, ViewModelBase> _measurementPresentationViewModels = new Dictionary<Type, ViewModelBase>();
+
+        public MeasurementChartViewModel MeasurementChartViewModel
+            => _measurementPresentationViewModels[typeof(MeasurementChartViewModel)] as MeasurementChartViewModel;
+        public MeasurementTableViewModel MeasurementTableViewModel { get; }
+
+        public ICommand SelectMeasurementChartCommand { get; }
+        public ICommand SelectMeasurementTableCommand { get; }
         public ICommand OpenUpdateMeterCommand { get; }
         public ICommand OpenDeleteMeterCommand { get; }
 
@@ -41,14 +52,27 @@ namespace LabPrototype.ViewModels.Main
 
             MeterDetailListingViewModel = new MeterDetailListingViewModel(selectedMeterService);
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel(selectedMeterService, flowMeasurementProvider);
-            HistoricMeasurementChartViewModel = new HistoricMeasurementChartViewModel(
+
+            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(
                 selectedMeterService,
-                chartMeasurementProvider, 
+                chartMeasurementProvider,
+                enabledMeasurementAttributeService);
+
+            MeasurementChartViewModel = new MeasurementChartViewModel(
+                selectedMeterService,
                 enabledMeasurementAttributeService,
+                measurementService,
+                chartMeasurementProvider);
+
+            MeasurementTableViewModel = new MeasurementTableViewModel(
+                selectedMeterService,
                 measurementService);
 
-            OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(ShowUpdateMeterDialogAsync);
-            OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(ShowDeleteMeterDialogAsync);
+            SelectMeasurementChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
+            SelectMeasurementTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
+
+            OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(OpenUpdateMeterDialogAsync);
+            OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(OpenDeleteMeterDialogAsync);
 
             if (!flowMeasurementProvider.IsRunning)
             {
@@ -62,13 +86,23 @@ namespace LabPrototype.ViewModels.Main
             base.Dispose();
         }
 
-        private async Task ShowUpdateMeterDialogAsync()
+        private void SelectMeasurementChart()
+        {
+            CurrentMeasurementViewModel = MeasurementChartViewModel;
+        }
+
+        private void SelectMeasurementTable()
+        {
+            CurrentMeasurementViewModel = MeasurementTableViewModel;
+        }
+
+        private async Task OpenUpdateMeterDialogAsync()
         {
             MeterNavigationParameter parameter = new MeterNavigationParameter(SelectedMeter);
             await _dialogService.ShowDialogAsync(nameof(UpdateMeterDialogViewModel), parameter);
         }
 
-        private async Task ShowDeleteMeterDialogAsync()
+        private async Task OpenDeleteMeterDialogAsync()
         {
             MeterNavigationParameter parameter = new MeterNavigationParameter(SelectedMeter);
             await _dialogService.ShowDialogAsync(nameof(DeleteMeterDialogViewModel), parameter);

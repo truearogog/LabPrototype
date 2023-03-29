@@ -3,7 +3,26 @@
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Components.MeasurementChart">
-	<ScottPlot:AvaPlot x:Name="ChartControl" />
+	<Grid RowDefinitions="*, auto">
+		<ScottPlot:AvaPlot Grid.Row="0" x:Name="ChartControl" />
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Classes="smallButtonPanel">
+			<Button Classes="smallButton" Command="{Binding ToggleLockXAxisCommand}">
+				<StackPanel>
+					<material:MaterialIcon Kind="Axis" IsVisible="{Binding !LockXAxis}" />
+					<material:MaterialIcon Kind="AxisLock" IsVisible="{Binding LockXAxis}" />
+					<TextBlock Text="X" />
+				</StackPanel>
+			</Button>
+			<Button Classes="smallButton" Command="{Binding ToggleLockYAxisCommand}">
+				<StackPanel>
+					<material:MaterialIcon Kind="Axis" IsVisible="{Binding !LockYAxis}" />
+					<material:MaterialIcon Kind="AxisLock" IsVisible="{Binding LockYAxis}" />
+					<TextBlock Text="Y" />
+				</StackPanel>
+			</Button>
+		</StackPanel>
+	</Grid>
 </UserControl>

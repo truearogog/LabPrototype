@@ -8,6 +8,8 @@ namespace LabPrototype.Models.Interfaces
         void AddPlots(Guid[] plotIds, double[] xs, double[][] ys, Color[] colors);
         void ClearPlots();
         void SetPlotVisibility(Guid plotId, bool visible);
+        public bool LockXAxis { get; set; }
+        public bool LockYAxis { get; set; }
 
         void AddCrosshair();
         void ShowCrosshair();
