@@ -1,4 +1,5 @@
 ﻿using LabPrototype.Domain.Models;
+using LabPrototype.Services.Implementations;
 using LabPrototype.Services.Interfaces;
 
 namespace LabPrototype.ViewModels.Components
@@ -10,6 +11,8 @@ namespace LabPrototype.ViewModels.Components
 
         private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
+        public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
+
         public MeasurementHistoryTableViewModel(
             ISelectedMeterService selectedMeterService,
             IMeasurementService measurementService)
@@ -18,6 +21,8 @@ namespace LabPrototype.ViewModels.Components
             _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             _measurementService = measurementService;
+
+            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(selectedMeterService);
         }
 
         public override void Dispose()

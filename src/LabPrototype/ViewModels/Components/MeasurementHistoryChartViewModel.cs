@@ -19,6 +19,8 @@ namespace LabPrototype.ViewModels.Components
 
         private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
 
+        public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
+
         public IPlotProvider PlotProvider { get; set; }
 
         private bool _lockXAxis;
@@ -61,6 +63,11 @@ namespace LabPrototype.ViewModels.Components
             _measurementService = measurementService;
 
             _chartMeasurementProvider = chartMeasurementProvider;
+
+            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(
+                selectedMeterService,
+                chartMeasurementProvider,
+                enabledMeasurementAttributeService);
 
             ToggleLockXAxisCommand = ReactiveCommand.Create(() => LockXAxis = !LockXAxis);
             ToggleLockYAxisCommand = ReactiveCommand.Create(() => LockYAxis = !LockYAxis);

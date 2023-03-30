@@ -2,13 +2,15 @@
 				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:local="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Components.MeasurementHistoryChart">
-	<Grid RowDefinitions="*, auto" IsVisible="">
-		<ScottPlot:AvaPlot Grid.Row="0" x:Name="ChartControl" />
-		<StackPanel Grid.Row="1" Orientation="Horizontal" Classes="smallButtonPanel">
+	<Grid RowDefinitions="auto, *, auto" IsVisible="{Binding IsVisible}">
+		<local:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
+		<ScottPlot:AvaPlot Grid.Row="1" x:Name="ChartControl" />
+		<StackPanel Grid.Row="2" Orientation="Horizontal" Classes="smallButtonPanel">
 			<Button Classes="smallButton" Command="{Binding ToggleLockXAxisCommand}">
 				<StackPanel>
 					<material:MaterialIcon Kind="Axis" IsVisible="{Binding !LockXAxis}" />

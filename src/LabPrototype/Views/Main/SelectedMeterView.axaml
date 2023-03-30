@@ -30,10 +30,10 @@
 				Classes="smallButtonPanel" 
 				HorizontalAlignment="Left">
 				
-				<Button Classes="smallButton" Command="{Binding SelectMeasurementChartCommand}">
+				<Button Classes="smallButton" Command="{Binding SelectChartCommand}">
 					<material:MaterialIcon Kind="GraphAreaspline" />
 				</Button>
-				<Button Classes="smallButton" Command="{Binding SelectMeasurementTableCommand}">
+				<Button Classes="smallButton" Command="{Binding SelectTableCommand}">
 					<material:MaterialIcon Kind="Table" />
 				</Button>
 					
@@ -54,10 +54,7 @@
 			</ScrollViewer>
 		</Grid>
 
-		<Grid Grid.Column="1" RowDefinitions="auto,*"> 
-			<components:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
-			<components:MeasurementHistoryChart Grid.Row="1" DataContext="{Binding MeasurementHistoryChartViewModel}" />
-			<components:MeasurementHistoryTable Grid.Row="1" DataContext="{Binding MeasurementHistoryTableViewModel}" />
-		</Grid>
+		<components:MeasurementHistoryChart Grid.Column="1" DataContext="{Binding MeasurementHistoryChartViewModel}" />
+		<components:MeasurementHistoryTable Grid.Column="1" DataContext="{Binding MeasurementHistoryTableViewModel}" />
 	</Grid>
 </UserControl>

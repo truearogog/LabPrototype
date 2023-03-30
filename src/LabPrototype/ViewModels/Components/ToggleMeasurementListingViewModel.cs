@@ -7,21 +7,24 @@ namespace LabPrototype.ViewModels.Components
     public class ToggleMeasurementListingViewModel : ViewModelBase
     {
         private readonly ISelectedMeterService _selectedMeterService;
-        private readonly IMeasurementProvider _measurementProvider;
-        private readonly IEnabledMeasurementAttributeService _enabledMeasurementAttributeService;
+        private readonly IMeasurementProvider? _measurementProvider;
+        private readonly IEnabledMeasurementAttributeService? _enabledMeasurementAttributeService;
 
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
         public ToggleMeasurementListingViewModel(
             ISelectedMeterService selectedMeterService, 
-            IChartMeasurementProvider measurementProvider, 
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService)
+            IChartMeasurementProvider? measurementProvider = null, 
+            IEnabledMeasurementAttributeService? enabledMeasurementAttributeService = null)
         {
             _selectedMeterService = selectedMeterService;
             _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             _measurementProvider = measurementProvider;
-            _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
+            if (_measurementProvider != null)
+            {
+                _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
+            }
 
             _enabledMeasurementAttributeService = enabledMeasurementAttributeService;
 
@@ -31,13 +34,16 @@ namespace LabPrototype.ViewModels.Components
         public override void Dispose()
         {
             _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
-            _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
+            if (_measurementProvider != null)
+            {
+                _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
+            }
             base.Dispose();
         }
 
         private void CreateMeasurements(Meter meter)
         {
-            _enabledMeasurementAttributeService.Clear();
+            _enabledMeasurementAttributeService?.Clear();
             Items.Clear();
             if (meter != null)
             {

@@ -4,7 +4,7 @@ namespace LabPrototype.ViewModels.Components
 {
     public abstract class MeasurementHistoryViewModelBase : ViewModelBase
     {
-        private bool _isVisible;
+        private bool _isVisible = true;
         public bool IsVisible
         {
             get => _isVisible;

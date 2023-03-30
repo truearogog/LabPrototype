@@ -2,6 +2,7 @@
 {
     public class Measurement : IComparable<Measurement>
     {
+        public Guid MeterId { get; set; }
         public DateTime DateTime { get; set; }
         public double Q1 { get;}
         public double Q2 { get; }

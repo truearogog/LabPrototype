@@ -24,25 +24,30 @@
 			<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Secondary}" />
 		</Style>
 	</UserControl.Styles>
-	<ToggleButton 
-		IsChecked="{Binding IsChecked}"
-		Command="{Binding ToggledCommand}">
-		<Grid RowDefinitions="auto,*">
-			<TextBlock
-				Grid.Row="0"
-				VerticalAlignment="Center"
-				Text="{Binding MeasurementAttribute.Name}" />
-			<Grid
-				Grid.Row="1"
-				ColumnDefinitions="*, auto">
-				<TextBlock
-					Grid.Column="0"
-					VerticalAlignment="Center"
-					Text="{Binding Value}"
-					TextWrapping="WrapWithOverflow"
-					IsVisible="{Binding HasValue}" />
-				<TextBlock
-					Grid.Column="1"
+	<ToggleButton IsChecked="{Binding IsChecked}" Command="{Binding ToggledCommand}">
+		<Grid RowDefinitions="*,auto">
+			<Grid Grid.Row="0" ColumnDefinitions="*, auto">
+				<TextBlock 
+					Grid.Column="0" 
+					VerticalAlignment="Center" 
+					Text="{Binding MeasurementAttribute.Name}" />
+				<TextBlock 
+					Grid.Column="1" 
+					VerticalAlignment="Center" 
+					Text="{Binding MeasurementAttribute.Unit}"
+					IsVisible="{Binding !HasValue}" />
+			</Grid>			
+			<Grid 
+				Grid.Row="1" 
+				ColumnDefinitions="*, auto" 
+				IsVisible="{Binding HasValue}">
+				<TextBlock 
+					Grid.Column="0" 
+					VerticalAlignment="Center" 
+					Text="{Binding Value}" 
+					TextWrapping="WrapWithOverflow" />
+				<TextBlock 
+					Grid.Column="1" 
 					VerticalAlignment="Center" 
 					Text="{Binding MeasurementAttribute.Unit}" />
 			</Grid>
