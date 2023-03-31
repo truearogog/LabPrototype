@@ -7,6 +7,7 @@ using LabPrototype.Models.Interfaces;
 using LabPrototype.Services.Interfaces;
 using System.Windows.Input;
 using ReactiveUI;
+using System.Drawing;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -92,17 +93,14 @@ namespace LabPrototype.ViewModels.Components
         private void CreateSeries()
         {
             PlotProvider.ClearPlots();
-            if (SelectedMeter != null)
-            {
-                var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
 
-                var plotIds = SelectedMeter.MeasurementAttributes.Select(a => a.Id).ToArray();
-                var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
-                var ys = SelectedMeter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
-                var colors = SelectedMeter.MeasurementAttributes.Select(a => a.ColorScheme.Primary.ToColor()).ToArray();
+            var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
+            var plotIds = SelectedMeter.MeasurementAttributes.Select(a => a.Id).ToArray();
+            var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
+            var ys = SelectedMeter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
+            var colors = SelectedMeter.MeasurementAttributes.Select(a => a.ColorScheme?.Primary.ToColor() ?? Color.White).ToArray();
 
-                PlotProvider.AddPlots(plotIds, xs, ys, colors);
-            }
+            PlotProvider.AddPlots(plotIds, xs, ys, colors);
         }
 
         private void _SelectedMeterUpdated(Meter meter)

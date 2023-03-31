@@ -1,6 +1,11 @@
-﻿using LabPrototype.Domain.Models;
-using LabPrototype.Services.Implementations;
+﻿using DynamicData;
+using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
+using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -10,8 +15,11 @@ namespace LabPrototype.ViewModels.Components
         private readonly IMeasurementService _measurementService;
 
         private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
+        public event Action<Meter> SelectedMeterUpdated;
 
         public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
+
+        public ObservableCollection<Measurement> Measurements { get; set; } = new();
 
         public MeasurementHistoryTableViewModel(
             ISelectedMeterService selectedMeterService,
@@ -35,7 +43,11 @@ namespace LabPrototype.ViewModels.Components
         {
             if (SelectedMeter != null)
             {
-
+                SelectedMeterUpdated.Invoke(meter);
+                Task.Run(() => _measurementService.LoadMeter(meter.Id)).Wait();
+                var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
+                Measurements = new(measurements);
+                this.RaisePropertyChanged(nameof(Measurements));
             }
         }
     }

@@ -52,20 +52,14 @@ namespace LabPrototype.ViewModels.Components
                         "Time", 
                         string.Empty, 
                         x => x.DateTime.ToString(), 
-                        ColorScheme.Midnight))
-                );
+                        "DateTime", 
+                        ColorScheme.Midnight
+                    )
+                ));
                 foreach (var measurementAttribute in meter.MeasurementAttributes)
                 {
                     Items.Add(new ToggleMeasurementListingItemViewModel(measurementAttribute, _enabledMeasurementAttributeService));
                 }
-            }
-        }
-
-        private void UpdateMeasurements(Measurement measurement)
-        {
-            foreach (var measurementViewModel in Items)
-            {
-                measurementViewModel.Update(measurement);
             }
         }
 
@@ -76,7 +70,10 @@ namespace LabPrototype.ViewModels.Components
 
         private void _MeasurementUpdated(Measurement measurement)
         {
-            UpdateMeasurements(measurement);
+            foreach (var measurementViewModel in Items)
+            {
+                measurementViewModel.Update(measurement);
+            }
         }
     }
 }

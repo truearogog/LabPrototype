@@ -19,7 +19,7 @@ namespace LabPrototype.EntityFramework.Queries
             using (var context = _contextFactory.Create())
             {
                 IEnumerable<MeasurementDto> measurementDtos = await context.Measurements.Where(x => x.MeterId.Equals(meterId)).ToListAsync();
-                return measurementDtos.Select(x => new Measurement(x.Q1, x.Q2, x.P, x.t1)).ToList();
+                return measurementDtos.Select(x => new Measurement(x.Created, x.Q1, x.Q2, x.P, x.t1)).ToList();
             }
         }
     }

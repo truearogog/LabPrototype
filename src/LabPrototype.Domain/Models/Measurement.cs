@@ -10,8 +10,9 @@
         public double P { get; }
         public double T { get; }
 
-        public Measurement(double q1, double q2, double p, double t)
+        public Measurement(DateTime dateTime, double q1, double q2, double p, double t)
         {
+            DateTime = dateTime;
             Q1 = q1;
             Q2 = q2;
             P = p;

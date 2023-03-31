@@ -28,6 +28,11 @@ namespace LabPrototype.Views.Components
                     _vm.PlotProvider = _plotProvider;
                 }
             };
+
+            DetachedFromVisualTree += (s, e) =>
+            {
+
+            };
         }
 
         private void _PointerMoved(object? sender, Avalonia.Input.PointerEventArgs e)

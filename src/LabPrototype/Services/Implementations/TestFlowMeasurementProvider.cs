@@ -21,13 +21,14 @@ namespace LabPrototype.Services.Implementations
             _timer = new Timer(1000) { AutoReset = true };
             _timer.Elapsed += GetNewMeasurement;
 
-            _measurement = new Measurement(0, 0, 0, 0);
+            _measurement = new Measurement(DateTime.Now, 0, 0, 0, 0);
             _random = new Random();
         }
 
         private void GetNewMeasurement(object? sender, ElapsedEventArgs e)
         {
             Measurement measurement = new Measurement(
+                DateTime.Now,
                 _measurement.Q1 + _random.Next(-10, 11),
                 _measurement.Q2 + _random.Next(-10, 11),
                 _measurement.P + _random.Next(-10, 11),

@@ -6,13 +6,15 @@
         public string Name { get; }
         public string Unit { get; }
         public Func<Measurement, object> ValueGetter { get; }
-        public ColorScheme ColorScheme { get; }
+        public string BindingName { get; }
+        public ColorScheme? ColorScheme { get; }
 
-        public MeasurementAttribute(string name, string unit, Func<Measurement, object> valueGetter, ColorScheme colorScheme)
+        public MeasurementAttribute(string name, string unit, Func<Measurement, object> valueGetter, string bindingName, ColorScheme? colorScheme)
         {
             Name = name;
             Unit = unit;
             ValueGetter = valueGetter;
+            BindingName = bindingName;
             ColorScheme = colorScheme;
         }
     }
