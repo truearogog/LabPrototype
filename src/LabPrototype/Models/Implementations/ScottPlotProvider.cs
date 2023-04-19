@@ -37,7 +37,6 @@ namespace LabPrototype.Models.Implementations
             _plot.Plot.Style(Style.Gray2);
             _plot.Plot.Style(Color.Transparent, Color.Transparent);
 
-            _plot.Configuration.LockVerticalAxis = true;
             _plot.Plot.XAxis.DateTimeFormat(true);
         }
 

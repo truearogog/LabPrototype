@@ -2,18 +2,17 @@
 using Avalonia.Controls;
 using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Dialogs;
+using LabPrototype.ViewModels.Windows;
 using System;
 
-namespace LabPrototype.Views.Dialogs
+namespace LabPrototype.Views.Models
 {
-    public class DialogWindowBase<TResult> : Window
-        where TResult : DialogResultBase
+    public class WindowBase<TResult> : Window
+        where TResult : WindowResultBase
     {
-        private Window ParentWindow => (Window)Owner;
+        protected WindowViewModelBase<TResult> ViewModel => (WindowViewModelBase<TResult>)DataContext;
 
-        protected DialogViewModelBase<TResult> ViewModel => (DialogViewModelBase<TResult>)DataContext;
-
-        protected DialogWindowBase()
+        protected WindowBase()
         {
             SubscribeToViewEvents();
         }
@@ -25,21 +24,10 @@ namespace LabPrototype.Views.Dialogs
 
         private void OnOpened(object sender, EventArgs e)
         {
-            LockSize();
-            CenterDialog();
-
             OnOpened();
         }
 
-        private void CenterDialog()
-        {
-            var x = ParentWindow.Position.X + (ParentWindow.Bounds.Width - Width) / 2;
-            var y = ParentWindow.Position.Y + (ParentWindow.Bounds.Height - Height) / 2;
-
-            Position = new PixelPoint((int)x, (int)y);
-        }
-
-        private void LockSize()
+        protected void LockSize()
         {
             MaxWidth = MinWidth = Width;
             MaxHeight = MinHeight = Height;
@@ -63,7 +51,7 @@ namespace LabPrototype.Views.Dialogs
 
         private void OnDataContextChanged(object sender, EventArgs e) => SubscribeToViewModelEvents();
 
-        private void ViewModelOnCloseRequested(object sender, DialogResultEventArgs<TResult> args)
+        private void ViewModelOnCloseRequested(object sender, WindowResultEventArgs<TResult> args)
         {
             UnsubscribeFromViewModelEvents();
             UnsubscribeFromViewEvents();
@@ -72,7 +60,7 @@ namespace LabPrototype.Views.Dialogs
         }
     }
 
-    public class DialogWindowBase : DialogWindowBase<DialogResultBase>
+    public class WindowBase : WindowBase<WindowResultBase>
     {
 
     }
