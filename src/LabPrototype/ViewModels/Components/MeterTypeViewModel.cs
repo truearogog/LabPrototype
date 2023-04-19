@@ -12,14 +12,14 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _type, value);
         }
 
-        private string _name;
+        private string _name = string.Empty;
         public string Name
         {
             get => _name;
             set => this.RaiseAndSetIfChanged(ref _name, value);
         }
 
-        private string _description;
+        private string _description = string.Empty;
         public string Description
         {
             get => _description;

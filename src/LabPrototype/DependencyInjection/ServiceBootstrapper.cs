@@ -46,7 +46,7 @@ namespace LabPrototype.DependencyInjection
 
         private static void RegisterCommonServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IDialogService>(() => new DialogService(
+            services.RegisterLazySingleton<IWindowService>(() => new DialogService(
                 resolver.GetRequiredService<IMainWindowProvider>()
             ));
 

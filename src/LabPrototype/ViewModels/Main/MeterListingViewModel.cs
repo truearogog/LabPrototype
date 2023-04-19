@@ -14,29 +14,25 @@ namespace LabPrototype.ViewModels.Main
 {
     public class MeterListingViewModel : ViewModelBase
     {
-        private readonly IDialogService _dialogService;
+        private readonly IWindowService _dialogService;
         private readonly IMeterService _meterService;
-        private readonly ISelectedMeterService _selectedMeterService;
 
         public ICommand OpenCreateMeterCommand { get; }
 
         public ObservableCollection<MeterListingItemViewModel> Items { get; } = new();
 
-        private MeterListingItemViewModel _selectedMeterListingItemViewModel;
-        public MeterListingItemViewModel SelectedMeterListingItemViewModel
+        private MeterListingItemViewModel? _selectedMeterListingItemViewModel;
+        public MeterListingItemViewModel? SelectedMeterListingItemViewModel
         {
             get => _selectedMeterListingItemViewModel;
             set
             {
                 this.RaiseAndSetIfChanged(ref _selectedMeterListingItemViewModel, value);
-                _selectedMeterService.SelectedMeter = _selectedMeterListingItemViewModel?.Meter;
+                // TODO: OPEN NEW WINDOW
             }
         }
 
-        public MeterListingViewModel(
-            IDialogService dialogService, 
-            IMeterService meterService, 
-            ISelectedMeterService selectedmeterService)
+        public MeterListingViewModel(IWindowService dialogService, IMeterService meterService)
         {
             _dialogService = dialogService;
 
@@ -45,9 +41,6 @@ namespace LabPrototype.ViewModels.Main
             _meterService.MeterCreated += _MeterCreated;
             _meterService.MeterUpdated += _MeterUpdated;
             _meterService.MeterDeleted += _MeterDeleted;
-
-            _selectedMeterService = selectedmeterService;
-            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
 
             OpenCreateMeterCommand = ReactiveCommand.CreateFromTask(ShowCreateMeterDialogAsync);
         }
@@ -58,7 +51,7 @@ namespace LabPrototype.ViewModels.Main
             _meterService.MeterCreated -= _MeterCreated;
             _meterService.MeterUpdated -= _MeterUpdated;
             _meterService.MeterDeleted -= _MeterDeleted;
-            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
+
             base.Dispose();
         }
 
@@ -94,7 +87,6 @@ namespace LabPrototype.ViewModels.Main
             if (meterViewModel != null)
             {
                 Items.Remove(meterViewModel);
-                _selectedMeterService.SelectedMeter = null;
             }
         }
 
@@ -102,14 +94,6 @@ namespace LabPrototype.ViewModels.Main
         {
             MeterListingItemViewModel meterListingItemViewModel = new MeterListingItemViewModel(meter);
             Items.Add(meterListingItemViewModel);
-        }
-
-        private void _SelectedMeterUpdated(Meter meter)
-        {
-            if (meter == null && SelectedMeterListingItemViewModel != null)
-            {
-                SelectedMeterListingItemViewModel = null;
-            }
         }
     }
 }

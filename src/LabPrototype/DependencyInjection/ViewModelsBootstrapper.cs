@@ -27,7 +27,7 @@ namespace LabPrototype.DependencyInjection
             ));
 
             services.RegisterLazySingleton(() => MainViewModel.LoadViewModel(
-                resolver.GetRequiredService<IDialogService>(),
+                resolver.GetRequiredService<IWindowService>(),
                 resolver.GetRequiredService<IMeterService>(),
                 resolver.GetRequiredService<ISelectedMeterService>(),
                 resolver.GetRequiredService<IFlowMeasurementProvider>(),

@@ -77,6 +77,9 @@
     <Compile Update="Views\Main\MeterListingView.axaml.cs">
       <DependentUpon>MeterListingView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Main\MeterView.axaml.cs">
+      <DependentUpon>MeterView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

@@ -47,15 +47,6 @@
 			</StackPanel>
 		</ExperimentalAcrylicBorder>
 
-		<ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
-			<ContentControl.DataTemplates>
-				<DataTemplate DataType="{x:Type vms:MeterListingViewModel}">
-					<local:MeterListingView />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type vms:SelectedMeterViewModel}">
-					<local:SelectedMeterView />
-				</DataTemplate>
-			</ContentControl.DataTemplates>
-		</ContentControl>
+		<local:MeterListingView Grid.Row="1" DataContext="{Binding MeterListingViewModel}" />
 	</Grid>
 </UserControl>

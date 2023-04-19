@@ -5,20 +5,16 @@ using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Main
 {
-    public class SelectedMeterViewModel : ViewModelBase
+    public class MeterViewModel : ViewModelBase
     {
-        private readonly IDialogService _dialogService;
+        private readonly IWindowService _dialogService;
         private readonly IMeterService _meterService;
-        private readonly ISelectedMeterService _selectedMeterService;
-
-        public Meter SelectedMeter => _selectedMeterService.SelectedMeter;
+        public Meter Meter { get; private set; }
 
         public MeterDetailListingViewModel MeterDetailListingViewModel { get; }
         public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
@@ -31,8 +27,8 @@ namespace LabPrototype.ViewModels.Main
         public ICommand OpenUpdateMeterCommand { get; }
         public ICommand OpenDeleteMeterCommand { get; }
 
-        public SelectedMeterViewModel(
-            IDialogService dialogService,
+        public MeterViewModel(
+            IWindowService dialogService,
             IMeterService meterService,
             ISelectedMeterService selectedMeterService,
             IFlowMeasurementProvider flowMeasurementProvider,

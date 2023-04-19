@@ -14,14 +14,16 @@ using LabPrototype.Services.Models;
 
 namespace LabPrototype.Services.Implementations
 {
-    public class DialogService : IDialogService
+    public class WindowService : IWindowService
     {
         private readonly IMainWindowProvider _mainWindowProvider;
 
-        public DialogService(IMainWindowProvider mainWindowProvider)
+        public WindowService(IMainWindowProvider mainWindowProvider)
         {
             _mainWindowProvider = mainWindowProvider;
         }
+
+        
 
         public async Task<TResult> ShowDialogAsync<TResult>(string viewModelName)
             where TResult : DialogResultBase
@@ -89,7 +91,7 @@ namespace LabPrototype.Services.Implementations
             return (DialogViewModelBase<TResult>)GetViewModel(viewModelType);
         }
 
-        private static Type GetViewModelType(string viewModelName)
+        private static Type? GetViewModelType(string viewModelName)
         {
             var viewModelsAssembly = Assembly.GetAssembly(typeof(ViewModelBase));
             if (viewModelsAssembly is null)
@@ -123,6 +125,7 @@ namespace LabPrototype.Services.Implementations
             mainWindow.ShowOverlay();
             var result = await window.ShowDialog<TResult>(mainWindow);
             mainWindow.HideOverlay();
+
             if (window is IDisposable disposable)
             {
                 disposable.Dispose();
