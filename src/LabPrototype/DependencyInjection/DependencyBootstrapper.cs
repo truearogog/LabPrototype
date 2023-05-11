@@ -10,8 +10,6 @@ namespace LabPrototype.DependencyInjection
             DatabaseBootstrapper.RegisterDatabase(services, resolver);
             LoggingBootstrapper.RegisterLogging(services, resolver);
             ServiceBootstrapper.RegisterServices(services, resolver);
-            ViewModelBootstrapper.RegisterViewModels(services, resolver);
-            AvaloniaServicesBootstrapper.RegisterAvaloniaServices(services);
         }
     }
 }

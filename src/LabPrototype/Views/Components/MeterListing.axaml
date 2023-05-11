@@ -4,9 +4,8 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:components="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-				xmlns:vms="using:LabPrototype.ViewModels.Main"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-				x:Class="LabPrototype.Views.Main.MeterListingView">
+				x:Class="LabPrototype.Views.Components.MeterListing">
 	
 	<Grid RowDefinitions="auto,*">
 		<ExperimentalAcrylicBorder Grid.Row="0">
@@ -29,32 +28,33 @@
 				</Button>
 			</Grid>
 		</ExperimentalAcrylicBorder>
-		
-		<ListBox 
+
+		<ItemsControl
 			Grid.Row="1"
 			Items="{Binding Items}"
-			SelectedItem="{Binding SelectedMeterListingItemViewModel}"
 			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 			Background="Transparent"
-			HorizontalAlignment="Stretch"
-			SelectionMode="Single,Toggle">
-			<ListBox.Styles>
-				<Style Selector="ListBoxItem">
-					<Setter Property="Padding" Value="0" />
-					<Setter Property="Margin" Value="10 8" />
-					<Setter Property="CornerRadius" Value="5" />
-				</Style>
-			</ListBox.Styles>
-			<ListBox.ItemsPanel>
+			HorizontalAlignment="Stretch">
+			
+			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel HorizontalAlignment="Center" />
+					<WrapPanel Margin="20">
+						<WrapPanel.Styles>
+							<Style Selector="ListBoxItem">
+								<Setter Property="Padding" Value="0" />
+								<Setter Property="Margin" Value="10 8" />
+							</Style>
+						</WrapPanel.Styles>
+					</WrapPanel>
 				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
-			<ListBox.ItemTemplate>
+			</ItemsControl.ItemsPanel>
+			
+			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<components:MeterListingItem />
 				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+			</ItemsControl.ItemTemplate>
+			
+		</ItemsControl>		
 	</Grid>
 </UserControl>

@@ -1,32 +1,46 @@
-﻿using System.Threading.Tasks;
+﻿using Avalonia.Controls;
 using LabPrototype.Services.Models;
+using LabPrototype.ViewModels;
+using LabPrototype.ViewModels.Models;
+using LabPrototype.Views;
+using System;
+using System.Threading.Tasks;
+using WindowBase = LabPrototype.Views.WindowBase;
 
 namespace LabPrototype.Services.Interfaces
 {
     public interface IWindowService
     {
-        Task ShowDialogAsync(string viewModelName);
-
-        Task ShowDialogAsync<TParameter>(string viewModelName, TParameter parameter)
+        Window ShowWindow<TView, TViewModel>()
+            where TView : WindowBase, new()
+            where TViewModel : WindowViewModelBase, new();
+        Window ShowWindow<TView, TViewModel>(Func<TViewModel> viewModelFactory)
+            where TView : WindowBase, new()
+            where TViewModel : WindowViewModelBase;
+        Window ShowWindow<TView, TViewModel, TParameter>(TParameter parameter)
+            where TView : WindowBase, new()
+            where TViewModel : WindowViewModelBase, new()
+            where TParameter : NavigationParameterBase;
+        Window ShowWindow<TView, TViewModel, TParameter>(Func<TViewModel> viewModelFactory, TParameter parameter)
+            where TView : WindowBase, new()
+            where TViewModel : WindowViewModelBase
             where TParameter : NavigationParameterBase;
 
-        Task<TResult> ShowDialogAsync<TResult>(string viewModelName)
-            where TResult : DialogResultBase;
-
-        Task<TResult> ShowDialogAsync<TResult, TParameter>(string viewModelName, TParameter parameter)
+        Task ShowDialogAsync<TView, TViewModel>(WindowViewModelBase parent)
+            where TView : DialogWindowBase, new()
+            where TViewModel : DialogViewModelBase<DialogResultBase>, new();
+        Task<TResult> ShowDialogAsync<TView, TViewModel, TResult>(WindowViewModelBase parent)
+            where TView : DialogWindowBase<TResult>, new()
             where TResult : DialogResultBase
+            where TViewModel : DialogViewModelBase<TResult>, new();
+        Task ShowDialogAsync<TView, TViewModel, TParameter>(WindowViewModelBase parent, TParameter parameter)
+            where TView : DialogWindowBase, new()
+            where TViewModel : DialogViewModelBase<DialogResultBase>, new()
             where TParameter : NavigationParameterBase;
-
-        Task ShowWindowAsync(string viewModelName);
-
-        Task ShowWindowAsync<TParameter>(string viewModelName, TParameter parameter)
-            where TParameter : NavigationParameterBase;
-
-        Task<TResult> ShowWindowAsync<TResult>(string viewModelName)
-            where TResult : WindowResultBase;
-
-        Task<TResult> ShowWindowAsync<TResult, TParameter>(string viewModelName, TParameter parameter)
-            where TResult : WindowResultBase
+        Task<TResult> ShowDialogAsync<TView, TViewModel, TResult, TParameter>(WindowViewModelBase parent, TParameter parameter)
+            where TView : DialogWindowBase<TResult>, new()
+            where TResult : DialogResultBase
+            where TViewModel : DialogViewModelBase<TResult>, new()
             where TParameter : NavigationParameterBase;
     }
 }

@@ -1,15 +1,19 @@
-<UserControl    xmlns="https://github.com/avaloniaui"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-				xmlns:local="using:LabPrototype.Views.Main"
-				xmlns:vms="using:LabPrototype.ViewModels.Main"
-				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                x:Class="LabPrototype.Views.Main.MainView"
-				x:DataType="vms:MainViewModel"
-				x:CompileBindings="True">
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:component-vms="using:LabPrototype.ViewModels.Components"
+		xmlns:components="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
+		xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="LabPrototype.Views.Windows.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="LabPrototype"
+		TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
 	<Grid RowDefinitions="auto,*">
+		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.3" IsVisible="False" />
+
 		<ExperimentalAcrylicBorder Grid.Row="0">
 			<ExperimentalAcrylicBorder.Material>
 				<ExperimentalAcrylicMaterial
@@ -47,6 +51,6 @@
 			</StackPanel>
 		</ExperimentalAcrylicBorder>
 
-		<local:MeterListingView Grid.Row="1" DataContext="{Binding MeterListingViewModel}" />
+		<components:MeterListing Grid.Row="1" DataContext="{Binding MeterListingViewModel}" />
 	</Grid>
-</UserControl>
+</Window>

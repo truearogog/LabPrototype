@@ -1,35 +1,53 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
+using ReactiveUI;
 using System.Collections.ObjectModel;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class FlowMeasurementListingViewModel : ViewModelBase
     {
-        private ISelectedMeterService _selectedMeterService;
         private IMeasurementProvider _measurementProvider;
+
+        private Meter? _meter;
+        public Meter? Meter
+        {
+            get => _meter;
+            set
+            {
+                _meter = value;
+            }
+        }
 
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
-        public FlowMeasurementListingViewModel(ISelectedMeterService selectedMeterService, IMeasurementProvider measurementProvider)
+        public FlowMeasurementListingViewModel()
         {
-            _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
-
-            _measurementProvider = measurementProvider;
+            _measurementProvider = GetRequiredService<IFlowMeasurementProvider>();
             _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
 
-            CreateMeasurements(_selectedMeterService.SelectedMeter);
+            if (_measurementProvider is IFlowMeasurementProvider flowMeasurementProvider)
+            {
+                if (!flowMeasurementProvider.IsRunning)
+                {
+                    flowMeasurementProvider.Start();
+                }
+            }
         }
 
         public override void Dispose()
         {
-            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
             _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
             base.Dispose();
         }
 
-        private void CreateMeasurements(Meter meter)
+        public void UpdateMeter(Meter? meter)
+        {
+            Meter = meter;
+            CreateMeasurements(meter);
+        }
+
+        private void CreateMeasurements(Meter? meter)
         {
             Items.Clear();
             if (meter != null)
@@ -43,16 +61,17 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void _SelectedMeterUpdated(Meter meter)
-        {
-            CreateMeasurements(meter);
-        }
-
         private void _MeasurementUpdated(Measurement measurement)
         {
-            foreach (var measurementViewModel in Items)
+            if (Meter != null)
             {
-                measurementViewModel.Update(measurement);
+                if (measurement.MeterId.Equals(Meter.Id))
+                {
+                    foreach (var measurementViewModel in Items)
+                    {
+                        measurementViewModel.Update(measurement);
+                    }
+                }
             }
         }
     }

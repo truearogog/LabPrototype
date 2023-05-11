@@ -1,20 +1,21 @@
 ﻿using LabPrototype.Commands;
 using LabPrototype.Services.Interfaces;
+using LabPrototype.ViewModels.Components;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Main
 {
-    public class MainViewModel : ViewModelBase
+    public class MainWindowViewModel : WindowViewModelBase
     {
         public MeterListingViewModel MeterListingViewModel { get; }
 
         public ICommand LoadMetersCommand { get; }
 
-        public MainViewModel(IWindowService dialogService, IMeterService meterService)
+        public MainWindowViewModel()
         {
+            MeterListingViewModel = new MeterListingViewModel(this);
 
-            MeterListingViewModel = new MeterListingViewModel(dialogService, meterService);
-
+            IMeterService meterService = GetRequiredService<IMeterService>();
             LoadMetersCommand = new LoadMetersCommand(meterService);
         }
 
@@ -23,9 +24,9 @@ namespace LabPrototype.ViewModels.Main
             base.Dispose();
         }
 
-        public static MainViewModel LoadViewModel(IWindowService dialogService, IMeterService meterService)
+        public static MainWindowViewModel LoadViewModel()
         {
-            var viewModel = new MainViewModel(dialogService, meterService);
+            var viewModel = new MainWindowViewModel();
             viewModel.LoadMetersCommand.Execute(null);
             return viewModel;
         }

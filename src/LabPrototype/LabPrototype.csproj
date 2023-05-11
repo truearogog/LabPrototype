@@ -74,11 +74,11 @@
     <Compile Update="Views\Components\ToggleMeasurementListing.axaml.cs">
       <DependentUpon>ToggleMeasurementListing.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Main\MeterListingView.axaml.cs">
-      <DependentUpon>MeterListingView.axaml</DependentUpon>
+    <Compile Update="Views\Components\MeterListing.axaml.cs">
+      <DependentUpon>MeterListing.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Main\MeterView.axaml.cs">
-      <DependentUpon>MeterView.axaml</DependentUpon>
+    <Compile Update="Views\Windows\MeterWindow.axaml.cs">
+      <DependentUpon>MeterWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

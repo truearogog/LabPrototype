@@ -1,5 +1,4 @@
 ﻿using LabPrototype.Domain.Models;
-using LabPrototype.Services.Interfaces;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 
@@ -7,33 +6,15 @@ namespace LabPrototype.ViewModels.Components
 {
     public class MeterDetailListingViewModel : ViewModelBase
     {
-        private Meter _meter;
-        public Meter Meter
-        {
-            get => _meter;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _meter, value);
-                UpdateDetails();
-            }
-        }
-
-        private readonly ISelectedMeterService _selectedMeterService;
-
         public ObservableCollection<MeterDetailListingItemViewModel> Items { get; } = new();
 
-        public MeterDetailListingViewModel(ISelectedMeterService selectedMeterService)
+        public MeterDetailListingViewModel()
         {
-            _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
-
             CreateDetails();
-            UpdateDetails();
         }
 
         public override void Dispose()
         {
-            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
             base.Dispose();
         }
 
@@ -45,17 +26,15 @@ namespace LabPrototype.ViewModels.Components
             Items.Add(new MeterDetailListingItemViewModel("Address", x => x?.Address));
         }
 
-        private void UpdateDetails()
+        public void UpdateMeter(Meter? meter)
         {
-            foreach (var detailViewModel in Items)
+            if (meter != null)
             {
-                detailViewModel.Update(Meter);
+                foreach (var detailViewModel in Items)
+                {
+                    detailViewModel.Update(meter);
+                }
             }
-        }
-
-        private void _SelectedMeterUpdated(Meter meter)
-        {
-            Meter = meter;
         }
     }
 }

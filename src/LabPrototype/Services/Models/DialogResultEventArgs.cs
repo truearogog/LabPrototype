@@ -2,11 +2,11 @@
 
 namespace LabPrototype.Services.Models
 {
-    public class WindowResultEventArgs<TResult> : EventArgs
+    public class DialogResultEventArgs<TResult> : EventArgs
     {
         public TResult Result { get; }
 
-        public WindowResultEventArgs(TResult result)
+        public DialogResultEventArgs(TResult result)
         {
             Result = result;
         }

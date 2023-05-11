@@ -1,12 +1,12 @@
 ﻿using LabPrototype.Domain.Models;
 
-namespace LabPrototype.Services.Models
+namespace LabPrototype.ViewModels.Models
 {
     public class MeterNavigationParameter : NavigationParameterBase
     {
-        public Meter Meter { get; }
+        public Meter? Meter { get; }
 
-        public MeterNavigationParameter(Meter meter)
+        public MeterNavigationParameter(Meter? meter)
         {
             Meter = meter;
         }

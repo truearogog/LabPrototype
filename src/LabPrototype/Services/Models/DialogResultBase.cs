@@ -1,6 +1,7 @@
 ﻿namespace LabPrototype.Services.Models
 {
-    public class WindowResultBase
+    public class DialogResultBase
     {
+
     }
 }

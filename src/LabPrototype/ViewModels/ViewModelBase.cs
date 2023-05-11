@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using LabPrototype.DependencyInjection;
+using ReactiveUI;
+using Splat;
 using System;
 
 namespace LabPrototype.ViewModels
@@ -9,5 +11,7 @@ namespace LabPrototype.ViewModels
         {
 
         }
+
+        protected static T GetRequiredService<T>() => Locator.Current.GetRequiredService<T>();
     }
 }

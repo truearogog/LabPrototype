@@ -13,16 +13,11 @@ namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryChartViewModel : MeasurementHistoryViewModelBase
     {
-        private readonly ISelectedMeterService _selectedMeterService;
-        private readonly IEnabledMeasurementAttributeService _enabledMeasurementAttributeService;
         private readonly IMeasurementService _measurementService;
-        private readonly IChartMeasurementProvider _chartMeasurementProvider;
+        private readonly ToggleMeasurementListingViewModel _toggleMeasurementListingViewModel;
 
-        private Meter SelectedMeter => _selectedMeterService.SelectedMeter;
-
-        public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
-
-        public IPlotProvider PlotProvider { get; set; }
+        public Meter? Meter { get; set; } = null;
+        public IPlotProvider? PlotProvider { get; set; } = null;
 
         private bool _lockXAxis;
         public bool LockXAxis
@@ -30,7 +25,10 @@ namespace LabPrototype.ViewModels.Components
             get => _lockXAxis;
             set
             {
-                PlotProvider.LockXAxis = value;
+                if (PlotProvider != null)
+                {
+                    PlotProvider.LockXAxis = value;
+                }
                 this.RaiseAndSetIfChanged(ref _lockXAxis, value);
             }
         }
@@ -41,7 +39,10 @@ namespace LabPrototype.ViewModels.Components
             get => _lockYAxis;
             set
             {
-                PlotProvider.LockYAxis = value;
+                if (PlotProvider != null)
+                {
+                    PlotProvider.LockYAxis = value;
+                }
                 this.RaiseAndSetIfChanged(ref _lockYAxis, value);
             }
         }
@@ -49,26 +50,11 @@ namespace LabPrototype.ViewModels.Components
         public ICommand ToggleLockXAxisCommand { get; }
         public ICommand ToggleLockYAxisCommand { get; }
 
-        public MeasurementHistoryChartViewModel(
-            ISelectedMeterService selectedMeterService,
-            IEnabledMeasurementAttributeService enabledMeasurementAttributeService,
-            IMeasurementService measurementService,
-            IChartMeasurementProvider chartMeasurementProvider)
+        public MeasurementHistoryChartViewModel(ToggleMeasurementListingViewModel toggleMeasurementListingViewModel)
         {
-            _selectedMeterService = selectedMeterService;
-            _selectedMeterService.SelectedMeterUpdated += _SelectedMeterUpdated;
-
-            _enabledMeasurementAttributeService = enabledMeasurementAttributeService;
-            _enabledMeasurementAttributeService.AttributeEnabledChanged += _AttributeEnabledChanged;
-
-            _measurementService = measurementService;
-
-            _chartMeasurementProvider = chartMeasurementProvider;
-
-            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel(
-                selectedMeterService,
-                chartMeasurementProvider,
-                enabledMeasurementAttributeService);
+            _measurementService = GetRequiredService<IMeasurementService>();
+            _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
+            _toggleMeasurementListingViewModel.OnChecked += OnChecked;
 
             ToggleLockXAxisCommand = ReactiveCommand.Create(() => LockXAxis = !LockXAxis);
             ToggleLockYAxisCommand = ReactiveCommand.Create(() => LockYAxis = !LockYAxis);
@@ -76,48 +62,51 @@ namespace LabPrototype.ViewModels.Components
 
         public override void Dispose()
         {
-            _selectedMeterService.SelectedMeterUpdated -= _SelectedMeterUpdated;
-            _enabledMeasurementAttributeService.AttributeEnabledChanged -= _AttributeEnabledChanged;
+            _toggleMeasurementListingViewModel.OnChecked -= OnChecked;
             base.Dispose();
         }
 
         public void UpdateNearestMeasurement(int nearestIndex)
         {
-            if (SelectedMeter != null)
+            if (Meter != null)
             {
-                var measurement = _measurementService.LoadedMeasurements[SelectedMeter.Id].ElementAt(nearestIndex);
-                _chartMeasurementProvider.Measurement = measurement;
+                var measurement = _measurementService.LoadedMeasurements[Meter.Id].ElementAt(nearestIndex);
+                _toggleMeasurementListingViewModel.UpdateMeasurement(measurement);
             }
         }
 
         private void CreateSeries()
         {
-            PlotProvider.ClearPlots();
+            if (PlotProvider != null && Meter != null)
+            {
+                PlotProvider.ClearPlots();
 
-            var measurements = _measurementService.LoadedMeasurements[SelectedMeter.Id];
-            var plotIds = SelectedMeter.MeasurementAttributes.Select(a => a.Id).ToArray();
-            var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
-            var ys = SelectedMeter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
-            var colors = SelectedMeter.MeasurementAttributes.Select(a => a.ColorScheme?.Primary.ToColor() ?? Color.White).ToArray();
+                var measurements = _measurementService.LoadedMeasurements[Meter.Id];
+                var plotIds = Meter.MeasurementAttributes.Select(a => a.Id).ToArray();
+                var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
+                var ys = Meter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
+                var colors = Meter.MeasurementAttributes.Select(a => a.ColorScheme?.Primary.ToColor() ?? Color.White).ToArray();
 
-            PlotProvider.AddPlots(plotIds, xs, ys, colors);
+                PlotProvider.AddPlots(plotIds, xs, ys, colors);
+            }
         }
 
-        private void _SelectedMeterUpdated(Meter meter)
+        public void UpdateMeter(Meter? meter)
         {
-            if (SelectedMeter != null)
+            Meter = meter;
+            if (Meter != null)
             {
                 Task.Run(async () => {
-                    await _measurementService.LoadMeter(meter.Id);
+                    await _measurementService.LoadMeter(Meter.Id);
                     CreateSeries();
-                    PlotProvider.AddCrosshair();
+                    PlotProvider?.AddCrosshair();
                 }).Wait();
             }
         }
 
-        private void _AttributeEnabledChanged(Guid attributeId, bool enabled)
+        private void OnChecked(Guid id, bool isChecked)
         {
-            PlotProvider?.SetPlotVisibility(attributeId, enabled);
+            PlotProvider?.SetPlotVisibility(id, isChecked);
         }
     }
 }

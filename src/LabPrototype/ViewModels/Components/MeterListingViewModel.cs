@@ -1,7 +1,7 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
-using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
+using LabPrototype.Views.Dialogs;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -10,16 +10,13 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace LabPrototype.ViewModels.Main
+namespace LabPrototype.ViewModels.Components
 {
     public class MeterListingViewModel : ViewModelBase
     {
-        private readonly IWindowService _dialogService;
+        private readonly WindowViewModelBase _parentWindow;
+        private readonly IWindowService _windowService;
         private readonly IMeterService _meterService;
-
-        public ICommand OpenCreateMeterCommand { get; }
-
-        public ObservableCollection<MeterListingItemViewModel> Items { get; } = new();
 
         private MeterListingItemViewModel? _selectedMeterListingItemViewModel;
         public MeterListingItemViewModel? SelectedMeterListingItemViewModel
@@ -28,15 +25,22 @@ namespace LabPrototype.ViewModels.Main
             set
             {
                 this.RaiseAndSetIfChanged(ref _selectedMeterListingItemViewModel, value);
-                // TODO: OPEN NEW WINDOW
+                
+
             }
         }
 
-        public MeterListingViewModel(IWindowService dialogService, IMeterService meterService)
-        {
-            _dialogService = dialogService;
+        public ICommand OpenCreateMeterCommand { get; }
 
-            _meterService = meterService;
+        public ObservableCollection<MeterListingItemViewModel> Items { get; } = new();
+
+        public MeterListingViewModel(WindowViewModelBase parentWindow)
+        {
+            _parentWindow = parentWindow;
+
+            _windowService = GetRequiredService<IWindowService>();
+            _meterService = GetRequiredService<IMeterService>();
+
             _meterService.MetersLoaded += _MetersLoaded;
             _meterService.MeterCreated += _MeterCreated;
             _meterService.MeterUpdated += _MeterUpdated;
@@ -55,7 +59,7 @@ namespace LabPrototype.ViewModels.Main
             base.Dispose();
         }
 
-        private async Task ShowCreateMeterDialogAsync() => await _dialogService.ShowDialogAsync(nameof(CreateMeterDialogViewModel));
+        private async Task ShowCreateMeterDialogAsync() => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
 
         private void _MetersLoaded()
         {

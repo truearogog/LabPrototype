@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using LabPrototype.ViewModels.Models;
+using ReactiveUI;
+using System;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -10,5 +12,7 @@ namespace LabPrototype.ViewModels.Components
             get => _isVisible;
             set => this.RaiseAndSetIfChanged(ref _isVisible, value);
         }
+
+        public event EventHandler<MeterEventArgs> UpdateViewCalled;
     }
 }

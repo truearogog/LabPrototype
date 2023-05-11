@@ -2,8 +2,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using LabPrototype.DependencyInjection;
+using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Main;
-using LabPrototype.Views;
+using LabPrototype.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Splat;
 
@@ -20,11 +21,9 @@ namespace LabPrototype
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                DataContext = GetRequiredService<MainWindowViewModel>();
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = DataContext
-                };
+                var windowService = GetRequiredService<IWindowService>();
+                var mainWindow = windowService.ShowWindow<MainWindow, MainWindowViewModel>(() => MainWindowViewModel.LoadViewModel());
+                desktop.MainWindow = mainWindow;
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -31,7 +31,9 @@ namespace LabPrototype.Views.Components
 
             DetachedFromVisualTree += (s, e) =>
             {
-
+                ChartControl.PointerMoved -= _PointerMoved;
+                ChartControl.PointerEnter -= _PointerEnter;
+                ChartControl.PointerLeave -= _PointerLeave;
             };
         }
 

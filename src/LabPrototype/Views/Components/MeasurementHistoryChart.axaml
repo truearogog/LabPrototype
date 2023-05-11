@@ -7,10 +7,9 @@
 				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Components.MeasurementHistoryChart">
-	<Grid RowDefinitions="auto, *, auto" IsVisible="{Binding IsVisible}">
-		<local:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
-		<ScottPlot:AvaPlot Grid.Row="1" x:Name="ChartControl" />
-		<StackPanel Grid.Row="2" Orientation="Horizontal" Classes="smallButtonPanel">
+	<Grid RowDefinitions="*, auto" IsVisible="{Binding IsVisible}">
+		<ScottPlot:AvaPlot Grid.Row="0" x:Name="ChartControl" />
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Classes="smallButtonPanel">
 			<Button Classes="smallButton" Command="{Binding ToggleLockXAxisCommand}">
 				<StackPanel>
 					<material:MaterialIcon Kind="Axis" IsVisible="{Binding !LockXAxis}" />

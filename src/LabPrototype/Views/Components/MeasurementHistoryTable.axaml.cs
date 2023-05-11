@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using LabPrototype.Domain.Models;
 using LabPrototype.ViewModels.Components;
+using LabPrototype.ViewModels.Models;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -21,7 +22,7 @@ public partial class MeasurementHistoryTable : UserControl
             _vm = DataContext as MeasurementHistoryTableViewModel;
             if (_vm != null)
             {
-                _vm.SelectedMeterUpdated += UpdateTable;
+                _vm.UpdateViewCalled += UpdateTable;
             }
         };
 
@@ -29,16 +30,16 @@ public partial class MeasurementHistoryTable : UserControl
         {
             if (_vm != null)
             {
-                _vm.SelectedMeterUpdated -= UpdateTable;
+                _vm.UpdateViewCalled -= UpdateTable;
             }
         };
     }
 
-    private void UpdateTable(Meter meter)
+    private void UpdateTable(object? s, MeterEventArgs e)
     {
         TableControl.Columns.Clear();
 
-        var measurementAttributes = meter.MeasurementAttributes.Prepend(new MeasurementAttribute(null, null, null, "DateTime", null));
+        var measurementAttributes = e.Meter.MeasurementAttributes.Prepend(new MeasurementAttribute(null, null, null, "DateTime", null));
 
         foreach (var measurementAttribute in measurementAttributes)
         {

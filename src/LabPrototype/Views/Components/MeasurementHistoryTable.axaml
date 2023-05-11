@@ -5,19 +5,11 @@
 				xmlns:local="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="LabPrototype.Views.Components.MeasurementHistoryTable">
-	<Grid
-		RowDefinitions="auto,*" 
-		IsVisible="{Binding IsVisible}">
-		<local:ToggleMeasurementListing 
-			Grid.Row="0" 
-			DataContext="{Binding ToggleMeasurementListingViewModel}" />
 		<DataGrid
 			x:Name="TableControl"
-			Grid.Row="1"
 			AutoGenerateColumns="False"
 			Items="{Binding Measurements}"
 			HeadersVisibility="None"
-			ColumnWidth="*">
-		</DataGrid>
-	</Grid>
+			ColumnWidth="*"
+			IsVisible="{Binding IsVisible}"/>
 </UserControl>

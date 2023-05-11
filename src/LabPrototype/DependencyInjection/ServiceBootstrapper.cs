@@ -46,9 +46,7 @@ namespace LabPrototype.DependencyInjection
 
         private static void RegisterCommonServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IWindowService>(() => new DialogService(
-                resolver.GetRequiredService<IMainWindowProvider>()
-            ));
+            services.RegisterLazySingleton<IWindowService>(() => new WindowService());
 
             services.RegisterLazySingleton<IMeterService>(() => new MeterService(
                 resolver.GetRequiredService<IGetAllMetersQuery>(),
@@ -61,15 +59,7 @@ namespace LabPrototype.DependencyInjection
                 resolver.GetRequiredService<IGetMeasurementsQuery>()
             ));
 
-            services.RegisterLazySingleton<ISelectedMeterService>(() => new SelectedMeterService(
-                resolver.GetRequiredService<IMeterService>()
-            ));
-
             services.RegisterLazySingleton<IFlowMeasurementProvider>(() => new TestFlowMeasurementProvider());
-
-            services.RegisterLazySingleton<IChartMeasurementProvider>(() => new ChartMeasurementProvider());
-
-            services.RegisterLazySingleton<IEnabledMeasurementAttributeService>(() => new EnabledMeasurementAttributeService());
         }
     }
 }
