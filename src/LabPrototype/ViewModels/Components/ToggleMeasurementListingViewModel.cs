@@ -1,4 +1,5 @@
 ﻿using LabPrototype.Domain.Models;
+using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 
@@ -24,24 +25,27 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        public void UpdateMeter(Meter meter)
+        public void UpdateMeter(Meter? meter)
         {
-            Items.Clear();
             if (meter != null)
             {
-                Items.Add(new ToggleMeasurementListingItemViewModel(
-                    this,
-                    new MeasurementAttribute(
-                        "Time",
-                        string.Empty,
-                        x => x.DateTime.ToString(),
-                        "DateTime",
-                        ColorScheme.Midnight
-                    )
-                ));
-                foreach (var measurementAttribute in meter.MeasurementAttributes)
+                Items.Clear();
+                if (meter != null)
                 {
-                    Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementAttribute));
+                    Items.Add(new ToggleMeasurementListingItemViewModel(
+                        this,
+                        new MeasurementAttribute(
+                            "Time",
+                            string.Empty,
+                            x => x.DateTime.ToString(),
+                            "DateTime",
+                            ColorScheme.Midnight
+                        )
+                    ));
+                    foreach (var measurementAttribute in meter.MeasurementAttributes)
+                    {
+                        Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementAttribute));
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿using LabPrototype.Domain.Models;
 using LabPrototype.Services.Interfaces;
-using LabPrototype.Services.Models;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using LabPrototype.ViewModels.Models;
@@ -62,6 +61,7 @@ namespace LabPrototype.ViewModels.Main
             Meter = parameter.Meter;
             MeterDetailListingViewModel.UpdateMeter(Meter);
             FlowMeasurementListingViewModel.UpdateMeter(Meter);
+            ToggleMeasurementListingViewModel.UpdateMeter(Meter);
             MeasurementHistoryChartViewModel.UpdateMeter(Meter);
             MeasurementHistoryTableViewModel.UpdateMeter(Meter);
         }
@@ -84,11 +84,7 @@ namespace LabPrototype.ViewModels.Main
             {
                 if (Meter.Id.Equals(meter.Id))
                 {
-                    Meter = meter;
-                    MeterDetailListingViewModel.UpdateMeter(Meter);
-                    FlowMeasurementListingViewModel.UpdateMeter(Meter);
-                    MeasurementHistoryChartViewModel.UpdateMeter(Meter);
-                    MeasurementHistoryTableViewModel.UpdateMeter(Meter);
+                    Activate(new MeterNavigationParameter(meter));
                 }
             }
         }

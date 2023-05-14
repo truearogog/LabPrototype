@@ -29,6 +29,7 @@ namespace LabPrototype.ViewModels.Components
                 Task.Run(() => _measurementService.LoadMeter(meter.Id)).Wait();
                 var measurements = _measurementService.LoadedMeasurements[meter.Id];
                 Measurements = new(measurements);
+                UpdateView(meter);
                 this.RaisePropertyChanged(nameof(Measurements));
             }
         }

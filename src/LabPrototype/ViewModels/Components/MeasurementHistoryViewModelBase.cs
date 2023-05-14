@@ -1,4 +1,4 @@
-﻿using LabPrototype.ViewModels.Models;
+﻿using LabPrototype.Domain.Models;
 using ReactiveUI;
 using System;
 
@@ -13,6 +13,11 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _isVisible, value);
         }
 
-        public event EventHandler<MeterEventArgs> UpdateViewCalled;
+        public event Action<Meter> UpdateViewCalled;
+
+        protected void UpdateView(Meter meter)
+        {
+            UpdateViewCalled?.Invoke(meter);
+        }
     }
 }
