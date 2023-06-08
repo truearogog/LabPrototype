@@ -25,7 +25,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
     <PackageReference Include="Material.Icons.Avalonia" Version="1.1.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="ScottPlot.Avalonia" Version="4.1.61" />
@@ -39,8 +39,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
-    <ProjectReference Include="..\LabPrototype.EntityFramework\LabPrototype.EntityFramework.csproj" />
-    <ProjectReference Include="..\LabPrototype.Extensions\LabPrototype.Extensions.csproj" />
+    <ProjectReference Include="..\LabPrototype.Framework\LabPrototype.Framework.csproj" />
+    <ProjectReference Include="..\LabPrototype.Infrastructure\LabPrototype.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,5 +86,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\IServices\" />
   </ItemGroup>
 </Project>

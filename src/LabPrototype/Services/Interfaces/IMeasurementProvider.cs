@@ -1,5 +1,4 @@
-﻿using LabPrototype.Domain.Models;
-using System;
+﻿using System;
 
 namespace LabPrototype.Services.Interfaces
 {

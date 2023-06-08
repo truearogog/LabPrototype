@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using LabPrototype.DependencyInjection;
+using LabPrototype.Framework.Extensions;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Main;
 using LabPrototype.Views.Windows;

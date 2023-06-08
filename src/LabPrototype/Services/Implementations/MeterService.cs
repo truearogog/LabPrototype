@@ -1,7 +1,4 @@
-﻿using LabPrototype.Domain.Commands;
-using LabPrototype.Domain.Models;
-using LabPrototype.Domain.Queries;
-using LabPrototype.Services.Interfaces;
+﻿using LabPrototype.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
