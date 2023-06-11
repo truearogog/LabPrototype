@@ -1,6 +1,8 @@
-﻿namespace LabPrototype.Domain.IServices
+﻿using LabPrototype.Domain.Models.Presentation;
+
+namespace LabPrototype.Domain.IServices
 {
-    public interface IMeterService
+    public interface IMeterService : IServiceBase<Meter>
     {
     }
 }

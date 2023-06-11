@@ -15,6 +15,12 @@ using Serilog.Core;
 using LabPrototype.Framework.Extensions;
 using LabPrototype.Domain.Models.Configurations;
 using LabPrototype.Infrastructure.DataAccessLayer;
+using LabPrototype.Domain.IRepositories;
+using LabPrototype.Infrastructure.DataAccessLayer.Repositories;
+using LabPrototype.Domain.IServices;
+using LabPrototype.AppManagers.Services;
+using LabPrototype.AppManagers.Stores;
+using LabPrototype.Domain.IStores;
 
 namespace LabPrototype
 {
@@ -72,6 +78,9 @@ namespace LabPrototype
             RegisterLogging(Locator.CurrentMutable, Locator.Current);
             RegisterDataAccess(Locator.CurrentMutable, Locator.Current);
             RegisterAutoMapper(Locator.CurrentMutable);
+            RegisterRepositories(Locator.CurrentMutable, Locator.Current);
+            RegisterServices(Locator.CurrentMutable, Locator.Current);
+            RegisterStores(Locator.CurrentMutable, Locator.Current);
         }
 
         private static void RegisterConfigurations(IMutableDependencyResolver services)
@@ -142,6 +151,58 @@ namespace LabPrototype
                 });
                 return new Mapper(config);
             });
+        }
+
+        private static void RegisterRepositories(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        {
+            services.RegisterLazySingleton<IColorSchemeRepository>(() => 
+                new ColorSchemeRepository(ResolveDbContext(resolver)));
+            services.RegisterLazySingleton<IMeasurementGroupRepository>(() => 
+                new MeasurementGroupRepository(ResolveDbContext(resolver)));
+            services.RegisterLazySingleton<IMeasurementRepository>(() => 
+                new MeasurementRepository(ResolveDbContext(resolver)));
+            services.RegisterLazySingleton<IMeasurementTypeRepository>(() => 
+                new MeasurementTypeRepository(ResolveDbContext(resolver)));
+            services.RegisterLazySingleton<IMeterRepository>(() => 
+                new MeterRepository(ResolveDbContext(resolver)));
+            services.RegisterLazySingleton<IMeterTypeRepository>(() => 
+                new MeterTypeRepository(ResolveDbContext(resolver)));
+        }
+
+        private static LabDbContext ResolveDbContext(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<LabDbContextFactory>().Create();
+
+        private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        {
+            services.RegisterLazySingleton<IColorSchemeService>(() => 
+                new ColorSchemeService(ResolveMapper(resolver), resolver.GetRequiredService<IColorSchemeRepository>()));
+            services.RegisterLazySingleton<IMeasurementGroupService>(() => 
+                new MeasurementGroupService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupRepository>()));
+            services.RegisterLazySingleton<IMeasurementService>(() => 
+                new MeasurementService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementRepository>()));
+            services.RegisterLazySingleton<IMeasurementTypeService>(() => 
+                new MeasurementTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementTypeRepository>()));
+            services.RegisterLazySingleton<IMeterService>(() => 
+                new MeterService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterRepository>()));
+            services.RegisterLazySingleton<IMeterTypeService>(() => 
+                new MeterTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterTypeRepository>()));
+        }
+
+        private static IMapper ResolveMapper(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<IMapper>();
+
+        private static void RegisterStores(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        {
+            services.RegisterLazySingleton<IColorSchemeStore>(() =>
+                new ColorSchemeStore(resolver.GetRequiredService<IColorSchemeService>()));
+            services.RegisterLazySingleton<IMeasurementGroupStore>(() =>
+                new MeasurementGroupStore(resolver.GetRequiredService<IMeasurementGroupService>()));
+            services.RegisterLazySingleton<IMeasurementStore>(() =>
+                new MeasurementStore(resolver.GetRequiredService<IMeasurementService>()));
+            services.RegisterLazySingleton<IMeasurementTypeStore>(() =>
+                new MeasurementTypeStore(resolver.GetRequiredService<IMeasurementTypeService>()));
+            services.RegisterLazySingleton<IMeterStore>(() =>
+                new MeterStore(resolver.GetRequiredService<IMeterService>()));
+            services.RegisterLazySingleton<IMeterTypeStore>(() =>
+                new MeterTypeStore(resolver.GetRequiredService<IMeterTypeService>()));
         }
 
         private static AppBuilder BuildAvaloniaApp() =>

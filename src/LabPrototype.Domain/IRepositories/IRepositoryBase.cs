@@ -11,6 +11,7 @@ namespace LabPrototype.Domain.IRepositories
         T Update(T entity);
         IEnumerable<T> UpdateRange(IEnumerable<T> entities);
         void Delete(T entity);
+        void Delete(int entityId);
         void DeleteRange(IEnumerable<T> entities);
         void DeleteRange(IEnumerable<int> entityIds);
         T? GetById(int id);

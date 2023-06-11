@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="IManagers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

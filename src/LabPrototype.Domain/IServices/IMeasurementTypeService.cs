@@ -2,7 +2,7 @@
 
 namespace LabPrototype.Domain.IServices
 {
-    public interface IColorSchemeService : IServiceBase<ColorScheme>
+    public interface IMeasurementTypeService : IServiceBase<MeasurementType>
     {
     }
 }

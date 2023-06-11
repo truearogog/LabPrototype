@@ -56,6 +56,11 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             _dbSet.Remove(entity);
             _dbContext.SaveChanges();
         }
+        public void Delete(int entityId)
+        {
+            _dbSet.Remove(new T { Id = entityId });
+            _dbContext.SaveChanges();
+        }
         public void DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);

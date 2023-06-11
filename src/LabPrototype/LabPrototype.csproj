@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LabPrototype.AppManagers\LabPrototype.AppManagers.csproj" />
     <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
     <ProjectReference Include="..\LabPrototype.Framework\LabPrototype.Framework.csproj" />
     <ProjectReference Include="..\LabPrototype.Infrastructure\LabPrototype.Infrastructure.csproj" />
