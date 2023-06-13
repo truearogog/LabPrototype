@@ -1,5 +1,4 @@
-﻿using LabPrototype.Domain.Models;
-using LabPrototype.Services.Interfaces;
+﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;

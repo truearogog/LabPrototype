@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Main;
 using LabPrototype.ViewModels.Models;

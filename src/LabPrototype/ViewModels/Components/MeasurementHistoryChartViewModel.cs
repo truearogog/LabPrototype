@@ -1,23 +1,29 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using LabPrototype.Extensions;
-using LabPrototype.Domain.Models;
-using LabPrototype.Models.Interfaces;
-using LabPrototype.Services.Interfaces;
-using System.Windows.Input;
-using ReactiveUI;
+﻿using System.Linq;
 using System.Drawing;
+using System.Windows.Input;
+using System.Threading.Tasks;
+using LabPrototype.Models.Interfaces;
+using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.IStores;
+using ReactiveUI;
+using System.Collections.Generic;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryChartViewModel : MeasurementHistoryViewModelBase
     {
-        private readonly IMeasurementService _measurementService;
+        private readonly IMeasurementGroupStore _measurementGroupStore;
         private readonly ToggleMeasurementListingViewModel _toggleMeasurementListingViewModel;
 
-        public Meter? Meter { get; set; } = null;
-        public IPlotProvider? PlotProvider { get; set; } = null;
+        private Meter? _meter = null;
+        public Meter? Meter
+        {
+            get => _meter;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _meter, value);
+            }
+        }
 
         private bool _lockXAxis;
         public bool LockXAxis
@@ -47,14 +53,21 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
+        public IPlotProvider? PlotProvider { get; set; } = null;
+
         public ICommand ToggleLockXAxisCommand { get; }
         public ICommand ToggleLockYAxisCommand { get; }
 
+        private IEnumerable<MeasurementGroup>? _measurementGroups = null;
+
         public MeasurementHistoryChartViewModel(ToggleMeasurementListingViewModel toggleMeasurementListingViewModel)
         {
-            _measurementService = GetRequiredService<IMeasurementService>();
+            _measurementGroupStore = GetRequiredService<IMeasurementGroupStore>();
+            _measurementGroupStore.ModelsLoaded += _MeasurementGroupsLoaded;
+            Task.Run(_measurementGroupStore.LoadAll);
+
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
-            _toggleMeasurementListingViewModel.OnChecked += OnChecked;
+            _toggleMeasurementListingViewModel.OnChecked += _OnChecked;
 
             ToggleLockXAxisCommand = ReactiveCommand.Create(() => LockXAxis = !LockXAxis);
             ToggleLockYAxisCommand = ReactiveCommand.Create(() => LockYAxis = !LockYAxis);
@@ -62,26 +75,32 @@ namespace LabPrototype.ViewModels.Components
 
         public override void Dispose()
         {
-            _toggleMeasurementListingViewModel.OnChecked -= OnChecked;
+            _measurementGroupStore.ModelsLoaded -= _MeasurementGroupsLoaded;
+            _toggleMeasurementListingViewModel.OnChecked -= _OnChecked;
             base.Dispose();
         }
 
-        public void UpdateNearestMeasurement(int nearestIndex)
+        private void _MeasurementGroupsLoaded(IEnumerable<MeasurementGroup> measurementGroups)
         {
-            if (Meter != null)
+            _measurementGroups = measurementGroups;
+            CreateSeries();
+        }
+
+        public void UpdateNearestMeasurementGroup(int nearestIndex)
+        {
+            if (_measurementGroups is not null)
             {
-                var measurement = _measurementService.LoadedMeasurements[Meter.Id].ElementAt(nearestIndex);
-                _toggleMeasurementListingViewModel.UpdateMeasurement(measurement);
+                var measurementGroup = _measurementGroups.ElementAt(nearestIndex);
+                _toggleMeasurementListingViewModel.UpdateMeasurementGroup(measurementGroup);
             }
         }
 
         private void CreateSeries()
         {
-            if (PlotProvider != null && Meter != null)
+            if (PlotProvider is not null && Meter is not null)
             {
                 PlotProvider.ClearPlots();
 
-                var measurements = _measurementService.LoadedMeasurements[Meter.Id];
                 var plotIds = Meter.MeasurementAttributes.Select(a => a.Id).ToArray();
                 var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
                 var ys = Meter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
@@ -104,7 +123,7 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void OnChecked(Guid id, bool isChecked)
+        private void _OnChecked(int id, bool isChecked)
         {
             PlotProvider?.SetPlotVisibility(id, isChecked);
         }

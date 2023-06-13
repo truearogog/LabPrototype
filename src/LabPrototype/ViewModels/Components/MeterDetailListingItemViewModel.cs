@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System;
 

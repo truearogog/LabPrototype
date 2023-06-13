@@ -43,7 +43,7 @@ namespace LabPrototype.Views.Components
             _plotProvider.SetCrosshairPosition(coordinateX, coordinateY);
 
             (double nearestX, double nearestY, int nearestIndex) = _plotProvider.GetPointNearestX(coordinateX);
-            _vm?.UpdateNearestMeasurement(nearestIndex);
+            _vm?.UpdateNearestMeasurementGroup(nearestIndex);
         }
 
         private void _PointerEnter(object? sender, Avalonia.Input.PointerEventArgs e)

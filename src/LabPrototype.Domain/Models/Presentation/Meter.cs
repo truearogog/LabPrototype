@@ -6,5 +6,6 @@
         public string? Name { get; set; }
         public string? Address { get; set; }
         public int MeterTypeId { get; set; }
+        public MeterType? MeterType { get; set; }
     }
 }

@@ -18,10 +18,10 @@
 			<Setter Property="Background" Value="#444444" />
 		</Style>
 		<Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Primary}" />
+			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.Primary}" />
 		</Style>
 		<Style Selector="ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="{Binding MeasurementAttribute.ColorScheme.Secondary}" />
+			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.Secondary}" />
 		</Style>
 	</UserControl.Styles>
 	<ToggleButton IsChecked="{Binding IsChecked}" Command="{Binding ToggledCommand}">
@@ -30,11 +30,11 @@
 				<TextBlock 
 					Grid.Column="0" 
 					VerticalAlignment="Center" 
-					Text="{Binding MeasurementAttribute.Name}" />
+					Text="{Binding MeasurementType.Name}" />
 				<TextBlock 
 					Grid.Column="1" 
 					VerticalAlignment="Center" 
-					Text="{Binding MeasurementAttribute.Unit}"
+					Text="{Binding MeasurementType.Unit}"
 					IsVisible="{Binding !HasValue}" />
 			</Grid>			
 			<Grid 
@@ -49,7 +49,7 @@
 				<TextBlock 
 					Grid.Column="1" 
 					VerticalAlignment="Center" 
-					Text="{Binding MeasurementAttribute.Unit}" />
+					Text="{Binding MeasurementType.Unit}" />
 			</Grid>
 		</Grid>
 	</ToggleButton>

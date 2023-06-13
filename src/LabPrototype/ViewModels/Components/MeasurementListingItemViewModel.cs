@@ -1,19 +1,19 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
-using System;
+using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementListingItemViewModel : ViewModelBase
     {
-        private MeasurementAttribute _measurementAttribute;
-        public MeasurementAttribute MeasurementAttribute
+        private MeasurementType _measurementType;
+        public MeasurementType MeasurementType
         {
-            get => _measurementAttribute;
-            set => this.RaiseAndSetIfChanged(ref _measurementAttribute, value);
+            get => _measurementType;
+            set => this.RaiseAndSetIfChanged(ref _measurementType, value);
         }
 
-        private string _value;
+        private string _value = string.Empty;
         public string Value
         {
             get => _value;
@@ -22,14 +22,14 @@ namespace LabPrototype.ViewModels.Components
 
         public bool HasValue => !string.IsNullOrEmpty(Value);
 
-        public MeasurementListingItemViewModel(MeasurementAttribute measurementAttribute)
+        public MeasurementListingItemViewModel(MeasurementType measurementType)
         {
-            _measurementAttribute = measurementAttribute;
+            _measurementType = measurementType;
         }
 
-        public void Update(Measurement measurement)
+        public void Update(MeasurementGroup measurementGroup)
         {
-            Value = _measurementAttribute?.ValueGetter?.Invoke(measurement).ToString() ?? string.Empty;
+            Value = measurementGroup.Measurements?.First(x => x.MeasurementTypeId.Equals(_measurementType.Id)).Value.ToString() ?? string.Empty;
             this.RaisePropertyChanged(nameof(HasValue));
         }
     }

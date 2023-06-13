@@ -22,7 +22,7 @@ namespace LabPrototype
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 var windowService = GetRequiredService<IWindowService>();
-                var mainWindow = windowService.ShowWindow<MainWindow, MainWindowViewModel>(() => MainWindowViewModel.LoadViewModel());
+                var mainWindow = windowService.ShowWindow<MainWindow, MainWindowViewModel>();
                 desktop.MainWindow = mainWindow;
             }
 

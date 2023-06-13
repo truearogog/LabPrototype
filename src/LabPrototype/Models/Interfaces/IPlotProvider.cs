@@ -5,9 +5,9 @@ namespace LabPrototype.Models.Interfaces
 {
     public interface IPlotProvider
     {
-        void AddPlots(Guid[] plotIds, double[] xs, double[][] ys, Color[] colors);
+        void AddPlots(int[] plotIds, double[] xs, double[][] ys, Color[] colors);
         void ClearPlots();
-        void SetPlotVisibility(Guid plotId, bool visible);
+        void SetPlotVisibility(int plotId, bool visible);
         public bool LockXAxis { get; set; }
         public bool LockYAxis { get; set; }
 

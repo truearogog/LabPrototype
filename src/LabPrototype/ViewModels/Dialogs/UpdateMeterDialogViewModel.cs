@@ -1,8 +1,6 @@
-﻿using LabPrototype.Commands;
-using LabPrototype.Services.Interfaces;
+﻿using LabPrototype.Domain.IStores;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Models;
-using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
@@ -12,16 +10,21 @@ namespace LabPrototype.ViewModels.Dialogs
 
         public UpdateMeterDialogViewModel()
         {
-            IMeterService meterService = GetRequiredService<IMeterService>();
+            IMeterStore meterService = GetRequiredService<IMeterStore>();
 
-            ICommand updateCommand = new UpdateMeterCommand(this, meterService);
+            MeterDetailFormViewModel = new MeterDetailFormViewModel(CloseCommand, meterService.Update);
+        }
 
-            MeterDetailFormViewModel = new MeterDetailFormViewModel(updateCommand, CloseCommand);
+        public override void Dispose()
+        {
+            MeterDetailFormViewModel.Dispose();
+
+            base.Dispose();
         }
 
         public override void Activate(MeterNavigationParameter parameter)
         {
-            MeterDetailFormViewModel.Update(parameter.Meter);
+            MeterDetailFormViewModel.Meter = parameter.Meter;
         }
     }
 }

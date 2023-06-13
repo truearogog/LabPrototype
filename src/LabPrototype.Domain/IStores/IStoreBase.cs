@@ -9,7 +9,7 @@ namespace LabPrototype.Domain.IStores
         event Action<T> ModelUpdated;
         event Action<int> ModelDeleted;
 
-        void Load();
+        void LoadAll();
         void Create(T model);
         void Update(T model);
         void Delete(int modelId);

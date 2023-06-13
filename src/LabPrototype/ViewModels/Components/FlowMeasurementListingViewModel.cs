@@ -1,77 +1,38 @@
-﻿using LabPrototype.Domain.Models;
-using LabPrototype.Services.Interfaces;
-using ReactiveUI;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Presentation;
 using System.Collections.ObjectModel;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class FlowMeasurementListingViewModel : ViewModelBase
     {
-        private IMeasurementProvider _measurementProvider;
-
-        private Meter? _meter;
-        public Meter? Meter
-        {
-            get => _meter;
-            set
-            {
-                _meter = value;
-            }
-        }
+        private readonly IMeterTypeService _meterTypeService;
+        private readonly IColorSchemeService _colorSchemeService;
 
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
         public FlowMeasurementListingViewModel()
         {
-            _measurementProvider = GetRequiredService<IFlowMeasurementProvider>();
-            _measurementProvider.MeasurementUpdated += _MeasurementUpdated;
-
-            if (_measurementProvider is IFlowMeasurementProvider flowMeasurementProvider)
-            {
-                if (!flowMeasurementProvider.IsRunning)
-                {
-                    flowMeasurementProvider.Start();
-                }
-            }
+            _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _colorSchemeService = GetRequiredService<IColorSchemeService>();
         }
 
-        public override void Dispose()
+        private void CreateMeasurements(Meter meter)
         {
-            _measurementProvider.MeasurementUpdated -= _MeasurementUpdated;
-            base.Dispose();
+            Items.Clear();
+            var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+
+            foreach (var measurementType in measurementTypes)
+            {
+                Items.Add(new MeasurementListingItemViewModel(measurementAttribute));
+            }
         }
 
         public void UpdateMeter(Meter? meter)
         {
-            Meter = meter;
-            CreateMeasurements(meter);
-        }
-
-        private void CreateMeasurements(Meter? meter)
-        {
-            Items.Clear();
-            if (meter != null)
+            if (meter is not null)
             {
-                var measurementAttributes = meter.MeasurementAttributes;
-
-                foreach (var measurementAttribute in measurementAttributes)
-                {
-                    Items.Add(new MeasurementListingItemViewModel(measurementAttribute));
-                }
-            }
-        }
-
-        private void _MeasurementUpdated(Measurement measurement)
-        {
-            if (Meter != null)
-            {
-                if (measurement.MeterId.Equals(Meter.Id))
-                {
-                    foreach (var measurementViewModel in Items)
-                    {
-                        measurementViewModel.Update(measurement);
-                    }
-                }
+                CreateMeasurements(meter);
             }
         }
     }

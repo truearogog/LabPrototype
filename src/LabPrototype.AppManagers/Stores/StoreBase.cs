@@ -19,7 +19,7 @@ namespace LabPrototype.AppManagers.Stores
             _service = service;
         }
 
-        public void Load()
+        public void LoadAll()
         {
             var models = _service.GetAll().ToList();
             ModelsLoaded?.Invoke(models);

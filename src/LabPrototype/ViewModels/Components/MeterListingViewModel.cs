@@ -1,9 +1,10 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.IStores;
+using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Dialogs;
 using LabPrototype.Views.Dialogs;
 using ReactiveUI;
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
@@ -16,19 +17,7 @@ namespace LabPrototype.ViewModels.Components
     {
         private readonly WindowViewModelBase _parentWindow;
         private readonly IWindowService _windowService;
-        private readonly IMeterService _meterService;
-
-        private MeterListingItemViewModel? _selectedMeterListingItemViewModel;
-        public MeterListingItemViewModel? SelectedMeterListingItemViewModel
-        {
-            get => _selectedMeterListingItemViewModel;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _selectedMeterListingItemViewModel, value);
-                
-
-            }
-        }
+        private readonly IMeterStore _meterStore;
 
         public ICommand OpenCreateMeterCommand { get; }
 
@@ -39,33 +28,34 @@ namespace LabPrototype.ViewModels.Components
             _parentWindow = parentWindow;
 
             _windowService = GetRequiredService<IWindowService>();
-            _meterService = GetRequiredService<IMeterService>();
 
-            _meterService.MetersLoaded += _MetersLoaded;
-            _meterService.MeterCreated += _MeterCreated;
-            _meterService.MeterUpdated += _MeterUpdated;
-            _meterService.MeterDeleted += _MeterDeleted;
+            _meterStore = GetRequiredService<IMeterStore>();
+            _meterStore.ModelsLoaded += _MetersLoaded;
+            _meterStore.ModelCreated += _MeterCreated;
+            _meterStore.ModelUpdated += _MeterUpdated;
+            _meterStore.ModelDeleted += _MeterDeleted;
+            Task.Run(_meterStore.LoadAll);
 
             OpenCreateMeterCommand = ReactiveCommand.CreateFromTask(ShowCreateMeterDialogAsync);
         }
 
         public override void Dispose()
         {
-            _meterService.MetersLoaded -= _MetersLoaded;
-            _meterService.MeterCreated -= _MeterCreated;
-            _meterService.MeterUpdated -= _MeterUpdated;
-            _meterService.MeterDeleted -= _MeterDeleted;
+            _meterStore.ModelsLoaded -= _MetersLoaded;
+            _meterStore.ModelCreated -= _MeterCreated;
+            _meterStore.ModelUpdated -= _MeterUpdated;
+            _meterStore.ModelDeleted -= _MeterDeleted;
 
             base.Dispose();
         }
 
         private async Task ShowCreateMeterDialogAsync() => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
 
-        private void _MetersLoaded()
+        private void _MetersLoaded(IEnumerable<Meter> meters)
         {
             Items.Clear();
 
-            foreach (var meter in _meterService.Meters)
+            foreach (var meter in meters)
             {
                 AddMeter(meter);
             }
@@ -79,16 +69,16 @@ namespace LabPrototype.ViewModels.Components
         private void _MeterUpdated(Meter meter)
         {
             var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
-            if (meterViewModel != null)
+            if (meterViewModel is not null)
             {
                 meterViewModel.Meter = meter;
             }
         }
 
-        private void _MeterDeleted(Guid id)
+        private void _MeterDeleted(int id)
         {
             var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(id));
-            if (meterViewModel != null)
+            if (meterViewModel is not null)
             {
                 Items.Remove(meterViewModel);
             }
@@ -96,7 +86,7 @@ namespace LabPrototype.ViewModels.Components
 
         private void AddMeter(Meter meter)
         {
-            MeterListingItemViewModel meterListingItemViewModel = new MeterListingItemViewModel(meter);
+            var meterListingItemViewModel = new MeterListingItemViewModel(meter);
             Items.Add(meterListingItemViewModel);
         }
     }

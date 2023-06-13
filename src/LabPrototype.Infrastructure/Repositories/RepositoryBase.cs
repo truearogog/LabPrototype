@@ -6,82 +6,92 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase, new()
     {
-        private readonly LabDbContext _dbContext;
-        private readonly DbSet<T> _dbSet;
+        protected readonly LabDbContext DbContext;
+        protected readonly DbSet<T> DbSet;
 
         public RepositoryBase(LabDbContext dbContext, DbSet<T> dbSet)
         {
-            _dbContext = dbContext;
-            _dbSet = dbSet;
+            DbContext = dbContext;
+            DbSet = dbSet;
         }
 
         public T Create(T entity)
         {
-            _dbSet.Add(entity);
-            _dbContext.SaveChanges();
+            DbSet.Add(entity);
+            DbContext.SaveChanges();
             return entity;
         }
         public async Task<T> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            await DbSet.AddAsync(entity);
+            await DbContext.SaveChangesAsync();
             return entity;
         }
         public IEnumerable<T> CreateRange(IEnumerable<T> entities)
         {
-            _dbSet.AddRange(entities);
-            _dbContext.SaveChanges();
+            DbSet.AddRange(entities);
+            DbContext.SaveChanges();
             return entities;
         }
         public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
         {
-            await _dbSet.AddRangeAsync(entities);
-            await _dbContext.SaveChangesAsync();
+            await DbSet.AddRangeAsync(entities);
+            await DbContext.SaveChangesAsync();
             return entities;
         }
         public T Update(T entity)
         {
-            _dbSet.Update(entity);
-            _dbContext.SaveChanges();
+            DbSet.Update(entity);
+            DbContext.SaveChanges();
             return entity;
         }
         public IEnumerable<T> UpdateRange(IEnumerable<T> entities)
         {
-            _dbSet.UpdateRange(entities);
-            _dbContext.SaveChanges();
+            DbSet.UpdateRange(entities);
+            DbContext.SaveChanges();
             return entities;
         }
         public void Delete(T entity)
         {
-            _dbSet.Remove(entity);
-            _dbContext.SaveChanges();
+            DbSet.Remove(entity);
+            DbContext.SaveChanges();
         }
         public void Delete(int entityId)
         {
-            _dbSet.Remove(new T { Id = entityId });
-            _dbContext.SaveChanges();
+            DbSet.Remove(new T { Id = entityId });
+            DbContext.SaveChanges();
         }
         public void DeleteRange(IEnumerable<T> entities)
         {
-            _dbSet.RemoveRange(entities);
-            _dbContext.SaveChanges();
+            DbSet.RemoveRange(entities);
+            DbContext.SaveChanges();
         }
         public void DeleteRange(IEnumerable<int> entityIds)
         {
-            _dbSet.RemoveRange(entityIds.Select(x => new T { Id = x }));
-            _dbContext.SaveChanges();
+            DbSet.RemoveRange(entityIds.Select(x => new T { Id = x }));
+            DbContext.SaveChanges();
         }
         public T? GetById(int id)
         {
-            return _dbSet.Find(id);
+            return DbSet.Find(id);
         }
         public async Task<T?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await DbSet.FindAsync(id);
         }
         public IQueryable<T> GetAll()
         {
-            return _dbSet;
+            return DbSet;
+        }
+        public IEnumerable<TOut> GetMany<TOut>(int id, Func<T, ICollection<TOut>?> getter)
+        {
+            var entity = GetById(id);
+            if (entity is null)
+                return Enumerable.Empty<TOut>();
+            var many = getter(entity);
+            if (many is null)
+                return Enumerable.Empty<TOut>();
+            return many;
         }
     }
 }

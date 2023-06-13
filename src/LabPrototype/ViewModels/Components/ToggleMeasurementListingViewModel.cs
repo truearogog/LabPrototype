@@ -1,19 +1,22 @@
-﻿using LabPrototype.Domain.Models;
-using ReactiveUI;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Presentation;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class ToggleMeasurementListingViewModel : ViewModelBase
     {
-        public event Action<Guid, bool> OnChecked;
+        public event Action<int, bool>? OnChecked;
 
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
+        private readonly IMeterTypeService _meterTypeService;
+
         public ToggleMeasurementListingViewModel()
         {
-
+            _meterTypeService = GetRequiredService<IMeterTypeService>();
         }
 
         public override void Dispose()
@@ -27,30 +30,19 @@ namespace LabPrototype.ViewModels.Components
 
         public void UpdateMeter(Meter? meter)
         {
-            if (meter != null)
+            if (meter is not null)
             {
+                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id) ?? Enumerable.Empty<MeasurementType>();
+
                 Items.Clear();
-                if (meter != null)
+                foreach (var measurementType in measurementTypes)
                 {
-                    Items.Add(new ToggleMeasurementListingItemViewModel(
-                        this,
-                        new MeasurementAttribute(
-                            "Time",
-                            string.Empty,
-                            x => x.DateTime.ToString(),
-                            "DateTime",
-                            ColorScheme.Midnight
-                        )
-                    ));
-                    foreach (var measurementAttribute in meter.MeasurementAttributes)
-                    {
-                        Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementAttribute));
-                    }
+                    Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementType));
                 }
             }
         }
 
-        public void UpdateMeasurement(Measurement measurement)
+        public void UpdateMeasurementGroup(MeasurementGroup measurement)
         {
             foreach (var item in Items)
             {
@@ -58,7 +50,7 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        public void UpdateMeasurementAttribute(Guid id, bool isChecked)
+        public void UpdateMeasurementAttribute(int id, bool isChecked)
         {
             OnChecked?.Invoke(id, isChecked);
         }

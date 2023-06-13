@@ -1,11 +1,11 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.IStores;
+using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Dialogs;
 using LabPrototype.ViewModels.Models;
 using LabPrototype.Views.Dialogs;
 using ReactiveUI;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -14,7 +14,7 @@ namespace LabPrototype.ViewModels.Main
     public class MeterWindowViewModel : ParametrizedWindowViewModelBase<MeterNavigationParameter>
     {
         private readonly IWindowService _windowService;
-        private readonly IMeterService _meterService;
+        private readonly IMeterStore _meterStore;
 
         private Meter? _meter = null;
         public Meter? Meter
@@ -38,10 +38,10 @@ namespace LabPrototype.ViewModels.Main
         public MeterWindowViewModel()
         {
             _windowService = GetRequiredService<IWindowService>();
-            _meterService = GetRequiredService<IMeterService>();
 
-            _meterService.MeterUpdated += _MeterUpdated;
-            _meterService.MeterDeleted += _MeterDeleted;
+            _meterStore = GetRequiredService<IMeterStore>();
+            _meterStore.ModelUpdated += _MeterUpdated;
+            _meterStore.ModelDeleted += _MeterDeleted;
 
             MeterDetailListingViewModel = new MeterDetailListingViewModel();
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel();
@@ -68,8 +68,8 @@ namespace LabPrototype.ViewModels.Main
 
         public override void Dispose()
         {
-            _meterService.MeterUpdated -= _MeterUpdated;
-            _meterService.MeterDeleted -= _MeterDeleted;
+            _meterStore.ModelUpdated -= _MeterUpdated;
+            _meterStore.ModelDeleted -= _MeterDeleted;
 
             MeterDetailListingViewModel.Dispose();
             FlowMeasurementListingViewModel.Dispose();
@@ -80,7 +80,7 @@ namespace LabPrototype.ViewModels.Main
 
         private void _MeterUpdated(Meter meter)
         {
-            if (Meter != null)
+            if (Meter is not null)
             {
                 if (Meter.Id.Equals(meter.Id))
                 {
@@ -89,9 +89,9 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void _MeterDeleted(Guid id)
+        private void _MeterDeleted(int id)
         {
-            if (Meter != null)
+            if (Meter is not null)
             {
                 if (Meter.Id.Equals(id))
                 {

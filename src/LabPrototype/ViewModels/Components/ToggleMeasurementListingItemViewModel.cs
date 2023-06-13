@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System.Windows.Input;
 
@@ -6,14 +6,13 @@ namespace LabPrototype.ViewModels.Components
 {
     public class ToggleMeasurementListingItemViewModel : MeasurementListingItemViewModel
     {
-        private ToggleMeasurementListingViewModel _toggleMeasurementListingViewModel;
+        private ToggleMeasurementListingViewModel? _toggleMeasurementListingViewModel;
 
         public bool IsChecked { get; set; } = true;
         public ICommand ToggledCommand { get; }
 
-        public ToggleMeasurementListingItemViewModel(
-            ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, 
-            MeasurementAttribute measurementAttribute) : base(measurementAttribute)
+        public ToggleMeasurementListingItemViewModel(ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, MeasurementType measurementType) 
+            : base(measurementType)
         {
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
 
@@ -29,7 +28,7 @@ namespace LabPrototype.ViewModels.Components
 
         private void Toggled()
         {
-            _toggleMeasurementListingViewModel.UpdateMeasurementAttribute(MeasurementAttribute.Id, IsChecked);
+            _toggleMeasurementListingViewModel?.UpdateMeasurementAttribute(MeasurementType.Id, IsChecked);
         }
     }
 }

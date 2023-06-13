@@ -1,35 +1,22 @@
-﻿using LabPrototype.Domain.Models;
+﻿using LabPrototype.Domain.IStores;
+using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeterDetailFormViewModel : ViewModelBase
     {
-        public Guid Id { get; set; }
-
-        private string _serialCode;
-        public string SerialCode
+        private Meter _meter = new Meter();
+        public Meter Meter
         {
-            get => _serialCode;
-            set => this.RaiseAndSetIfChanged(ref _serialCode, value);
-        }
-
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set => this.RaiseAndSetIfChanged(ref _name, value);
-        }
-
-        private string _address;
-        public string Address
-        {
-            get => _address;
-            set => this.RaiseAndSetIfChanged(ref _address, value);
+            get => _meter;
+            set => this.RaiseAndSetIfChanged(ref _meter, value);
         }
 
         private int _selectedMeterTypeIndex;
@@ -41,33 +28,36 @@ namespace LabPrototype.ViewModels.Components
 
         public ObservableCollection<MeterTypeViewModel> MeterTypes { get; set; } = new();
 
-        public ICommand SubmitCommand { get; }
+        private readonly IMeterTypeStore _meterTypeStore;
+
         public ICommand CancelCommand { get; }
+        public ICommand SubmitCommand { get; }
 
-        public MeterDetailFormViewModel(ICommand submitCommand, ICommand cancelCommand)
+        public MeterDetailFormViewModel(ICommand cancelCommand, Action<Meter> submitAction)
         {
-            SubmitCommand = submitCommand;
             CancelCommand = cancelCommand;
+            SubmitCommand = ReactiveCommand.Create(() => submitAction(Meter));
 
-            CreateMeterTypes();
+            _meterTypeStore = GetRequiredService<IMeterTypeStore>();
+            _meterTypeStore.ModelsLoaded += _MeterTypesLoaded;
+            Task.Run(_meterTypeStore.LoadAll);
         }
 
-        private void CreateMeterTypes()
+        public override void Dispose()
+        {
+            _meterTypeStore.ModelsLoaded -= _MeterTypesLoaded;
+
+            base.Dispose();
+        }
+
+        private void _MeterTypesLoaded(IEnumerable<MeterType> meterTypes)
         {
             MeterTypes.Clear();
-            foreach (var meterType in MeterType.All)
+            foreach(var meterType in meterTypes)
             {
                 MeterTypes.Add(new MeterTypeViewModel(meterType));
             }
-        }
-
-        public void Update(Meter meter)
-        {
-            Id = meter.Id;
-            SerialCode = meter.SerialCode;
-            Name = meter.Name;
-            Address = meter.Address;
-            SelectedMeterTypeIndex = MeterType.All.FindIndex(x => x.Id.Equals(meter.TypeId));
+            SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x.MeterType?.Id.Equals(Meter?.Id) ?? false);
         }
     }
 }

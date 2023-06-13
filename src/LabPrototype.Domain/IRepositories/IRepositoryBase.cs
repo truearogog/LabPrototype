@@ -17,5 +17,6 @@ namespace LabPrototype.Domain.IRepositories
         T? GetById(int id);
         Task<T?> GetByIdAsync(int id);
         IQueryable<T> GetAll();
+        IEnumerable<TOut>? GetMany<TOut>(int id, Func<T, ICollection<TOut>?> getter);
     }
 }

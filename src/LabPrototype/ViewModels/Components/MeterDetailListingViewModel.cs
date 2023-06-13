@@ -1,5 +1,4 @@
-﻿using LabPrototype.Domain.Models;
-using ReactiveUI;
+﻿using LabPrototype.Domain.Models.Presentation;
 using System.Collections.ObjectModel;
 
 namespace LabPrototype.ViewModels.Components
@@ -28,7 +27,7 @@ namespace LabPrototype.ViewModels.Components
 
         public void UpdateMeter(Meter? meter)
         {
-            if (meter != null)
+            if (meter is not null)
             {
                 foreach (var detailViewModel in Items)
                 {

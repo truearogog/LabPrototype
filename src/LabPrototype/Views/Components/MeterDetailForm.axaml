@@ -26,17 +26,17 @@
 		<StackPanel Grid.Row="0" x:Name="rootStackPanel">
 			<DockPanel>
 				<TextBlock Text="Serial code" />
-				<TextBox Watermark="Serial code" Text="{Binding SerialCode}" />
+				<TextBox Watermark="Serial code" Text="{Binding Meter.SerialCode}" />
 			</DockPanel>
 
 			<DockPanel>
 				<TextBlock Text="Name" />
-				<TextBox Watermark="Meter name" Text="{Binding Name}" />
+				<TextBox Watermark="Meter name" Text="{Binding Meter.Name}" />
 			</DockPanel>
 
 			<DockPanel>
 				<TextBlock Text="Address" />
-				<TextBox Watermark="Address" Text="{Binding Address}" />
+				<TextBox Watermark="Address" Text="{Binding Meter.Address}" />
 			</DockPanel>
 
 			<DockPanel>
@@ -44,7 +44,7 @@
 				<ComboBox Items="{Binding MeterTypes}" SelectedIndex="{Binding SelectedMeterTypeIndex}">
 					<ComboBox.ItemTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Description}" />
+							<TextBlock Text="{Binding MeterType.Name}" ToolTip.Tip="{Binding MeterType.Description}" />
 						</DataTemplate>
 					</ComboBox.ItemTemplate>
 				</ComboBox>
