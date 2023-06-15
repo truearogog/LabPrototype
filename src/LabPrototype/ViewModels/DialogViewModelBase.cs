@@ -1,4 +1,4 @@
-﻿using LabPrototype.Extensions;
+﻿using LabPrototype.Framework.Extensions;
 using LabPrototype.Services.Models;
 using ReactiveUI;
 using System;
@@ -26,5 +26,9 @@ namespace LabPrototype.ViewModels
 
             CloseRequested.Raise(this, args);
         }
+    }
+
+    public abstract class DialogViewModelBase : DialogViewModelBase<DialogResultBase>
+    {
     }
 }

@@ -1,19 +1,23 @@
-﻿using LabPrototype.Domain.Models.Presentation;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryTableViewModel : MeasurementHistoryViewModelBase
     {
-        private readonly IMeasurementService _measurementService;
+        private readonly IMeasurementGroupService _measurementGroupService;
+        private readonly IMeterTypeService _meterTypeService;
 
-        public ObservableCollection<Measurement> Measurements { get; set; } = new();
+        public ObservableCollection<MeasurementGroup> MeasurementGroups { get; set; } = new();
 
         public MeasurementHistoryTableViewModel()
         {
-            _measurementService = GetRequiredService<IMeasurementService>();
+            _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
+            _meterTypeService = GetRequiredService<IMeterTypeService>();
         }
 
         public override void Dispose()
@@ -23,13 +27,17 @@ namespace LabPrototype.ViewModels.Components
 
         public void UpdateMeter(Meter? meter)
         {
-            if (meter != null)
+            if (meter is not null)
             {
-                Task.Run(() => _measurementService.LoadMeter(meter.Id)).Wait();
-                var measurements = _measurementService.LoadedMeasurements[meter.Id];
-                Measurements = new(measurements);
-                UpdateView(meter);
-                this.RaisePropertyChanged(nameof(Measurements));
+                var measurementGroups = _measurementGroupService.GetAll(x => x.MeterId.Equals(meter.Id));
+                if (measurementGroups.Any())
+                {
+                    MeasurementGroups = new(measurementGroups);
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+                    var measurementTypeIds = measurementGroups.First().Measurements?.Select(x => x.MeasurementTypeId) ?? throw new Exception();
+                    UpdateView(measurementTypes, measurementTypeIds);
+                    this.RaisePropertyChanged(nameof(MeasurementGroups));
+                }
             }
         }
     }

@@ -4,26 +4,18 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using LabPrototype.Models.Interfaces;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.IStores;
 using ReactiveUI;
 using System.Collections.Generic;
+using LabPrototype.Domain.IServices;
+using LabPrototype.Framework.Extensions;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryChartViewModel : MeasurementHistoryViewModelBase
     {
-        private readonly IMeasurementGroupStore _measurementGroupStore;
+        private readonly IMeterTypeService _meterTypeService;
+        private readonly IMeasurementGroupService _measurementGroupService;
         private readonly ToggleMeasurementListingViewModel _toggleMeasurementListingViewModel;
-
-        private Meter? _meter = null;
-        public Meter? Meter
-        {
-            get => _meter;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _meter, value);
-            }
-        }
 
         private bool _lockXAxis;
         public bool LockXAxis
@@ -62,9 +54,8 @@ namespace LabPrototype.ViewModels.Components
 
         public MeasurementHistoryChartViewModel(ToggleMeasurementListingViewModel toggleMeasurementListingViewModel)
         {
-            _measurementGroupStore = GetRequiredService<IMeasurementGroupStore>();
-            _measurementGroupStore.ModelsLoaded += _MeasurementGroupsLoaded;
-            Task.Run(_measurementGroupStore.LoadAll);
+            _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
 
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
             _toggleMeasurementListingViewModel.OnChecked += _OnChecked;
@@ -75,51 +66,54 @@ namespace LabPrototype.ViewModels.Components
 
         public override void Dispose()
         {
-            _measurementGroupStore.ModelsLoaded -= _MeasurementGroupsLoaded;
             _toggleMeasurementListingViewModel.OnChecked -= _OnChecked;
             base.Dispose();
         }
 
-        private void _MeasurementGroupsLoaded(IEnumerable<MeasurementGroup> measurementGroups)
+        public void UpdateMeter(Meter? meter)
         {
-            _measurementGroups = measurementGroups;
-            CreateSeries();
+            if (meter is not null)
+            {
+                Task.Run(() =>
+                {
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+                    _measurementGroups = _measurementGroupService.GetAll(x => x.MeterId.Equals(meter.Id));
+                    CreateSeries(measurementTypes);
+                    PlotProvider?.AddCrosshair();
+                });
+            }
         }
 
         public void UpdateNearestMeasurementGroup(int nearestIndex)
         {
-            if (_measurementGroups is not null)
+            if (_measurementGroups is not null && _measurementGroups.Any())
             {
                 var measurementGroup = _measurementGroups.ElementAt(nearestIndex);
                 _toggleMeasurementListingViewModel.UpdateMeasurementGroup(measurementGroup);
             }
         }
 
-        private void CreateSeries()
+        private void CreateSeries(IEnumerable<MeasurementType> measurementTypes)
         {
-            if (PlotProvider is not null && Meter is not null)
+            if (PlotProvider is not null)
             {
                 PlotProvider.ClearPlots();
 
-                var plotIds = Meter.MeasurementAttributes.Select(a => a.Id).ToArray();
-                var xs = measurements.Select(x => x.DateTime.ToOADate()).ToArray();
-                var ys = Meter.MeasurementAttributes.Select(a => measurements.Select(m => (double)a.ValueGetter(m)).ToArray()).ToArray();
-                var colors = Meter.MeasurementAttributes.Select(a => a.ColorScheme?.Primary.ToColor() ?? Color.White).ToArray();
+                if (_measurementGroups is not null && _measurementGroups.Any())
+                {
+                    var xs = _measurementGroups.Select(x => x.Created.ToOADate()).ToArray();
+                    foreach (var measurementType in measurementTypes)
+                    {
+                        var measurements = _measurementGroups?
+                            .Select(x => x.Measurements?
+                                .First(y => y.MeasurementTypeId.Equals(x.Id)))
+                            .OfType<Measurement>() ?? Enumerable.Empty<Measurement>();
 
-                PlotProvider.AddPlots(plotIds, xs, ys, colors);
-            }
-        }
-
-        public void UpdateMeter(Meter? meter)
-        {
-            Meter = meter;
-            if (Meter != null)
-            {
-                Task.Run(async () => {
-                    await _measurementService.LoadMeter(Meter.Id);
-                    CreateSeries();
-                    PlotProvider?.AddCrosshair();
-                }).Wait();
+                        var ys = measurements.Select(x => x.Value).ToArray();
+                        var color = measurementType.ColorScheme?.PrimaryColor?.ToColor() ?? Color.White;
+                        PlotProvider.AddPlot(measurementType.Id, xs, ys, color);
+                    }
+                }
             }
         }
 

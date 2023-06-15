@@ -4,15 +4,15 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using LabPrototype.Models.Interfaces;
 using System.Linq;
+using LabPrototype.Models.Interfaces;
 
 namespace LabPrototype.Models.Implementations
 {
     public class ScottPlotProvider : IPlotProvider
     {
         private AvaPlot _plot;
-        private Dictionary<Guid, SignalPlotXY> _signalPlotsXY = new Dictionary<Guid, SignalPlotXY>();
+        private Dictionary<int, SignalPlotXY> _signalPlotsXY = new Dictionary<int, SignalPlotXY>();
 
         private Crosshair? _crosshair;
 
@@ -40,16 +40,13 @@ namespace LabPrototype.Models.Implementations
             _plot.Plot.XAxis.DateTimeFormat(true);
         }
 
-        public void AddPlots(Guid[] plotIds, double[] xs, double[][] ys, Color[] colors)
+        public void AddPlot(int plotId, double[] xs, double[] ys, Color color)
         {
-            var plotCount = plotIds.Length;
-            for (int i = 0; i < plotCount; ++i)
-            {
-                var plot = _plot.Plot.AddSignalXY(xs, ys[i], colors[i]);
-                plot.MarkerShape = MarkerShape.openCircle;
-                plot.LineWidth = 2;
-                _signalPlotsXY[plotIds[i]] = plot;
-            }
+            var plot = _plot.Plot.AddSignalXY(xs, ys, color);
+            plot.MarkerShape = MarkerShape.openCircle;
+            plot.LineWidth = 2;
+            _signalPlotsXY[plotId] = plot;
+
             _plot.Plot.SetOuterViewLimits(xs.Min(), xs.Max());
             _plot.Plot.AxisAuto();
             _plot.Refresh();
@@ -61,7 +58,7 @@ namespace LabPrototype.Models.Implementations
             _signalPlotsXY.Clear();
         }
 
-        public void SetPlotVisibility(Guid plotId, bool visible)
+        public void SetPlotVisibility(int plotId, bool visible)
         {
             if (_signalPlotsXY.ContainsKey(plotId))
             {

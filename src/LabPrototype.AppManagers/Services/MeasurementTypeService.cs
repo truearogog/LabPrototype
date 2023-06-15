@@ -6,7 +6,7 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Services
 {
-    public class MeasurementTypeService : ServiceBase<MeasurementTypeEntity, MeasurementType>, IMeasurementTypeService
+    public class MeasurementTypeService : ServiceBase<MeasurementTypeEntity, MeasurementType, IMeasurementTypeRepository>, IMeasurementTypeService
     {
         public MeasurementTypeService(IMapper mapper, IMeasurementTypeRepository repository) : base(mapper, repository)
         {

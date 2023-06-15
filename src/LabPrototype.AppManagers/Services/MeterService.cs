@@ -6,7 +6,7 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Services
 {
-    public class MeterService : ServiceBase<MeterEntity, Meter>, IMeterService
+    public class MeterService : ServiceBase<MeterEntity, Meter, IMeterRepository>, IMeterService
     {
         public MeterService(IMapper mapper, IMeterRepository repository) : base(mapper, repository)
         {

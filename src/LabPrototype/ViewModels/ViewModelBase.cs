@@ -1,4 +1,4 @@
-﻿using LabPrototype.DependencyInjection;
+﻿using LabPrototype.Framework.Extensions;
 using ReactiveUI;
 using Splat;
 using System;

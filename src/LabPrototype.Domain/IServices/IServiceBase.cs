@@ -18,5 +18,6 @@ namespace LabPrototype.Domain.IServices
         TModel? GetById(int id);
         Task<TModel?> GetByIdAsync(int id);
         IQueryable<TModel> GetAll();
+        IEnumerable<TModel> GetAll(Func<TModel, bool> predicate);
     }
 }

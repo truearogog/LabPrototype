@@ -1,6 +1,7 @@
 ﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -13,11 +14,11 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _isVisible, value);
         }
 
-        public event Action<Meter>? UpdateViewCalled;
+        public event Action<IEnumerable<MeasurementType>, IEnumerable<int>>? UpdateViewCalled;
 
-        protected void UpdateView(Meter meter)
+        protected void UpdateView(IEnumerable<MeasurementType> measurementTypes, IEnumerable<int> typeIndexes)
         {
-            UpdateViewCalled?.Invoke(meter);
+            UpdateViewCalled?.Invoke(measurementTypes, typeIndexes);
         }
     }
 }

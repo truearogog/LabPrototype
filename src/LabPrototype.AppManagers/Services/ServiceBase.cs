@@ -72,11 +72,6 @@ namespace LabPrototype.AppManagers.Services
             Repository.DeleteRange(modelIds);
         }
 
-        public IQueryable<TModel> GetAll()
-        {
-            return Repository.GetAll().ProjectTo<TModel>(MapperConfig);
-        }
-
         public TModel? GetById(int id)
         {
             var entity = Repository.GetById(id);
@@ -101,6 +96,21 @@ namespace LabPrototype.AppManagers.Services
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
             Repository.UpdateRange(entities);
             return Mapper.Map<IEnumerable<TModel>>(entities);
+        }
+
+        public IQueryable<TModel> GetAll()
+        {
+            return Repository.GetAll().ProjectTo<TModel>(MapperConfig);
+        }
+
+        public IEnumerable<TModel> GetAll(Func<TModel, bool> predicate)
+        {
+            return 
+                Repository
+                .GetAll()
+                .ProjectTo<TModel>(MapperConfig)
+                .Where(predicate)
+                .ToList();
         }
     }
 }

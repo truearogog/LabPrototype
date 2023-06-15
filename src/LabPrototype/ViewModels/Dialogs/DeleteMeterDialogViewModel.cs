@@ -1,35 +1,40 @@
-﻿using LabPrototype.Commands;
-using LabPrototype.Domain.Models;
-using LabPrototype.Services.Interfaces;
+﻿using LabPrototype.Domain.IStores;
+using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.ViewModels.Models;
 using ReactiveUI;
+using System;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
     public class DeleteMeterDialogViewModel : ParametrizedDialogViewModelBase<MeterNavigationParameter>
     {
-        private Meter _meter;
+        private Meter _meter = new();
         public Meter Meter
         {
             get => _meter;
             set => this.RaiseAndSetIfChanged(ref _meter, value);
         }
 
-        public ICommand DeleteCommand { get; }
+        private readonly sbyte _value;
+
         public ICommand CancelCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public DeleteMeterDialogViewModel()
         {
-            IMeterService meterService = GetRequiredService<IMeterService>();
+            var meterStore = GetRequiredService<IMeterStore>();
 
-            DeleteCommand = new DeleteMeterCommand(this, meterService);
             CancelCommand = CloseCommand;
+            DeleteCommand = ReactiveCommand.Create(() => { 
+                meterStore.Delete(_meter.Id);
+                Close();
+            });
         }
 
         public override void Activate(MeterNavigationParameter parameter)
         {
-            Meter = parameter.Meter;
+            Meter = parameter.Meter ?? throw new Exception();
         }
     }
 }

@@ -7,14 +7,12 @@ namespace LabPrototype.ViewModels.Components
     public class FlowMeasurementListingViewModel : ViewModelBase
     {
         private readonly IMeterTypeService _meterTypeService;
-        private readonly IColorSchemeService _colorSchemeService;
 
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
         public FlowMeasurementListingViewModel()
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _colorSchemeService = GetRequiredService<IColorSchemeService>();
         }
 
         private void CreateMeasurements(Meter meter)
@@ -24,7 +22,7 @@ namespace LabPrototype.ViewModels.Components
 
             foreach (var measurementType in measurementTypes)
             {
-                Items.Add(new MeasurementListingItemViewModel(measurementAttribute));
+                Items.Add(new MeasurementListingItemViewModel(measurementType));
             }
         }
 

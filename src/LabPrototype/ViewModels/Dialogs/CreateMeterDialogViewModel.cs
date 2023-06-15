@@ -1,18 +1,17 @@
-﻿using LabPrototype.Domain.IStores;
-using LabPrototype.Services.Models;
-using LabPrototype.ViewModels.Components;
+﻿using LabPrototype.ViewModels.Components;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
-    public class CreateMeterDialogViewModel : DialogViewModelBase<DialogResultBase>
+    public class CreateMeterDialogViewModel : DialogViewModelBase
     {
         public MeterDetailFormViewModel MeterDetailFormViewModel { get; }
 
         public CreateMeterDialogViewModel()
         {
-            IMeterStore meterService = GetRequiredService<IMeterStore>();
-
-            MeterDetailFormViewModel = new MeterDetailFormViewModel(CloseCommand, meterService.Create);
+            MeterDetailFormViewModel = new MeterDetailFormViewModel(CloseCommand, (meterStore, meter) => {
+                meterStore.Create(meter);
+                Close();
+            });
         }
 
         public override void Dispose()

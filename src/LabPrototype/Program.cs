@@ -21,6 +21,10 @@ using LabPrototype.Domain.IServices;
 using LabPrototype.AppManagers.Services;
 using LabPrototype.AppManagers.Stores;
 using LabPrototype.Domain.IStores;
+using LabPrototype.Services.Interfaces;
+using LabPrototype.Services.Implementations;
+using LabPrototype.AppManagers.Profiles;
+using System.Collections.Generic;
 
 namespace LabPrototype
 {
@@ -43,8 +47,8 @@ namespace LabPrototype
                 // set culture
                 CultureInfo.CurrentCulture = new CultureInfo("en-GB", false);
 
-                SubscribeToDomainUnhandledEvents();
                 RegisterDependencies();
+                SubscribeToDomainUnhandledEvents();
 
                 // ensure that database is created
                 var contextFactory = Locator.Current.GetRequiredService<LabDbContextFactory>();
@@ -79,8 +83,9 @@ namespace LabPrototype
             RegisterDataAccess(Locator.CurrentMutable, Locator.Current);
             RegisterAutoMapper(Locator.CurrentMutable);
             RegisterRepositories(Locator.CurrentMutable, Locator.Current);
-            RegisterServices(Locator.CurrentMutable, Locator.Current);
+            RegisterDataServices(Locator.CurrentMutable, Locator.Current);
             RegisterStores(Locator.CurrentMutable, Locator.Current);
+            RegisterServices(Locator.CurrentMutable, Locator.Current);
         }
 
         private static void RegisterConfigurations(IMutableDependencyResolver services)
@@ -90,10 +95,10 @@ namespace LabPrototype
                 .Build();
 
             var loggingConfig = GetConfiguration<LoggingConfiguration>(configuration, "Logging");
-            RegisterConfiguration(services, loggingConfig);
+            services.RegisterConstant(loggingConfig);
 
             var dataAccessConfig = GetConfiguration<DataAccessConfiguration>(configuration, "DataAccess");
-            RegisterConfiguration(services, dataAccessConfig);
+            services.RegisterConstant(dataAccessConfig);
         }
 
         private static T? GetConfiguration<T>(IConfigurationRoot configuration, string sectionName) where T : ConfigurationBase
@@ -102,18 +107,12 @@ namespace LabPrototype
             return config;
         }
 
-        private static void RegisterConfiguration<T>(IMutableDependencyResolver services, T? configuration) where T : ConfigurationBase
-        {
-            services.RegisterConstant(configuration);
-        }
-
         private static void RegisterDataAccess(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            var databaseConfiguration = resolver.GetRequiredService<DataAccessConfiguration>();
-
-            services.RegisterLazySingleton(() =>
-                new DbContextOptionsBuilder().UseSqlite(databaseConfiguration.ConnectionString).Options
-            );
+            services.RegisterLazySingleton(() => {
+                var databaseConfiguration = resolver.GetRequiredService<DataAccessConfiguration>();
+                return new DbContextOptionsBuilder().UseSqlite(databaseConfiguration.ConnectionString).Options;
+            });
 
             services.RegisterLazySingleton(() => new LabDbContextFactory(
                 resolver.GetRequiredService<DbContextOptions>()
@@ -142,7 +141,14 @@ namespace LabPrototype
         {
             services.RegisterLazySingleton<IMapper>(() =>
             {
-                var profileTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetType().Name.EndsWith("_Profile"));
+                var profileTypes = new List<Type> {
+                    typeof(ColorScheme_Profile),
+                    typeof(Measurement_Profile),
+                    typeof(MeasurementGroup_Profile),
+                    typeof(MeasurementType_Profile),
+                    typeof(Meter_Profile),
+                    typeof(MeterType_Profile),
+                };
                 var config = new MapperConfiguration(cfg => {
                     foreach (var profileType in profileTypes)
                     {
@@ -155,35 +161,35 @@ namespace LabPrototype
 
         private static void RegisterRepositories(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IColorSchemeRepository>(() => 
+            services.Register<IColorSchemeRepository>(() => 
                 new ColorSchemeRepository(ResolveDbContext(resolver)));
-            services.RegisterLazySingleton<IMeasurementGroupRepository>(() => 
+            services.Register<IMeasurementGroupRepository>(() => 
                 new MeasurementGroupRepository(ResolveDbContext(resolver)));
-            services.RegisterLazySingleton<IMeasurementRepository>(() => 
+            services.Register<IMeasurementRepository>(() => 
                 new MeasurementRepository(ResolveDbContext(resolver)));
-            services.RegisterLazySingleton<IMeasurementTypeRepository>(() => 
+            services.Register<IMeasurementTypeRepository>(() => 
                 new MeasurementTypeRepository(ResolveDbContext(resolver)));
-            services.RegisterLazySingleton<IMeterRepository>(() => 
+            services.Register<IMeterRepository>(() => 
                 new MeterRepository(ResolveDbContext(resolver)));
-            services.RegisterLazySingleton<IMeterTypeRepository>(() => 
+            services.Register<IMeterTypeRepository>(() => 
                 new MeterTypeRepository(ResolveDbContext(resolver)));
         }
 
         private static LabDbContext ResolveDbContext(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<LabDbContextFactory>().Create();
 
-        private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        private static void RegisterDataServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IColorSchemeService>(() => 
+            services.Register<IColorSchemeService>(() => 
                 new ColorSchemeService(ResolveMapper(resolver), resolver.GetRequiredService<IColorSchemeRepository>()));
-            services.RegisterLazySingleton<IMeasurementGroupService>(() => 
+            services.Register<IMeasurementGroupService>(() => 
                 new MeasurementGroupService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupRepository>()));
-            services.RegisterLazySingleton<IMeasurementService>(() => 
+            services.Register<IMeasurementService>(() => 
                 new MeasurementService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementRepository>()));
-            services.RegisterLazySingleton<IMeasurementTypeService>(() => 
+            services.Register<IMeasurementTypeService>(() => 
                 new MeasurementTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementTypeRepository>()));
-            services.RegisterLazySingleton<IMeterService>(() => 
+            services.Register<IMeterService>(() => 
                 new MeterService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterRepository>()));
-            services.RegisterLazySingleton<IMeterTypeService>(() => 
+            services.Register<IMeterTypeService>(() => 
                 new MeterTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterTypeRepository>()));
         }
 
@@ -203,6 +209,11 @@ namespace LabPrototype
                 new MeterStore(resolver.GetRequiredService<IMeterService>()));
             services.RegisterLazySingleton<IMeterTypeStore>(() =>
                 new MeterTypeStore(resolver.GetRequiredService<IMeterTypeService>()));
+        }
+
+        private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        {
+            services.RegisterLazySingleton<IWindowService>(() => new WindowService());
         }
 
         private static AppBuilder BuildAvaloniaApp() =>
