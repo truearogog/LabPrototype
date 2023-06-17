@@ -7,39 +7,25 @@ namespace LabPrototype.AppManagers.Stores
     public abstract class StoreBase<T> : IStoreBase<T>
         where T : PresentationModelBase
     {
-        public event Action<IEnumerable<T>>? ModelsLoaded;
         public event Action<T>? ModelCreated;
         public event Action<T>? ModelUpdated;
         public event Action<int>? ModelDeleted;
 
-        private readonly IServiceBase<T> _service;
-
-        protected StoreBase(IServiceBase<T> service)
+        public void Create(IServiceBase<T> service, T model)
         {
-            _service = service;
-        }
-
-        public void LoadAll()
-        {
-            var models = _service.GetAll().ToList();
-            ModelsLoaded?.Invoke(models);
-        }
-
-        public void Create(T model)
-        {
-            model = _service.Create(model);
+            model = service.Create(model);
             ModelCreated?.Invoke(model);
         }
 
-        public void Update(T model)
+        public void Update(IServiceBase<T> service, T model)
         {
-            model = _service.Update(model);
+            model = service.Update(model);
             ModelUpdated?.Invoke(model);
         }
 
-        public void Delete(int modelId)
+        public void Delete(IServiceBase<T> service, int modelId)
         {
-            _service.Delete(modelId);
+            service.Delete(modelId);
             ModelDeleted?.Invoke(modelId);
         }
     }

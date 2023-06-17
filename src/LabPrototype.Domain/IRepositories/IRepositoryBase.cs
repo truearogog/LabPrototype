@@ -8,8 +8,10 @@ namespace LabPrototype.Domain.IRepositories
         Task<T> CreateAsync(T entity);
         IEnumerable<T> CreateRange(IEnumerable<T> entities);
         Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities);
-        T Update(T entity);
+        T? Update(T entity);
+        Task<T?> UpdateAsync(T entity);
         IEnumerable<T> UpdateRange(IEnumerable<T> entities);
+        Task<IEnumerable<T>> UpdateRangeAsync(IEnumerable<T> entities);
         void Delete(T entity);
         void Delete(int entityId);
         void DeleteRange(IEnumerable<T> entities);

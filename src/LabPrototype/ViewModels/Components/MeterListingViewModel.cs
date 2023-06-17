@@ -1,4 +1,6 @@
-﻿using LabPrototype.Domain.IStores;
+﻿using LabPrototype.AppManagers.Services;
+using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.Interfaces;
 using LabPrototype.ViewModels.Dialogs;
@@ -17,6 +19,7 @@ namespace LabPrototype.ViewModels.Components
     {
         private readonly WindowViewModelBase _parentWindow;
         private readonly IWindowService _windowService;
+        private readonly IMeterService _meterService;
         private readonly IMeterStore _meterStore;
 
         public ICommand OpenCreateMeterCommand { get; }
@@ -29,19 +32,19 @@ namespace LabPrototype.ViewModels.Components
 
             _windowService = GetRequiredService<IWindowService>();
 
+            _meterService = GetRequiredService<IMeterService>();
+            AdMeters(_meterService.GetAll());
+
             _meterStore = GetRequiredService<IMeterStore>();
-            _meterStore.ModelsLoaded += _MetersLoaded;
             _meterStore.ModelCreated += _MeterCreated;
             _meterStore.ModelUpdated += _MeterUpdated;
             _meterStore.ModelDeleted += _MeterDeleted;
-            Task.Run(_meterStore.LoadAll);
 
             OpenCreateMeterCommand = ReactiveCommand.CreateFromTask(ShowCreateMeterDialogAsync);
         }
 
         public override void Dispose()
         {
-            _meterStore.ModelsLoaded -= _MetersLoaded;
             _meterStore.ModelCreated -= _MeterCreated;
             _meterStore.ModelUpdated -= _MeterUpdated;
             _meterStore.ModelDeleted -= _MeterDeleted;
@@ -51,7 +54,7 @@ namespace LabPrototype.ViewModels.Components
 
         private async Task ShowCreateMeterDialogAsync() => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
 
-        private void _MetersLoaded(IEnumerable<Meter> meters)
+        private void AdMeters(IEnumerable<Meter> meters)
         {
             Items.Clear();
 

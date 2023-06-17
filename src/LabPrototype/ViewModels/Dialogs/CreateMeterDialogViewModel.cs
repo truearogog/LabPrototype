@@ -1,4 +1,5 @@
-﻿using LabPrototype.ViewModels.Components;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.ViewModels.Components;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
@@ -8,8 +9,10 @@ namespace LabPrototype.ViewModels.Dialogs
 
         public CreateMeterDialogViewModel()
         {
+            var meterService = GetRequiredService<IMeterService>();
+
             MeterDetailFormViewModel = new MeterDetailFormViewModel(CloseCommand, (meterStore, meter) => {
-                meterStore.Create(meter);
+                meterStore.Create(meterService, meter);
                 Close();
             });
         }

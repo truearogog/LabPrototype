@@ -1,4 +1,5 @@
-﻿using LabPrototype.ViewModels.Components;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Models;
 using System;
 
@@ -10,8 +11,10 @@ namespace LabPrototype.ViewModels.Dialogs
 
         public UpdateMeterDialogViewModel()
         {
+            var meterService = GetRequiredService<IMeterService>();
+
             MeterDetailFormViewModel = new MeterDetailFormViewModel(CloseCommand, (meterStore, meter) => {
-                meterStore.Update(meter);
+                meterStore.Update(meterService, meter);
                 Close();
             });
         }

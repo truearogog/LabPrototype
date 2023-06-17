@@ -1,5 +1,6 @@
 ﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
+using System;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Components
@@ -11,8 +12,11 @@ namespace LabPrototype.ViewModels.Components
         public bool IsChecked { get; set; } = true;
         public ICommand ToggledCommand { get; }
 
-        public ToggleMeasurementListingItemViewModel(ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, MeasurementType measurementType) 
-            : base(measurementType)
+        public ToggleMeasurementListingItemViewModel(
+            ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, 
+            MeasurementType measurementType, 
+            Func<MeasurementGroup, string>? valueGetter = null)
+            : base(measurementType, valueGetter)
         {
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
 

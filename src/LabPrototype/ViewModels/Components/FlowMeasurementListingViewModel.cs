@@ -19,7 +19,6 @@ namespace LabPrototype.ViewModels.Components
         {
             Items.Clear();
             var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
-
             foreach (var measurementType in measurementTypes)
             {
                 Items.Add(new MeasurementListingItemViewModel(measurementType));

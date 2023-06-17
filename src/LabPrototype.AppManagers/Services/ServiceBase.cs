@@ -87,7 +87,7 @@ namespace LabPrototype.AppManagers.Services
         public TModel Update(TModel model)
         {
             var entity = Mapper.Map<TEntity>(model);
-            entity = Repository.Update(entity);
+            Repository.Update(entity);
             return Mapper.Map<TModel>(entity);
         }
 

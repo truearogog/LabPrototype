@@ -197,18 +197,12 @@ namespace LabPrototype
 
         private static void RegisterStores(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IColorSchemeStore>(() =>
-                new ColorSchemeStore(resolver.GetRequiredService<IColorSchemeService>()));
-            services.RegisterLazySingleton<IMeasurementGroupStore>(() =>
-                new MeasurementGroupStore(resolver.GetRequiredService<IMeasurementGroupService>()));
-            services.RegisterLazySingleton<IMeasurementStore>(() =>
-                new MeasurementStore(resolver.GetRequiredService<IMeasurementService>()));
-            services.RegisterLazySingleton<IMeasurementTypeStore>(() =>
-                new MeasurementTypeStore(resolver.GetRequiredService<IMeasurementTypeService>()));
-            services.RegisterLazySingleton<IMeterStore>(() =>
-                new MeterStore(resolver.GetRequiredService<IMeterService>()));
-            services.RegisterLazySingleton<IMeterTypeStore>(() =>
-                new MeterTypeStore(resolver.GetRequiredService<IMeterTypeService>()));
+            services.RegisterLazySingleton<IColorSchemeStore>(() => new ColorSchemeStore());
+            services.RegisterLazySingleton<IMeasurementGroupStore>(() => new MeasurementGroupStore());
+            services.RegisterLazySingleton<IMeasurementStore>(() => new MeasurementStore());
+            services.RegisterLazySingleton<IMeasurementTypeStore>(() => new MeasurementTypeStore());
+            services.RegisterLazySingleton<IMeterStore>(() => new MeterStore());
+            services.RegisterLazySingleton<IMeterTypeStore>(() => new MeterTypeStore());
         }
 
         private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)

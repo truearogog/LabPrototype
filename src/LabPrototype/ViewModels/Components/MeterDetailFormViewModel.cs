@@ -16,7 +16,11 @@ namespace LabPrototype.ViewModels.Components
         public Meter Meter
         {
             get => _meter;
-            set => this.RaiseAndSetIfChanged(ref _meter, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _meter, value);
+                SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x?.Id.Equals(Meter?.MeterTypeId) ?? false);
+            }
         }
 
         private int _selectedMeterTypeIndex;
@@ -26,7 +30,7 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _selectedMeterTypeIndex, value);
         }
 
-        public ObservableCollection<MeterTypeViewModel> MeterTypes { get; set; } = new();
+        public ObservableCollection<MeterType> MeterTypes { get; set; } = new();
 
         private readonly IMeterStore _meterStore;
         private readonly IMeterTypeService _meterTypeService;
@@ -44,7 +48,7 @@ namespace LabPrototype.ViewModels.Components
 
             CancelCommand = cancelCommand;
             SubmitCommand = ReactiveCommand.Create(() => {
-                Meter.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].MeterType.Id;
+                Meter.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
                 submitAction(_meterStore, Meter);
             });
         }
@@ -57,11 +61,10 @@ namespace LabPrototype.ViewModels.Components
         private void CreateMeterTypes(IEnumerable<MeterType> meterTypes)
         {
             MeterTypes.Clear();
-            foreach(var meterType in meterTypes)
+            foreach (var meterType in meterTypes)
             {
-                MeterTypes.Add(new MeterTypeViewModel(meterType));
+                MeterTypes.Add(meterType);
             }
-            SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x.MeterType?.Id.Equals(Meter?.Id) ?? false);
         }
     }
 }

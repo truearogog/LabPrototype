@@ -18,10 +18,10 @@
 			<Setter Property="Background" Value="#444444" />
 		</Style>
 		<Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.Primary}" />
+			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.PrimaryColor}" />
 		</Style>
 		<Style Selector="ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.Secondary}" />
+			<Setter Property="Background" Value="{Binding MeasurementType.ColorScheme.SecondaryColor}" />
 		</Style>
 	</UserControl.Styles>
 	<ToggleButton IsChecked="{Binding IsChecked}" Command="{Binding ToggledCommand}">

@@ -13,10 +13,12 @@ namespace LabPrototype.ViewModels.Components
         public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
 
         private readonly IMeterTypeService _meterTypeService;
+        private readonly IColorSchemeService _colorSchemeService;
 
         public ToggleMeasurementListingViewModel()
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _colorSchemeService = GetRequiredService<IColorSchemeService>();
         }
 
         public override void Dispose()
@@ -32,9 +34,15 @@ namespace LabPrototype.ViewModels.Components
         {
             if (meter is not null)
             {
-                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id) ?? Enumerable.Empty<MeasurementType>();
+                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId) ?? Enumerable.Empty<MeasurementType>();
 
                 Items.Clear();
+
+                var dateTimeColorScheme = _colorSchemeService.GetById(9);
+                Items.Add(new ToggleMeasurementListingItemViewModel(
+                    this, 
+                    new MeasurementType() { Name = "Date/time", ColorScheme = dateTimeColorScheme }, 
+                    measurementGroup => measurementGroup.Created.ToString()));
                 foreach (var measurementType in measurementTypes)
                 {
                     Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementType));

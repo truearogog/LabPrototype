@@ -1,5 +1,6 @@
 ﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
+using System;
 using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
@@ -22,14 +23,17 @@ namespace LabPrototype.ViewModels.Components
 
         public bool HasValue => !string.IsNullOrEmpty(Value);
 
-        public MeasurementListingItemViewModel(MeasurementType measurementType)
+        private Func<MeasurementGroup, string> _valueGetter;
+
+        public MeasurementListingItemViewModel(MeasurementType measurementType, Func<MeasurementGroup, string>? valueGetter = null)
         {
             _measurementType = measurementType;
+            _valueGetter = valueGetter ?? (measurementGroup => measurementGroup.Measurements?.First(x => x.MeasurementTypeId.Equals(_measurementType.Id)).Value.ToString() ?? string.Empty);
         }
 
         public void Update(MeasurementGroup measurementGroup)
         {
-            Value = measurementGroup.Measurements?.First(x => x.MeasurementTypeId.Equals(_measurementType.Id)).Value.ToString() ?? string.Empty;
+            Value = _valueGetter(measurementGroup);
             this.RaisePropertyChanged(nameof(HasValue));
         }
     }

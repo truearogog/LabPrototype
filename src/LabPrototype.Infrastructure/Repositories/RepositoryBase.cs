@@ -17,6 +17,8 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 
         public T Create(T entity)
         {
+            entity.Created = DateTime.Now;
+            entity.Updated = DateTime.Now;
             DbSet.Add(entity);
             DbContext.SaveChanges();
             return entity;
@@ -39,17 +41,65 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             await DbContext.SaveChangesAsync();
             return entities;
         }
-        public T Update(T entity)
+        public T? Update(T entity)
         {
-            DbSet.Update(entity);
+            var entry = DbSet.Find(entity.Id);
+            if (entry == null)
+            {
+                return default;
+            }
+            entity.Updated = DateTime.Now;
+            DbContext.Entry(entry).CurrentValues.SetValues(entity);
             DbContext.SaveChanges();
+            return entity;
+        }
+        public async Task<T?> UpdateAsync(T entity)
+        {
+            var entry = await DbSet.FindAsync(entity.Id);
+            if (entry == null)
+            {
+                return default;
+            }
+            entity.Updated = DateTime.Now;
+            DbContext.Entry(entry).CurrentValues.SetValues(entity);
+            await DbContext.SaveChangesAsync();
             return entity;
         }
         public IEnumerable<T> UpdateRange(IEnumerable<T> entities)
         {
-            DbSet.UpdateRange(entities);
+            var updatedEntities = new List<T>();
+            foreach (var entity in entities)
+            {
+                var entry = DbSet.Find(entity.Id);
+                if (entry == null)
+                {
+                    continue;
+                }
+                entity.Updated = DateTime.Now;
+                DbContext.Entry(entry).CurrentValues.SetValues(entity);
+
+                updatedEntities.Add(entity);
+            }
             DbContext.SaveChanges();
-            return entities;
+            return updatedEntities;
+        }
+        public async Task<IEnumerable<T>> UpdateRangeAsync(IEnumerable<T> entities)
+        {
+            var updatedEntities = new List<T>();
+            foreach (var entity in entities)
+            {
+                var entry = await DbSet.FindAsync(entity.Id);
+                if (entry == null)
+                {
+                    continue;
+                }
+                entity.Updated = DateTime.Now;
+                DbContext.Entry(entry).CurrentValues.SetValues(entity);
+
+                updatedEntities.Add(entity);
+            }
+            await DbContext.SaveChangesAsync();
+            return updatedEntities;
         }
         public void Delete(T entity)
         {

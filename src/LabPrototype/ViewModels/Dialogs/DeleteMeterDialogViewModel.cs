@@ -1,4 +1,5 @@
-﻿using LabPrototype.Domain.IStores;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.ViewModels.Models;
 using ReactiveUI;
@@ -24,10 +25,11 @@ namespace LabPrototype.ViewModels.Dialogs
         public DeleteMeterDialogViewModel()
         {
             var meterStore = GetRequiredService<IMeterStore>();
+            var meterService = GetRequiredService<IMeterService>();
 
             CancelCommand = CloseCommand;
             DeleteCommand = ReactiveCommand.Create(() => { 
-                meterStore.Delete(_meter.Id);
+                meterStore.Delete(meterService, _meter.Id);
                 Close();
             });
         }
