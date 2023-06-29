@@ -1,4 +1,4 @@
-﻿using LabPrototype.Services.Models;
+﻿using LabPrototype.Services.WindowService;
 using LabPrototype.ViewModels.Models;
 
 namespace LabPrototype.ViewModels

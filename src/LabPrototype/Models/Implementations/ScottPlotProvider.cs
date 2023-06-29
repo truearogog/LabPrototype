@@ -11,8 +11,8 @@ namespace LabPrototype.Models.Implementations
 {
     public class ScottPlotProvider : IPlotProvider
     {
-        private AvaPlot _plot;
-        private Dictionary<int, SignalPlotXY> _signalPlotsXY = new Dictionary<int, SignalPlotXY>();
+        private readonly AvaPlot _plot;
+        private Dictionary<int, SignalPlotXY> _signalPlotsXY = new();
 
         private Crosshair? _crosshair;
 
@@ -36,6 +36,8 @@ namespace LabPrototype.Models.Implementations
 
             _plot.Plot.Style(Style.Gray2);
             _plot.Plot.Style(Color.Transparent, Color.Transparent);
+
+
 
             _plot.Plot.XAxis.DateTimeFormat(true);
         }
@@ -80,7 +82,6 @@ namespace LabPrototype.Models.Implementations
         public void AddCrosshair()
         {
             _crosshair = _plot.Plot.AddCrosshair(0, 0);
-            _crosshair.HorizontalLine.IsVisible = false;
             _crosshair.VerticalLine.PositionFormatter = x => DateTime.FromOADate(x).ToString();
         }
 

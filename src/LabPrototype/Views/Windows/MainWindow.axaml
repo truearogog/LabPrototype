@@ -24,7 +24,7 @@
 			</ExperimentalAcrylicBorder.Material>
 
 			<StackPanel Orientation="Horizontal" Margin="10" Spacing="10">
-				<Button Classes="navButton" Command="{Binding DeselectMeterCommand}">
+				<Button Classes="navButton" Command="{Binding SelectMeterListingCommand}">
 					<StackPanel>
 						<material:MaterialIcon Kind="Menu" Width="20" Height="20" />
 						<TextBlock VerticalAlignment="Center" Text="Meters" />
@@ -36,7 +36,7 @@
 						<TextBlock VerticalAlignment="Center" Text="Reports" />
 					</StackPanel>
 				</Button>
-				<Button Classes="navButton">
+				<Button Classes="navButton" Command="{Binding SelectModelSettingsCommand}">
 					<StackPanel>
 						<material:MaterialIcon Kind="Settings" Width="20" Height="20" />
 						<TextBlock VerticalAlignment="Center" Text="Settings" />
@@ -51,6 +51,15 @@
 			</StackPanel>
 		</ExperimentalAcrylicBorder>
 
-		<components:MeterListing Grid.Row="1" DataContext="{Binding MeterListingViewModel}" />
+		<ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+			<ContentControl.DataTemplates>
+				<DataTemplate DataType="{x:Type component-vms:MeterListingViewModel}">
+					<components:MeterListing />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type component-vms:ModelSettingsViewModel}">
+					<components:ModelSettings  />
+				</DataTemplate>
+			</ContentControl.DataTemplates>
+		</ContentControl>
 	</Grid>
 </Window>

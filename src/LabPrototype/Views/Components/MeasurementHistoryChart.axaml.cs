@@ -8,7 +8,9 @@ namespace LabPrototype.Views.Components
     public partial class MeasurementHistoryChart : UserControl
     {
         private MeasurementHistoryChartViewModel? _vm;
-        private IPlotProvider _plotProvider;
+        private readonly IPlotProvider _plotProvider;
+
+        private bool _isPanning = false;
 
         public MeasurementHistoryChart()
         {
@@ -19,6 +21,8 @@ namespace LabPrototype.Views.Components
             ChartControl.PointerMoved += _PointerMoved;
             ChartControl.PointerEnter += _PointerEnter;
             ChartControl.PointerLeave += _PointerLeave;
+            ChartControl.PointerPressed += _PointerPressed;
+            ChartControl.PointerReleased += _PointerReleased;
 
             DataContextChanged += (s, e) =>
             {
@@ -34,7 +38,19 @@ namespace LabPrototype.Views.Components
                 ChartControl.PointerMoved -= _PointerMoved;
                 ChartControl.PointerEnter -= _PointerEnter;
                 ChartControl.PointerLeave -= _PointerLeave;
+                ChartControl.PointerPressed -= _PointerPressed;
+                ChartControl.PointerReleased -= _PointerReleased;
             };
+        }
+
+        private void _PointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+        {
+
+        }
+
+        private void _PointerReleased(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
+        {
+
         }
 
         private void _PointerMoved(object? sender, Avalonia.Input.PointerEventArgs e)

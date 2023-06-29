@@ -54,8 +54,11 @@
     <Compile Update="Views\Components\MeasurementHistoryTable.axaml.cs">
       <DependentUpon>MeasurementHistoryTable.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Components\MeterDetailForm.axaml.cs">
-      <DependentUpon>MeterDetailForm.axaml</DependentUpon>
+    <Compile Update="Views\Components\ModelSettings.axaml.cs">
+      <DependentUpon>ModelSettings.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Components\SettingsForms\MeterSettingsForm.axaml.cs">
+      <DependentUpon>MeterSettingsForm.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Components\FlowMeasurementListingItem.axaml.cs">
       <DependentUpon>FlowMeasurementListingItem.axaml</DependentUpon>
@@ -87,9 +90,5 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\IServices\" />
   </ItemGroup>
 </Project>

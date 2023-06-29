@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="LabPrototype.Views.Components.MeterDetailForm">
+             x:Class="LabPrototype.Views.Components.SettingsForms.MeterSettingsForm">
 	<UserControl.Styles>
 		<Style Selector="StackPanel#rootStackPanel">
 			<Setter Property="Spacing" Value="20" />
@@ -26,17 +26,17 @@
 		<StackPanel Grid.Row="0" x:Name="rootStackPanel">
 			<DockPanel>
 				<TextBlock Text="Serial code" />
-				<TextBox Watermark="Serial code" Text="{Binding Meter.SerialCode}" />
+				<TextBox Watermark="Serial code" Text="{Binding Model.SerialCode}" />
 			</DockPanel>
 
 			<DockPanel>
 				<TextBlock Text="Name" />
-				<TextBox Watermark="Meter name" Text="{Binding Meter.Name}" />
+				<TextBox Watermark="Meter name" Text="{Binding Model.Name}" />
 			</DockPanel>
 
 			<DockPanel>
 				<TextBlock Text="Address" />
-				<TextBox Watermark="Address" Text="{Binding Meter.Address}" />
+				<TextBox Watermark="Address" Text="{Binding Model.Address}" />
 			</DockPanel>
 
 			<DockPanel>

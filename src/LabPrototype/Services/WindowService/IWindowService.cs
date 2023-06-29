@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using LabPrototype.Services.Models;
 using LabPrototype.ViewModels;
 using LabPrototype.ViewModels.Models;
 using LabPrototype.Views;
@@ -7,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using WindowBase = LabPrototype.Views.WindowBase;
 
-namespace LabPrototype.Services.Interfaces
+namespace LabPrototype.Services.WindowService
 {
     public interface IWindowService
     {

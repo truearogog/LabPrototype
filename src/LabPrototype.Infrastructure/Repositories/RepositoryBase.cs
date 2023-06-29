@@ -17,8 +17,6 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 
         public T Create(T entity)
         {
-            entity.Created = DateTime.Now;
-            entity.Updated = DateTime.Now;
             DbSet.Add(entity);
             DbContext.SaveChanges();
             return entity;
@@ -31,13 +29,21 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
         }
         public IEnumerable<T> CreateRange(IEnumerable<T> entities)
         {
-            DbSet.AddRange(entities);
+            foreach (var entity in entities)
+            {
+                DbSet.Add(entity);
+            }
             DbContext.SaveChanges();
             return entities;
         }
         public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
         {
-            await DbSet.AddRangeAsync(entities);
+            foreach (var entity in entities)
+            {
+                entity.Created = DateTime.Now;
+                entity.Updated = DateTime.Now;
+                await DbSet.AddAsync(entity);
+            }
             await DbContext.SaveChangesAsync();
             return entities;
         }

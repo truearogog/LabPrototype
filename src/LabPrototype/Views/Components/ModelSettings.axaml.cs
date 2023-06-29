@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace LabPrototype.Views.Components
 {
-    public partial class MeterDetailForm : UserControl
+    public partial class ModelSettings : UserControl
     {
-        public MeterDetailForm()
+        public ModelSettings()
         {
             InitializeComponent();
         }

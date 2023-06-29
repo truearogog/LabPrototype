@@ -1,17 +1,17 @@
 ﻿using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Services.Interfaces;
+using LabPrototype.Services.WindowService;
 using LabPrototype.ViewModels.Components;
-using LabPrototype.ViewModels.Dialogs;
+using LabPrototype.ViewModels.Dialogs.MeterSettings;
 using LabPrototype.ViewModels.Models;
-using LabPrototype.Views.Dialogs;
+using LabPrototype.Views.Dialogs.MeterSettings;
 using ReactiveUI;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Main
 {
-    public class MeterWindowViewModel : ParametrizedWindowViewModelBase<MeterNavigationParameter>
+    public class MeterWindowViewModel : ParametrizedWindowViewModelBase<ModelNavigationParameter<Meter>>
     {
         private readonly IWindowService _windowService;
         private readonly IMeterStore _meterStore;
@@ -56,9 +56,9 @@ namespace LabPrototype.ViewModels.Main
             OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(OpenDeleteMeterDialogAsync);
         }
 
-        public override void Activate(MeterNavigationParameter parameter)
+        public override void Activate(ModelNavigationParameter<Meter> parameter)
         {
-            Meter = parameter.Meter;
+            Meter = parameter.Model;
             MeterDetailListingViewModel.UpdateMeter(Meter);
             FlowMeasurementListingViewModel.UpdateMeter(Meter);
             ToggleMeasurementListingViewModel.UpdateMeter(Meter);
@@ -78,13 +78,13 @@ namespace LabPrototype.ViewModels.Main
             MeasurementHistoryTableViewModel.Dispose();
         }
 
-        private void _MeterUpdated(Meter meter)
+        private void _MeterUpdated(Meter? meter)
         {
-            if (Meter is not null)
+            if (meter is not null && Meter is not null)
             {
                 if (Meter.Id.Equals(meter.Id))
                 {
-                    Activate(new MeterNavigationParameter(meter));
+                    Activate(new ModelNavigationParameter<Meter>(meter));
                 }
             }
         }
@@ -114,14 +114,14 @@ namespace LabPrototype.ViewModels.Main
 
         private async Task OpenUpdateMeterDialogAsync()
         {
-            MeterNavigationParameter parameter = new MeterNavigationParameter(Meter);
-            await _windowService.ShowDialogAsync<UpdateMeterDialog, UpdateMeterDialogViewModel, MeterNavigationParameter>(this, parameter);
+            var parameter = new ModelNavigationParameter<Meter>(Meter);
+            await _windowService.ShowDialogAsync<UpdateMeterDialog, UpdateMeterDialogViewModel, ModelNavigationParameter<Meter>>(this, parameter);
         }
 
         private async Task OpenDeleteMeterDialogAsync()
         {
-            MeterNavigationParameter parameter = new MeterNavigationParameter(Meter);
-            await _windowService.ShowDialogAsync<DeleteMeterDialog, DeleteMeterDialogViewModel, MeterNavigationParameter>(this, parameter);
+            var parameter = new ModelNavigationParameter<Meter>(Meter);
+            await _windowService.ShowDialogAsync<DeleteMeterDialog, DeleteMeterDialogViewModel, ModelNavigationParameter<Meter>>(this, parameter);
         }
     }
 }

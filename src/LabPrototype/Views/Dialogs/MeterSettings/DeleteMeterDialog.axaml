@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="LabPrototype.Views.Dialogs.DeleteMeterDialog"
+        x:Class="LabPrototype.Views.Dialogs.MeterSettings.DeleteMeterDialog"
         Title="Delete meter"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
@@ -30,7 +30,7 @@
 				</WrapPanel.Styles>
 				<TextBlock Text="Are you sure you want to delete" />
 				<StackPanel Orientation="Horizontal">
-					<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Meter.Name}" />
+					<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Model.Name}" />
 					<TextBlock Text="?" />
 				</StackPanel>
 			</WrapPanel>

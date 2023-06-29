@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LabPrototype.Services.Models
+namespace LabPrototype.Services.WindowService
 {
     public class DialogResultEventArgs<TResult> : EventArgs
     {

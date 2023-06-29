@@ -76,7 +76,7 @@ namespace LabPrototype.ViewModels.Components
             {
                 Task.Run(() =>
                 {
-                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                     _measurementGroups = _measurementGroupService.GetAll(x => x.MeterId.Equals(meter.Id));
                     CreateSeries(measurementTypes);
                     PlotProvider?.AddCrosshair();
@@ -102,11 +102,11 @@ namespace LabPrototype.ViewModels.Components
                 if (_measurementGroups is not null && _measurementGroups.Any())
                 {
                     var xs = _measurementGroups.Select(x => x.Created.ToOADate()).ToArray();
+
                     foreach (var measurementType in measurementTypes)
                     {
                         var measurements = _measurementGroups?
-                            .Select(x => x.Measurements?
-                                .First(y => y.MeasurementTypeId.Equals(x.Id)))
+                            .Select(x => x.Measurements?.First(y => y.MeasurementTypeId.Equals(measurementType.Id)))
                             .OfType<Measurement>() ?? Enumerable.Empty<Measurement>();
 
                         var ys = measurements.Select(x => x.Value).ToArray();

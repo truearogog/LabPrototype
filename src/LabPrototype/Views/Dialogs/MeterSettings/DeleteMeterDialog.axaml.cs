@@ -1,4 +1,4 @@
-namespace LabPrototype.Views.Dialogs
+namespace LabPrototype.Views.Dialogs.MeterSettings
 {
     public partial class DeleteMeterDialog : DialogWindowBase
     {

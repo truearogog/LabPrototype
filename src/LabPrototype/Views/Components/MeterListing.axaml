@@ -29,32 +29,41 @@
 			</Grid>
 		</ExperimentalAcrylicBorder>
 
-		<ItemsControl
-			Grid.Row="1"
-			Items="{Binding Items}"
-			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-			Background="Transparent"
-			HorizontalAlignment="Stretch">
-			
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel Margin="20">
-						<WrapPanel.Styles>
-							<Style Selector="ListBoxItem">
-								<Setter Property="Padding" Value="0" />
-								<Setter Property="Margin" Value="10 8" />
-							</Style>
-						</WrapPanel.Styles>
-					</WrapPanel>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<components:MeterListingItem />
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-			
-		</ItemsControl>		
+		<ExperimentalAcrylicBorder Grid.Row="1">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.6" />
+			</ExperimentalAcrylicBorder.Material>
+
+			<ItemsControl
+				Items="{Binding Items}"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				Background="Transparent"
+				HorizontalAlignment="Stretch">
+
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Margin="20">
+							<WrapPanel.Styles>
+								<Style Selector="ListBoxItem">
+									<Setter Property="Padding" Value="0" />
+									<Setter Property="Margin" Value="10 8" />
+								</Style>
+							</WrapPanel.Styles>
+						</WrapPanel>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<components:MeterListingItem />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+
+			</ItemsControl>
+		</ExperimentalAcrylicBorder>
 	</Grid>
 </UserControl>

@@ -8,21 +8,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace LabPrototype.ViewModels.Components
+namespace LabPrototype.ViewModels.Components.ModelSettings
 {
-    public class MeterDetailFormViewModel : ViewModelBase
+    public class MeterSettingsFormViewModel : SettingsFormViewModelBase<Meter, IMeterStore>
     {
-        private Meter _meter = new();
-        public Meter Meter
-        {
-            get => _meter;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _meter, value);
-                SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x?.Id.Equals(Meter?.MeterTypeId) ?? false);
-            }
-        }
-
         private int _selectedMeterTypeIndex;
         public int SelectedMeterTypeIndex
         {
@@ -32,25 +21,14 @@ namespace LabPrototype.ViewModels.Components
 
         public ObservableCollection<MeterType> MeterTypes { get; set; } = new();
 
-        private readonly IMeterStore _meterStore;
         private readonly IMeterTypeService _meterTypeService;
 
-        public ICommand CancelCommand { get; }
-        public ICommand SubmitCommand { get; }
-
-        public MeterDetailFormViewModel(ICommand cancelCommand, Action<IMeterStore, Meter> submitAction)
+        public MeterSettingsFormViewModel(ICommand cancelCommand, Action<IMeterStore, Meter> submitAction) : base(cancelCommand, submitAction)
         {
-            _meterStore = GetRequiredService<IMeterStore>();
             _meterTypeService = GetRequiredService<IMeterTypeService>();
 
             var meterTypes = _meterTypeService.GetAll();
             CreateMeterTypes(meterTypes);
-
-            CancelCommand = cancelCommand;
-            SubmitCommand = ReactiveCommand.Create(() => {
-                Meter.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
-                submitAction(_meterStore, Meter);
-            });
         }
 
         public override void Dispose()
@@ -65,6 +43,16 @@ namespace LabPrototype.ViewModels.Components
             {
                 MeterTypes.Add(meterType);
             }
+        }
+
+        protected override void OnSubmit()
+        {
+            Model.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
+        }
+
+        protected override void OnModelSet()
+        {
+            SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x?.Id.Equals(Model?.MeterTypeId) ?? false);
         }
     }
 }

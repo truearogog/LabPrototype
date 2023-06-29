@@ -12,11 +12,6 @@ namespace LabPrototype.ViewModels.Components
             CreateDetails();
         }
 
-        public override void Dispose()
-        {
-            base.Dispose();
-        }
-
         private void CreateDetails()
         {
             Items.Clear();

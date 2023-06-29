@@ -1,10 +1,9 @@
-﻿using LabPrototype.AppManagers.Services;
-using LabPrototype.Domain.IServices;
+﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Services.Interfaces;
-using LabPrototype.ViewModels.Dialogs;
-using LabPrototype.Views.Dialogs;
+using LabPrototype.Services.WindowService;
+using LabPrototype.ViewModels.Dialogs.MeterSettings;
+using LabPrototype.Views.Dialogs.MeterSettings;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +32,7 @@ namespace LabPrototype.ViewModels.Components
             _windowService = GetRequiredService<IWindowService>();
 
             _meterService = GetRequiredService<IMeterService>();
-            AdMeters(_meterService.GetAll());
+            AddMeters(_meterService.GetAll());
 
             _meterStore = GetRequiredService<IMeterStore>();
             _meterStore.ModelCreated += _MeterCreated;
@@ -52,9 +51,10 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        private async Task ShowCreateMeterDialogAsync() => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
+        private async Task ShowCreateMeterDialogAsync() 
+            => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
 
-        private void AdMeters(IEnumerable<Meter> meters)
+        private void AddMeters(IEnumerable<Meter> meters)
         {
             Items.Clear();
 
@@ -69,12 +69,15 @@ namespace LabPrototype.ViewModels.Components
             AddMeter(meter);
         }
 
-        private void _MeterUpdated(Meter meter)
+        private void _MeterUpdated(Meter? meter)
         {
-            var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
-            if (meterViewModel is not null)
+            if (meter is not null)
             {
-                meterViewModel.Meter = meter;
+                var meterViewModel = Items.FirstOrDefault(x => x.Meter.Id.Equals(meter.Id));
+                if (meterViewModel is not null)
+                {
+                    meterViewModel.Meter = meter;
+                }
             }
         }
 

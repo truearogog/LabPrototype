@@ -2,22 +2,24 @@
 
 namespace LabPrototype.Domain.IServices
 {
-    public interface IServiceBase<TModel> 
-        where TModel : PresentationModelBase
+    public interface IServiceBase<T> 
+        where T : PresentationModelBase
     {
-        TModel Create(TModel model);
-        Task<TModel> CreateAsync(TModel model);
-        IEnumerable<TModel> CreateRange(IEnumerable<TModel> models);
-        Task<IEnumerable<TModel>> CreateRangeAsync(IEnumerable<TModel> models);
-        TModel Update(TModel model);
-        IEnumerable<TModel> UpdateRange(IEnumerable<TModel> models);
-        void Delete(TModel model);
+        T Create(T model);
+        Task<T> CreateAsync(T model);
+        IEnumerable<T> CreateRange(IEnumerable<T> models);
+        Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> models);
+        T? Update(T model);
+        Task<T?> UpdateAsync(T model);
+        IEnumerable<T> UpdateRange(IEnumerable<T> models);
+        Task<IEnumerable<T>> UpdateRangeAsync(IEnumerable<T> models);
+        void Delete(T model);
         void Delete(int modelId);
-        void DeleteRange(IEnumerable<TModel> models);
+        void DeleteRange(IEnumerable<T> models);
         void DeleteRange(IEnumerable<int> modelIds);
-        TModel? GetById(int id);
-        Task<TModel?> GetByIdAsync(int id);
-        IQueryable<TModel> GetAll();
-        IEnumerable<TModel> GetAll(Func<TModel, bool> predicate);
+        T? GetById(int id);
+        Task<T?> GetByIdAsync(int id);
+        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll(Func<T, bool> predicate);
     }
 }

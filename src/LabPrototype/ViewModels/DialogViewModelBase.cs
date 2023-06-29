@@ -1,5 +1,5 @@
 ﻿using LabPrototype.Framework.Extensions;
-using LabPrototype.Services.Models;
+using LabPrototype.Services.WindowService;
 using ReactiveUI;
 using System;
 using System.Windows.Input;
@@ -18,7 +18,7 @@ namespace LabPrototype.ViewModels
             CloseCommand = ReactiveCommand.Create(Close);
         }
 
-        protected void Close() => Close(default);
+        public void Close() => Close(default);
 
         protected void Close(TResult result)
         {

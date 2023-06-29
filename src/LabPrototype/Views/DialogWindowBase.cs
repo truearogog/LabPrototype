@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using LabPrototype.Services.Models;
+using LabPrototype.Services.WindowService;
 using LabPrototype.ViewModels;
 using System;
 

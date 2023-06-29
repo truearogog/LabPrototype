@@ -7,9 +7,9 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Services
 {
-    public abstract class ServiceBase<TEntity, TModel, TRepository> : IServiceBase<TModel>
+    public abstract class ServiceBase<TEntity, T, TRepository> : IServiceBase<T>
         where TEntity : EntityBase
-        where TModel : PresentationModelBase
+        where T : PresentationModelBase
         where TRepository : IRepositoryBase<TEntity>
     {
         protected readonly TRepository Repository;
@@ -23,35 +23,35 @@ namespace LabPrototype.AppManagers.Services
             Mapper = mapper;
         }
 
-        public TModel Create(TModel model)
+        public T Create(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
             Repository.Create(entity);
-            return Mapper.Map<TModel>(entity);
+            return Mapper.Map<T>(entity);
         }
 
-        public async Task<TModel> CreateAsync(TModel model)
+        public async Task<T> CreateAsync(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
             entity = await Repository.CreateAsync(entity);
-            return Mapper.Map<TModel>(entity);
+            return Mapper.Map<T>(entity);
         }
 
-        public IEnumerable<TModel> CreateRange(IEnumerable<TModel> models)
+        public IEnumerable<T> CreateRange(IEnumerable<T> models)
         {
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
             Repository.CreateRange(entities);
-            return Mapper.Map<IEnumerable<TModel>>(entities);
+            return Mapper.Map<IEnumerable<T>>(entities);
         }
 
-        public async Task<IEnumerable<TModel>> CreateRangeAsync(IEnumerable<TModel> models)
+        public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> models)
         {
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
             await Repository.CreateRangeAsync(entities);
-            return Mapper.Map<IEnumerable<TModel>>(entities);
+            return Mapper.Map<IEnumerable<T>>(entities);
         }
 
-        public void Delete(TModel model)
+        public void Delete(T model)
         {
             Repository.Delete(model.Id);
         }
@@ -61,7 +61,7 @@ namespace LabPrototype.AppManagers.Services
             Repository.Delete(modelId);
         }
 
-        public void DeleteRange(IEnumerable<TModel> models)
+        public void DeleteRange(IEnumerable<T> models)
         {
             var modelIds = models.Select(x => x.Id) ?? Enumerable.Empty<int>();
             Repository.DeleteRange(modelIds);
@@ -72,43 +72,61 @@ namespace LabPrototype.AppManagers.Services
             Repository.DeleteRange(modelIds);
         }
 
-        public TModel? GetById(int id)
+        public T? GetById(int id)
         {
             var entity = Repository.GetById(id);
-            return Mapper.Map<TModel>(entity);
+            return Mapper.Map<T>(entity);
         }
 
-        public async Task<TModel?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
             var entity = await Repository.GetByIdAsync(id);
-            return Mapper.Map<TModel>(entity);
+            return Mapper.Map<T>(entity);
         }
 
-        public TModel Update(TModel model)
+        public T? Update(T model)
         {
             var entity = Mapper.Map<TEntity>(model);
-            Repository.Update(entity);
-            return Mapper.Map<TModel>(entity);
+            entity = Repository.Update(entity);
+            return Mapper.Map<T>(entity);
         }
 
-        public IEnumerable<TModel> UpdateRange(IEnumerable<TModel> models)
+        public async Task<T?> UpdateAsync(T model)
+        {
+            var entity = Mapper.Map<TEntity>(model);
+            entity = await Repository.UpdateAsync(entity);
+            return Mapper.Map<T?>(entity);
+        }
+
+
+        public IEnumerable<T> UpdateRange(IEnumerable<T> models)
         {
             var entities = Mapper.Map<IEnumerable<TEntity>>(models);
-            Repository.UpdateRange(entities);
-            return Mapper.Map<IEnumerable<TModel>>(entities);
+            entities = Repository.UpdateRange(entities);
+            return Mapper.Map<IEnumerable<T>>(entities);
         }
 
-        public IQueryable<TModel> GetAll()
+        public async Task<IEnumerable<T>> UpdateRangeAsync(IEnumerable<T> models)
         {
-            return Repository.GetAll().ProjectTo<TModel>(MapperConfig);
+            var entities = Mapper.Map<IEnumerable<TEntity>>(models);
+            entities = await Repository.UpdateRangeAsync(entities);
+            return Mapper.Map<IEnumerable<T>>(entities);
         }
 
-        public IEnumerable<TModel> GetAll(Func<TModel, bool> predicate)
+        public IQueryable<T> GetAll()
         {
             return 
                 Repository
                 .GetAll()
-                .ProjectTo<TModel>(MapperConfig)
+                .ProjectTo<T>(MapperConfig);
+        }
+
+        public IEnumerable<T> GetAll(Func<T, bool> predicate)
+        {
+            return 
+                Repository
+                .GetAll()
+                .ProjectTo<T>(MapperConfig)
                 .Where(predicate)
                 .ToList();
         }

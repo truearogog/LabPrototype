@@ -19,50 +19,69 @@
 
 		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.3" IsVisible="False" />
 
-		<Grid Grid.Column="0" RowDefinitions="auto,auto,*">
+		<ExperimentalAcrylicBorder Grid.Column="0">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.8" />
+			</ExperimentalAcrylicBorder.Material>
 
-			<Border Grid.Row="0" Classes="detailHeader">
-				<TextBlock
-					Text="{Binding Meter.Name}"
-					FontSize="24"
-					TextTrimming="CharacterEllipsis"
-					ToolTip.Tip="{Binding Meter.Name}" />
-			</Border>
+			<Grid RowDefinitions="auto,auto,*">
+				<Border Grid.Row="0" Classes="detailHeader">
+					<TextBlock
+						Text="{Binding Meter.Name}"
+						FontSize="24"
+						TextTrimming="CharacterEllipsis"
+						ToolTip.Tip="{Binding Meter.Name}" />
+				</Border>
 
-			<WrapPanel 
-				Grid.Row="1" 
-				Classes="smallButtonPanel" 
-				HorizontalAlignment="Left">
-				
-				<Button Classes="smallButton" Command="{Binding SelectChartCommand}">
-					<material:MaterialIcon Kind="GraphAreaspline" />
-				</Button>
-				<Button Classes="smallButton" Command="{Binding SelectTableCommand}">
-					<material:MaterialIcon Kind="Table" />
-				</Button>
-					
-				<!-- TODO: REMOVE BUTTONS -->
-				<Button Classes="smallButton" Command="{Binding OpenUpdateMeterCommand}">
-					<material:MaterialIcon Kind="Edit" />
-				</Button>
-				<Button Classes="smallButton" Command="{Binding OpenDeleteMeterCommand}">
-					<material:MaterialIcon Kind="Delete" />
-				</Button>
-			</WrapPanel>
+				<WrapPanel
+					Grid.Row="1"
+					Classes="smallButtonPanel"
+					HorizontalAlignment="Left">
 
-			<ScrollViewer Grid.Row="2">
-				<StackPanel>
-					<components:MeterDetailListing DataContext="{Binding MeterDetailListingViewModel}" />
-					<components:FlowMeasurementListing DataContext="{Binding FlowMeasurementListingViewModel}" />
-				</StackPanel>
-			</ScrollViewer>
-		</Grid>
+					<Button Classes="smallButton" Command="{Binding SelectChartCommand}">
+						<material:MaterialIcon Kind="GraphAreaspline" />
+					</Button>
+					<Button Classes="smallButton" Command="{Binding SelectTableCommand}">
+						<material:MaterialIcon Kind="Table" />
+					</Button>
 
-		<Grid Grid.Column="1" RowDefinitions="auto, *">
-			<components:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
+					<!-- TODO: REMOVE BUTTONS -->
+					<Button Classes="smallButton" Command="{Binding OpenUpdateMeterCommand}">
+						<material:MaterialIcon Kind="Edit" />
+					</Button>
+					<Button Classes="smallButton" Command="{Binding OpenDeleteMeterCommand}">
+						<material:MaterialIcon Kind="Delete" />
+					</Button>
+				</WrapPanel>
 
-			<components:MeasurementHistoryChart Grid.Row="1" DataContext="{Binding MeasurementHistoryChartViewModel}" />
-			<components:MeasurementHistoryTable Grid.Row="1" DataContext="{Binding MeasurementHistoryTableViewModel}" />
-		</Grid>
+				<ScrollViewer Grid.Row="2">
+					<StackPanel>
+						<components:MeterDetailListing DataContext="{Binding MeterDetailListingViewModel}" />
+						<components:FlowMeasurementListing DataContext="{Binding FlowMeasurementListingViewModel}" />
+					</StackPanel>
+				</ScrollViewer>
+			</Grid>
+		</ExperimentalAcrylicBorder>
+
+		<ExperimentalAcrylicBorder Grid.Column="1">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.8" />
+			</ExperimentalAcrylicBorder.Material>
+
+			<Grid RowDefinitions="auto, *">
+				<components:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
+
+				<components:MeasurementHistoryChart Grid.Row="1" DataContext="{Binding MeasurementHistoryChartViewModel}" />
+				<components:MeasurementHistoryTable Grid.Row="1" DataContext="{Binding MeasurementHistoryTableViewModel}" />
+			</Grid>
+		</ExperimentalAcrylicBorder>
 	</Grid>
 </Window>

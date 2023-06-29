@@ -33,7 +33,7 @@ namespace LabPrototype.ViewModels.Components
                 if (measurementGroups.Any())
                 {
                     MeasurementGroups = new(measurementGroups);
-                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                     var measurementTypeIds = measurementGroups.First().Measurements?.Select(x => x.MeasurementTypeId) ?? throw new Exception();
                     UpdateView(measurementTypes, measurementTypeIds);
                     this.RaisePropertyChanged(nameof(MeasurementGroups));

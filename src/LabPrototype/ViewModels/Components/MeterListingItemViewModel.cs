@@ -1,5 +1,5 @@
 ﻿using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Services.Interfaces;
+using LabPrototype.Services.WindowService;
 using LabPrototype.ViewModels.Main;
 using LabPrototype.ViewModels.Models;
 using LabPrototype.Views.Windows;
@@ -32,8 +32,8 @@ namespace LabPrototype.ViewModels.Components
 
         private void OpenMeter()
         {
-            var parameter = new MeterNavigationParameter(Meter);
-            _windowService.ShowWindow<MeterWindow, MeterWindowViewModel, MeterNavigationParameter>(parameter);
+            var parameter = new ModelNavigationParameter<Meter>(Meter);
+            _windowService.ShowWindow<MeterWindow, MeterWindowViewModel, ModelNavigationParameter<Meter>>(parameter);
         }
     }
 }

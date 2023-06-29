@@ -3,8 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Splat;
-using System.Reflection;
-using System.Linq;
 using System;
 using System.Threading;
 using System.Globalization;
@@ -21,10 +19,12 @@ using LabPrototype.Domain.IServices;
 using LabPrototype.AppManagers.Services;
 using LabPrototype.AppManagers.Stores;
 using LabPrototype.Domain.IStores;
-using LabPrototype.Services.Interfaces;
-using LabPrototype.Services.Implementations;
 using LabPrototype.AppManagers.Profiles;
 using System.Collections.Generic;
+using System.Linq;
+using LabPrototype.Domain.Entities;
+using LabPrototype.Services.FlowMeasurementGroupProvider;
+using LabPrototype.Services.WindowService;
 
 namespace LabPrototype
 {
@@ -57,13 +57,59 @@ namespace LabPrototype
                     context.Database.EnsureCreated();
                 }
 
+                // seed measurement groups
+                // SeedMeasurementGroups();
+                
+                
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
-
-                // todo: get selected meter and save to database
             }
             finally
             {
                 mutex.ReleaseMutex();
+            }
+        }
+
+        private static void SeedMeasurementGroups()
+        {
+            var measurementGroupRepository = Locator.Current.GetRequiredService<IMeasurementGroupRepository>();
+            var measurementRepository = Locator.Current.GetRequiredService<IMeasurementRepository>();
+            var meterRepository = Locator.Current.GetRequiredService<IMeterRepository>();
+            var meterTypeRepository = Locator.Current.GetRequiredService<IMeterTypeRepository>();
+            var random = new Random();
+
+            var meters = meterRepository.GetAll().ToList();
+            var now = DateTime.Now;
+            foreach (var meter in meters)
+            {
+                if (meter.MeterType is not null)
+                {
+                    var measurementTypes = meterTypeRepository.GetMeasurementTypes(meter.MeterTypeId);
+                    var values = Enumerable.Repeat(0, measurementTypes.Count()).ToArray();
+                    for (int i = 0; i < 1000; ++i)
+                    {
+                        var measurementGroup = new MeasurementGroupEntity
+                        {
+                            MeterId = meter.Id,
+                            Created = DateTime.Now.AddMinutes(10 * i),
+                        };
+                        measurementGroupRepository.Create(measurementGroup);
+
+                        var j = 0;
+                        var measurements = measurementTypes.Select(measurementType =>
+                        {
+                            values[j] += random.Next(-5, 6);
+                            return new MeasurementEntity
+                            {
+                                Value = values[j++],
+                                MeasurementGroupId = measurementGroup.Id,
+                                MeasurementTypeId = measurementType.Id,
+                                Created = DateTime.Now.AddMinutes(10 * i),
+                            };
+                        });
+
+                        measurementRepository.CreateRange(measurements);
+                    }
+                }
             }
         }
 
@@ -208,6 +254,8 @@ namespace LabPrototype
         private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
             services.RegisterLazySingleton<IWindowService>(() => new WindowService());
+            services.RegisterLazySingleton<IFlowMeasurementGroupProvider>(() =>
+                new TestFlowMeasurementGroupProvider(resolver.GetRequiredService<IMeterService>(), resolver.GetRequiredService<IMeterTypeService>()));
         }
 
         private static AppBuilder BuildAvaloniaApp() =>
