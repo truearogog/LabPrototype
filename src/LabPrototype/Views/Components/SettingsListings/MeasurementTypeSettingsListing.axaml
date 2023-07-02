@@ -1,10 +1,10 @@
-<UserControl	xmlns="https://github.com/avaloniaui"
-				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-				xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-				x:Class="LabPrototype.Views.Components.SettingsListings.MeterSettingsListing">
+<UserControl    xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			    xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+                x:Class="LabPrototype.Views.Components.SettingsListings.MeasurementTypeSettingsListing">
 	<Grid RowDefinitions="auto,*">
 		<Panel Grid.Row="0" Margin="0 10">
 			<Button Classes="smallButton" Padding="10 5" Command="{Binding OpenCreateModelCommand}">
@@ -14,7 +14,7 @@
 				</StackPanel>
 			</Button>
 		</Panel>
-
+		
 		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
 			<ItemsRepeater
 				Items="{Binding ListingItems}"
@@ -34,7 +34,7 @@
 								<TextBlock Grid.Column="0" Text="{Binding Model.Name}" VerticalAlignment="Center" FontSize="26" />
 
 								<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
-									<Button Classes="smallButton" Padding="10 5" Command="{Binding OpenUpdateModelCommand}" >
+									<Button Classes="smallButton" Padding="10 5" Command="{Binding OpenUpdateModelCommand}">
 										<StackPanel Orientation="Horizontal">
 											<material:MaterialIcon Kind="Edit" Width="20" Height="20" />
 											<TextBlock Text="Edit" />

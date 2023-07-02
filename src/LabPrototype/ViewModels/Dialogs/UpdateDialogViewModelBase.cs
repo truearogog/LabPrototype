@@ -11,14 +11,26 @@ namespace LabPrototype.ViewModels.Dialogs
         where T : PresentationModelBase, new()
         where TService : IServiceBase<T>
         where TStore : IStoreBase<T>
-        where TSettingsForm : SettingsFormViewModelBase<T, TStore>
+        where TSettingsForm : SettingsFormViewModelBase<T, TStore>, new()
     {
         public TSettingsForm SettingsFormViewModel { get; }
 
-        public UpdateDialogViewModelBase(Func<ParametrizedDialogViewModelBase<ModelNavigationParameter<T>>, TService, TSettingsForm> settingsFormFactory)
+        public UpdateDialogViewModelBase()
         {
             var service = GetRequiredService<TService>();
-            SettingsFormViewModel = settingsFormFactory(this, service);
+            SettingsFormViewModel = new TSettingsForm();
+            SettingsFormViewModel.Activate(CloseCommand, (store, model) =>
+            {
+                store.Update(service, model);
+                Close();
+            });
+        }
+
+        public override void Dispose()
+        {
+            SettingsFormViewModel.Dispose();
+
+            base.Dispose();
         }
 
         public override void Activate(ModelNavigationParameter<T> parameter)

@@ -12,7 +12,7 @@
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent">
 	<Grid RowDefinitions="auto,*">
-		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.3" IsVisible="False" />
+		<Grid Grid.RowSpan="2" x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.3" IsVisible="False" />
 
 		<ExperimentalAcrylicBorder Grid.Row="0">
 			<ExperimentalAcrylicBorder.Material>

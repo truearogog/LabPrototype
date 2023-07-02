@@ -79,10 +79,13 @@ namespace LabPrototype.ViewModels.Components.Settings
         private void AddModel(T model)
         {
             var viewModel = new TListingItemViewModel();
+            var navigationParameter = new ModelNavigationParameter<T>(model);
             viewModel.Activate(
                 model,
-                ReactiveCommand.CreateFromTask(async () => await _windowService.ShowDialogAsync<TUpdateView, TUpdateViewModel>(_parentWindow)),
-                ReactiveCommand.CreateFromTask(async () => await _windowService.ShowDialogAsync<TDeleteView, TDeleteViewModel>(_parentWindow)));
+                ReactiveCommand.CreateFromTask(async () 
+                    => await _windowService.ShowDialogAsync<TUpdateView, TUpdateViewModel, ModelNavigationParameter<T>>(_parentWindow, navigationParameter)),
+                ReactiveCommand.CreateFromTask(async () 
+                    => await _windowService.ShowDialogAsync<TDeleteView, TDeleteViewModel, ModelNavigationParameter<T>>(_parentWindow, navigationParameter)));
             ListingItems.Add(viewModel);
         }
 

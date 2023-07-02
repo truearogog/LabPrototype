@@ -3,8 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        x:Class="LabPrototype.Views.Dialogs.MeterSettings.DeleteMeterDialog"
-        Title="Delete meter"
+        x:Class="LabPrototype.Views.Dialogs.MeasurementTypeSettings.DeleteMeasurementTypeDialog"
+        Title="Delete measurement type"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
 		MinWidth="200"
@@ -34,7 +34,7 @@
 					<TextBlock Text="?" />
 				</StackPanel>
 			</WrapPanel>
-			
+
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
 				<Button Content="Delete" Command="{Binding DeleteCommand}" />
 				<Button Content="Cancel" Command="{Binding CancelCommand}" />

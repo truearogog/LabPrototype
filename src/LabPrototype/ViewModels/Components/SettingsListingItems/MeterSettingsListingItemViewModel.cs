@@ -4,8 +4,6 @@ namespace LabPrototype.ViewModels.Components.SettingsListingItems
 {
     public class MeterSettingsListingItemViewModel : SettingsListingItemViewModelBase<Meter>
     {
-        public MeterSettingsListingItemViewModel() : base()
-        {
-        }
+        public MeterSettingsListingItemViewModel() { }
     }
 }

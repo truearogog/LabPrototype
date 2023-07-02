@@ -6,9 +6,6 @@ namespace LabPrototype.ViewModels.Dialogs.MeterSettings
 {
     public class DeleteMeterDialogViewModel : DeleteDialogViewModelBase<Meter, IMeterService, IMeterStore>
     {
-        public DeleteMeterDialogViewModel() : base()
-        {
-
-        }
+        public DeleteMeterDialogViewModel() : base() { }
     }
 }

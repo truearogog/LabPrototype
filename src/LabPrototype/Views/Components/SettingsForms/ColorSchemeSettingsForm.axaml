@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LabPrototype.Views.Components.SettingsForms.ColorSchemeSettingsForm">
+	<UserControl.Styles>
+		<Style Selector="StackPanel#rootStackPanel">
+			<Setter Property="Spacing" Value="20" />
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="Margin" Value="20" />
+			<Setter Property="Orientation" Value="Vertical" />
+		</Style>
+
+		<Style Selector="StackPanel#rootStackPanel DockPanel">
+			<Setter Property="LastChildFill" Value="True" />
+		</Style>
+
+		<Style Selector="StackPanel#rootStackPanel DockPanel TextBlock">
+			<Setter Property="MinWidth" Value="100" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="*, auto">
+		<StackPanel Grid.Row="0" x:Name="rootStackPanel">
+			<DockPanel>
+				<TextBlock Text="Name" />
+				<TextBox Watermark="Name" Text="{Binding Model.Name}" />
+			</DockPanel>
+
+			<DockPanel>
+				<TextBlock Text="Primary Color" />
+				<TextBox Watermark="Primary Color" Text="{Binding Model.PrimaryColor}" />
+			</DockPanel>
+
+			<DockPanel>
+				<TextBlock Text="Secondary Color" />
+				<TextBox Watermark="Primary Color" Text="{Binding Model.SecondaryColor}" />
+			</DockPanel>
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+			<Button Content="Submit" Command="{Binding SubmitCommand}" />
+			<Button Content="Cancel" Command="{Binding CancelCommand}" />
+		</StackPanel>
+	</Grid>
+</UserControl>

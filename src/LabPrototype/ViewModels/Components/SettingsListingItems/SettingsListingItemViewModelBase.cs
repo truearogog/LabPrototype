@@ -1,5 +1,4 @@
-﻿using Avalonia.Media;
-using LabPrototype.Domain.Models.Presentation;
+﻿using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System.Windows.Input;
 

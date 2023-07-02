@@ -17,7 +17,7 @@
 			<ColumnDefinition Width="4*" />
 		</Grid.ColumnDefinitions>
 
-		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.3" IsVisible="False" />
+		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.7" IsVisible="False" />
 
 		<ExperimentalAcrylicBorder Grid.Column="0">
 			<ExperimentalAcrylicBorder.Material>
@@ -47,14 +47,6 @@
 					</Button>
 					<Button Classes="smallButton" Command="{Binding SelectTableCommand}">
 						<material:MaterialIcon Kind="Table" />
-					</Button>
-
-					<!-- TODO: REMOVE BUTTONS -->
-					<Button Classes="smallButton" Command="{Binding OpenUpdateMeterCommand}">
-						<material:MaterialIcon Kind="Edit" />
-					</Button>
-					<Button Classes="smallButton" Command="{Binding OpenDeleteMeterCommand}">
-						<material:MaterialIcon Kind="Delete" />
 					</Button>
 				</WrapPanel>
 

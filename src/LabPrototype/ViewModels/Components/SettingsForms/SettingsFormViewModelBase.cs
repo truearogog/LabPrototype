@@ -23,22 +23,32 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
 
         private readonly TStore _store;
 
-        public ICommand CancelCommand { get; }
-        public ICommand SubmitCommand { get; }
+        public ICommand? CancelCommand { get; private set; }
+        public ICommand? SubmitCommand { get; private set; }
 
-        public SettingsFormViewModelBase(ICommand cancelCommand, Action<TStore, T> submitAction)
+        public SettingsFormViewModelBase()
         {
             _store = GetRequiredService<TStore>();
+        }
 
+        public void Activate(ICommand cancelCommand, Action<TStore, T> submitAction)
+        {
             CancelCommand = cancelCommand;
+            this.RaisePropertyChanged(nameof(CancelCommand));
             SubmitCommand = ReactiveCommand.Create(() =>
             {
                 OnSubmit();
                 submitAction(_store, _model);
             });
+            this.RaisePropertyChanged(nameof(SubmitCommand));
         }
 
-        protected abstract void OnSubmit();
-        protected abstract void OnModelSet();
+        protected virtual void OnSubmit()
+        {
+        }
+
+        protected virtual void OnModelSet()
+        {
+        }
     }
 }

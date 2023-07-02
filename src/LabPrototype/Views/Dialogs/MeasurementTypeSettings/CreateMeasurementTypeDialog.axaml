@@ -3,13 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-		xmlns:settings-forms="using:LabPrototype.Views.Components.SettingsForms"
-        x:Class="LabPrototype.Views.Dialogs.MeterSettings.UpdateMeterDialog"
-        Title="Edit meter"
+        xmlns:settings-forms="using:LabPrototype.Views.Components.SettingsForms"
+        x:Class="LabPrototype.Views.Dialogs.MeasurementTypeSettings.CreateMeasurementTypeDialog"
+        Title="Delete meter"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-		MinWidth="400"
-		MinHeight="300"
+		MinWidth="200"
+		MinHeight="150"
 		SizeToContent="WidthAndHeight">
 	<Panel>
 		<ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -23,8 +23,8 @@
 		</ExperimentalAcrylicBorder>
 
 		<Grid Margin="20" RowDefinitions="auto,*">
-			<TextBlock Grid.Row="0" Text="Edit meter" FontSize="20" />
-			<settings-forms:MeterSettingsForm Grid.Row="1" DataContext="{Binding SettingsFormViewModel}" />
+			<TextBlock Grid.Row="0" Text="New measurement type" FontSize="20" />
+			<settings-forms:MeasurementTypeSettingsForm Grid.Row="1" DataContext="{Binding SettingsFormViewModel}" />
 		</Grid>
 	</Panel>
 </Window>

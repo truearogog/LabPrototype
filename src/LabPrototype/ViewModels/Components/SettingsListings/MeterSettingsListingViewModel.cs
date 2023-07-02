@@ -18,7 +18,6 @@ namespace LabPrototype.ViewModels.Components.Settings
     {
         public MeterSettingsListingViewModel(WindowViewModelBase parentWindow) : base(parentWindow)
         {
-
         }
     }
 }

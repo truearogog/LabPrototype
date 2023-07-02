@@ -2,7 +2,6 @@
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.ViewModels.Components.ModelSettings;
-using System;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
@@ -10,14 +9,19 @@ namespace LabPrototype.ViewModels.Dialogs
         where T : PresentationModelBase, new()
         where TService : IServiceBase<T>
         where TStore : IStoreBase<T>
-        where TSettingsForm : SettingsFormViewModelBase<T, TStore>
+        where TSettingsForm : SettingsFormViewModelBase<T, TStore>, new()
     {
         public TSettingsForm SettingsFormViewModel { get; } 
 
-        public CreateDialogViewModelBase(Func<DialogViewModelBase, TService, TSettingsForm> settingsFormFactory)
+        public CreateDialogViewModelBase()
         {
             var service = GetRequiredService<TService>();
-            SettingsFormViewModel = settingsFormFactory(this, service);
+            SettingsFormViewModel = new TSettingsForm();
+            SettingsFormViewModel.Activate(CloseCommand, (store, model) =>
+            {
+                store.Create(service, model);
+                Close();
+            });
         }
 
         public override void Dispose()

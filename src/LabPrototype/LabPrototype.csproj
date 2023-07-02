@@ -72,6 +72,9 @@
     <Compile Update="Views\Components\MeterListingItem.axaml.cs">
       <DependentUpon>MeterListingItem.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Components\SettingsForms\MeasurementTypeSettingsForm.axaml.cs">
+      <DependentUpon>MeasurementTypeSettingsForm.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Components\ToggleMeasurementListingItem.axaml.cs">
       <DependentUpon>ToggleMeasurementListingItem.axaml</DependentUpon>
     </Compile>
@@ -80,6 +83,9 @@
     </Compile>
     <Compile Update="Views\Components\MeterListing.axaml.cs">
       <DependentUpon>MeterListing.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Dialogs\MeasurementTypeSettings\CreateMeasurementTypeDialog.axaml.cs">
+      <DependentUpon>CreateMeasurementTypeDialog.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Windows\MeterWindow.axaml.cs">
       <DependentUpon>MeterWindow.axaml</DependentUpon>

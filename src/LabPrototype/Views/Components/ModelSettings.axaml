@@ -19,13 +19,13 @@
 				<settings-listings:MeterSettingsListing DataContext="{Binding MeterSettingsListingViewModel}" />
 			</TabItem>
 			<TabItem Header="Meter Types">
-
+				
 			</TabItem>
 			<TabItem Header="Measurement Types">
-
+				<settings-listings:MeasurementTypeSettingsListing DataContext="{Binding MeasurementTypeSettingsListingViewModel}" />
 			</TabItem>
 			<TabItem Header="Color Schemes">
-
+				<settings-listings:ColorSchemeSettingsListing DataContext="{Binding ColorSchemeSettingsListingViewModel}" />
 			</TabItem>
 		</TabControl>
 	</ExperimentalAcrylicBorder>
