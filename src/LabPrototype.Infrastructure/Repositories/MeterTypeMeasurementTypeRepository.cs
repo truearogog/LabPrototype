@@ -6,7 +6,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 {
     public class MeterTypeMeasurementTypeRepository : RepositoryBase<MeterTypeMeasurementTypeEntity>, IMeterTypeMeasurementTypeRepository
     {
-        public MeterTypeMeasurementTypeRepository(LabDbContext dbContext, DbSet<MeterTypeMeasurementTypeEntity> dbSet) : base(dbContext, dbSet)
+        public MeterTypeMeasurementTypeRepository(LabDbContext dbContext) : base(dbContext, dbContext.MeterTypeMeasurementTypes)
         {
         }
     }

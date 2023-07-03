@@ -31,14 +31,14 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
             _store = GetRequiredService<TStore>();
         }
 
-        public void Activate(ICommand cancelCommand, Action<TStore, T> submitAction)
+        public virtual void Activate(ICommand cancelCommand, Action<TStore, T>? submitAction = null)
         {
             CancelCommand = cancelCommand;
             this.RaisePropertyChanged(nameof(CancelCommand));
             SubmitCommand = ReactiveCommand.Create(() =>
             {
                 OnSubmit();
-                submitAction(_store, _model);
+                submitAction?.Invoke(_store, _model);
             });
             this.RaisePropertyChanged(nameof(SubmitCommand));
         }

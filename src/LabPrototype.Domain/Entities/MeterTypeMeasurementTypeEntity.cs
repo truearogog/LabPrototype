@@ -7,5 +7,7 @@
 
         public int MeasurementTypeId { get; set; }
         public virtual MeasurementTypeEntity? MeasurementType { get; set; }
+
+        public int SortOrder { get; set; }
     }
 }

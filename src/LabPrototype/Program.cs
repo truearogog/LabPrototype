@@ -194,6 +194,7 @@ namespace LabPrototype
                     typeof(MeasurementType_Profile),
                     typeof(Meter_Profile),
                     typeof(MeterType_Profile),
+                    typeof(MeterTypeMeasurementType_Profile)
                 };
                 var config = new MapperConfiguration(cfg => {
                     foreach (var profileType in profileTypes)
@@ -219,6 +220,8 @@ namespace LabPrototype
                 new MeterRepository(ResolveDbContext(resolver)));
             services.Register<IMeterTypeRepository>(() => 
                 new MeterTypeRepository(ResolveDbContext(resolver)));
+            services.Register<IMeterTypeMeasurementTypeRepository>(() => 
+                new MeterTypeMeasurementTypeRepository(ResolveDbContext(resolver)));
         }
 
         private static LabDbContext ResolveDbContext(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<LabDbContextFactory>().Create();
@@ -237,10 +240,12 @@ namespace LabPrototype
                 new MeterService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterRepository>()));
             services.Register<IMeterTypeService>(() => 
                 new MeterTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterTypeRepository>()));
+            services.Register<IMeterTypeMeasurementTypeService>(() => 
+                new MeterTypeMeasurementTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterTypeMeasurementTypeRepository>()));
         }
 
         private static IMapper ResolveMapper(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<IMapper>();
-
+        
         private static void RegisterStores(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
             services.RegisterLazySingleton<IColorSchemeStore>(() => new ColorSchemeStore());
@@ -249,6 +254,7 @@ namespace LabPrototype
             services.RegisterLazySingleton<IMeasurementTypeStore>(() => new MeasurementTypeStore());
             services.RegisterLazySingleton<IMeterStore>(() => new MeterStore());
             services.RegisterLazySingleton<IMeterTypeStore>(() => new MeterTypeStore());
+            services.RegisterLazySingleton<IMeterTypeMeasurementTypeStore>(() => new MeterTypeMeasurementTypeStore());
         }
 
         private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
