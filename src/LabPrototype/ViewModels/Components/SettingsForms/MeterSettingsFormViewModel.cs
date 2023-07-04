@@ -38,7 +38,7 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
             }
         }
 
-        protected override void OnSubmit()
+        public override void PrepareModel()
         {
             Model.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
         }

@@ -39,7 +39,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             }
         }
 
-        protected override void OnSubmit()
+        public override void PrepareModel()
         {
             Model.ColorSchemeId = ColorSchemes[SelectedColorSchemeIndex].Id;
         }

@@ -26,7 +26,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
         private readonly IMeterTypeMeasurementTypeService _meterTypeMeasurementTypeService;
         private readonly IMeterTypeMeasurementTypeStore _meterTypeMeasurementTypeStore;
 
-        public ICommand CreateMeterTypeMeasurementTypeCommand { get; }
+        public ICommand AddMeterTypeMeasurementTypeCommand { get; }
 
         public MeterTypeSettingsFormViewModel() : base()
         {
@@ -37,7 +37,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             var colorSchemes = _colorSchemeService.GetAll();
             CreateColorSchemes(colorSchemes);
 
-            CreateMeterTypeMeasurementTypeCommand = ReactiveCommand.Create(() => AddMeterTypeMeasurementTypeForm());
+            AddMeterTypeMeasurementTypeCommand = ReactiveCommand.Create(() => AddMeterTypeMeasurementTypeForm());
         }
 
         private void CreateColorSchemes(IEnumerable<ColorScheme> colorSchemes)
@@ -49,34 +49,45 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             }
         }
 
-        protected override void OnSubmit()
+        public override void PrepareModel()
         {
             Model.ColorSchemeId = ColorSchemes[SelectedColorSchemeIndex].Id;
+        }
 
-            var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(Model.Id));
-
-            var meterTypeMeasurementTypesToCreate = MeterTypeMeasurementTypeForms
-                .Select(x => x.Model)
-                .Where(x => x.Id == default);
-            foreach (var meterTypeMeasurementTypeToCreate in meterTypeMeasurementTypesToCreate)
+        protected override void AfterSubmit(MeterType? model)
+        {
+            if (model != default)
             {
-                _meterTypeMeasurementTypeStore.Create(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToCreate);
-            }
+                var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(model.Id));
 
-            var meterTypeMeasurementTypesToUpdate = MeterTypeMeasurementTypeForms
-                .Select(x => x.Model)
-                .Where(x => meterTypeMeasurementTypes.Any(y => y.Id.Equals(x.Id)));
-            foreach (var meterTypeMeasurementTypeToUpdate in meterTypeMeasurementTypesToUpdate)
-            {
-                _meterTypeMeasurementTypeStore.Update(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToUpdate);
-            }
+                MeterTypeMeasurementTypeForms.ToList().ForEach(x => {
+                    x.PrepareModel();
+                    x.Model.MeterTypeId = model.Id;
+                });
 
-            var meterTypeMeasurementTypeIdsToDelete = meterTypeMeasurementTypes
-                .Select(x => x.Id)
-                .Where(x => MeterTypeMeasurementTypeForms.Any(y => y.Model.Id.Equals(x)) == false);
-            foreach (var meterTypeMeasurementTypeIdToDelete in meterTypeMeasurementTypeIdsToDelete)
-            {
-                _meterTypeMeasurementTypeStore.Delete(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeIdToDelete);
+                var meterTypeMeasurementTypesToCreate = MeterTypeMeasurementTypeForms
+                    .Select(x => x.Model)
+                    .Where(x => x.Id == default);
+                foreach (var meterTypeMeasurementTypeToCreate in meterTypeMeasurementTypesToCreate)
+                {
+                    _meterTypeMeasurementTypeStore.Create(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToCreate);
+                }
+
+                var meterTypeMeasurementTypesToUpdate = MeterTypeMeasurementTypeForms
+                    .Select(x => x.Model)
+                    .Where(x => meterTypeMeasurementTypes.Any(y => y.Id.Equals(x.Id)));
+                foreach (var meterTypeMeasurementTypeToUpdate in meterTypeMeasurementTypesToUpdate)
+                {
+                    _meterTypeMeasurementTypeStore.Update(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToUpdate);
+                }
+
+                var meterTypeMeasurementTypeIdsToDelete = meterTypeMeasurementTypes
+                    .Select(x => x.Id)
+                    .Where(x => MeterTypeMeasurementTypeForms.Any(y => y.Model.Id.Equals(x)) == false);
+                foreach (var meterTypeMeasurementTypeIdToDelete in meterTypeMeasurementTypeIdsToDelete)
+                {
+                    _meterTypeMeasurementTypeStore.Delete(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeIdToDelete);
+                }
             }
         }
 
@@ -100,7 +111,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
         private void AddMeterTypeMeasurementTypeForm(MeterTypeMeasurementType? meterTypeMeasurementType = null)
         {
             var viewModel = new MeterTypeMeasurementTypeSettingsFormViewModel();
-            viewModel.Model = meterTypeMeasurementType ?? new MeterTypeMeasurementType();
+            viewModel.Model = meterTypeMeasurementType ?? new MeterTypeMeasurementType() { MeterTypeId = Model.Id };
             var deleteCommand = ReactiveCommand.Create(() => MeterTypeMeasurementTypeForms.Remove(viewModel));
             viewModel.Activate(deleteCommand, null);
             MeterTypeMeasurementTypeForms.Add(viewModel);

@@ -1,7 +1,6 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.ViewModels.Components.Settings;
 using LabPrototype.ViewModels.Components.SettingsListingItems;
 using LabPrototype.ViewModels.Dialogs.MeasurementTypeSettings;
 using LabPrototype.Views.Dialogs.MeasurementTypeSettings;

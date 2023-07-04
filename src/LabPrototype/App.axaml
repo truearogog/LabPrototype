@@ -12,5 +12,6 @@
 		<StyleInclude Source="avares://Material.Icons.Avalonia/App.xaml" />
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>
 		<StyleInclude Source="/Styles/Common.axaml" />
+		<StyleInclude Source="/Styles/ExperimentalAcrylicBorders.axaml" />
     </Application.Styles>
 </Application>

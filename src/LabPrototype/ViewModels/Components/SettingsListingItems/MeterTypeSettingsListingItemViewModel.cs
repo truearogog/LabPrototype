@@ -2,7 +2,7 @@
 
 namespace LabPrototype.ViewModels.Components.SettingsListingItems
 {
-    internal class MeterTypeSettingsListingItemViewModel : SettingsListingItemViewModelBase<MeterType>
+    public class MeterTypeSettingsListingItemViewModel : SettingsListingItemViewModelBase<MeterType>
     {
         public MeterTypeSettingsListingItemViewModel() { }
     }

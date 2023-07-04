@@ -5,7 +5,7 @@ using LabPrototype.ViewModels.Components.SettingsListingItems;
 using LabPrototype.ViewModels.Dialogs.MeterSettings;
 using LabPrototype.Views.Dialogs.MeterSettings;
 
-namespace LabPrototype.ViewModels.Components.Settings
+namespace LabPrototype.ViewModels.Components.SettingsListings
 {
     public class MeterSettingsListingViewModel : SettingsListingViewModelBase<
         Meter,

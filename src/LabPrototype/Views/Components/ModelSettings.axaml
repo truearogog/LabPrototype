@@ -19,7 +19,7 @@
 				<settings-listings:MeterSettingsListing DataContext="{Binding MeterSettingsListingViewModel}" />
 			</TabItem>
 			<TabItem Header="Meter Types">
-				
+				<settings-listings:MeterTypeSettingsListing DataContext="{Binding MeterTypeSettingsListingViewModel} " />
 			</TabItem>
 			<TabItem Header="Measurement Types">
 				<settings-listings:MeasurementTypeSettingsListing DataContext="{Binding MeasurementTypeSettingsListingViewModel}" />

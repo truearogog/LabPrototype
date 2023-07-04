@@ -1,0 +1,129 @@
+<UserControl	
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="300"
+	MinWidth="500" MinHeight="300"
+	MaxWidth="500" MaxHeight="600"
+	xmlns:local="using:LabPrototype.Views.Components.SettingsForms"
+	xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+	x:Class="LabPrototype.Views.Components.SettingsForms.MeterTypeSettingsForm">
+
+	<UserControl.Styles>
+		<Style Selector="Border.colorPresenter">
+			<Setter Property="Width" Value="20" />
+			<Setter Property="Height" Value="20" />
+			<Setter Property="CornerRadius" Value="3" />
+		</Style>
+		<Style Selector="StackPanel.formStackPanel">
+			<Setter Property="Spacing" Value="10" />
+		</Style>
+		<Style Selector=".formItem TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Left" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+		<Style Selector=".formItem > TextBlock">
+			<Setter Property="Margin" Value="0 5" />
+			<Setter Property="MinWidth" Value="140" />
+		</Style>
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="*,auto">
+		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Padding="0 0 20 0">
+			<StackPanel Classes="formStackPanel">
+
+				<Grid Classes="formItem" ColumnDefinitions="auto,*">
+					<TextBlock	Grid.Column="0" Text="Name" />
+					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Model.Name}" />
+				</Grid>
+
+				<Grid Classes="formItem" ColumnDefinitions="auto,*">
+					<TextBlock	Grid.Column="0" Text="Description" />
+					<TextBox	Grid.Column="1" Watermark="Description" Text="{Binding Model.Description}" />
+				</Grid>
+
+				<Grid Classes="formItem" ColumnDefinitions="auto,*">
+					<TextBlock	Grid.Column="0" Text="Color Scheme" />
+					<ComboBox	Grid.Column="1" Items="{Binding ColorSchemes}" SelectedIndex="{Binding SelectedColorSchemeIndex}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+									<Border Classes="colorPresenter" Background="{Binding PrimaryColor}" />
+									<Border Classes="colorPresenter" Background="{Binding SecondaryColor}" />
+								</StackPanel>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</Grid>
+
+				<Grid Classes="formItem" ColumnDefinitions="auto,*">
+					<TextBlock	
+						Grid.Column="0" 
+						Text="Measurement Types" />
+					<Button		
+						Grid.Column="1" 
+						Classes="smallButton" 
+						Padding="10 5" 
+						HorizontalAlignment="Right" 
+						Command="{Binding AddMeterTypeMeasurementTypeCommand}">
+						<StackPanel>
+							<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
+							<TextBlock VerticalAlignment="Center" Text="Add" />
+						</StackPanel>
+					</Button>
+				</Grid>
+				
+				<ItemsRepeater
+					Items="{Binding MeterTypeMeasurementTypeForms}"
+					Background="Transparent">
+
+					<ItemsRepeater.Layout>
+						<StackLayout Spacing="10" Orientation="Vertical" />
+					</ItemsRepeater.Layout>
+
+					<ItemsRepeater.ItemTemplate>
+						<DataTemplate>
+							<Border Background="#1e1f20" Padding="5" CornerRadius="5">
+								<Grid ColumnDefinitions="*, auto">
+									<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
+										<ComboBox
+											Items="{Binding MeasurementTypes}"
+											SelectedIndex="{Binding SelectedMeasurementTypeIndex}">
+											<ComboBox.ItemTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Name}" />
+												</DataTemplate>
+											</ComboBox.ItemTemplate>
+										</ComboBox>
+
+										<StackPanel Classes="formItem" Orientation="Horizontal" Spacing="5">
+											<TextBlock
+												Text="Sort order"
+												MinWidth="0" />
+											<NumericUpDown
+												Value="{Binding Model.SortOrder}"
+												Minimum="0"
+												AllowSpin="False"
+												ShowButtonSpinner="False" />
+										</StackPanel>
+									</StackPanel>
+
+									<Button Grid.Column="1" Classes="smallButton" Padding="10 5" Command="{Binding CancelCommand}">
+										<material:MaterialIcon Kind="Delete" Foreground="White" Width="20" Height="20" />
+									</Button>
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ItemsRepeater.ItemTemplate>
+				</ItemsRepeater>
+			</StackPanel>
+		</ScrollViewer>
+
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">
+			<Button Content="Submit" Command="{Binding SubmitCommand}" />
+			<Button Content="Cancel" Command="{Binding CancelCommand}" />
+		</StackPanel>
+	</Grid>
+</UserControl>

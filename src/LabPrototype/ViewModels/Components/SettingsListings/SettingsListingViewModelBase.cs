@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace LabPrototype.ViewModels.Components.Settings
+namespace LabPrototype.ViewModels.Components.SettingsListings
 {
     public abstract class SettingsListingViewModelBase<
         T,

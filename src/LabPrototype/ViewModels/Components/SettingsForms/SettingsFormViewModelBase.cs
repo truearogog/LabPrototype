@@ -31,19 +31,32 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
             _store = GetRequiredService<TStore>();
         }
 
-        public virtual void Activate(ICommand cancelCommand, Action<TStore, T>? submitAction = null)
+        public virtual void Activate(ICommand cancelCommand, Func<TStore, T, T?>? submitAction = null)
         {
             CancelCommand = cancelCommand;
             this.RaisePropertyChanged(nameof(CancelCommand));
             SubmitCommand = ReactiveCommand.Create(() =>
             {
-                OnSubmit();
-                submitAction?.Invoke(_store, _model);
+                BeforeSubmit();
+                if (submitAction != default)
+                {
+                    var model = submitAction?.Invoke(_store, _model);
+                    AfterSubmit(model);
+                }
             });
             this.RaisePropertyChanged(nameof(SubmitCommand));
         }
 
-        protected virtual void OnSubmit()
+        protected virtual void BeforeSubmit()
+        {
+            PrepareModel();
+        }
+
+        protected virtual void AfterSubmit(T? model)
+        {
+        }
+
+        public virtual void PrepareModel()
         {
         }
 

@@ -99,6 +99,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Dialogs\MeterTypeSettings\" />
+    <UpToDateCheckInput Remove="Views\Dialogs\MeterTypeSettings\CreateMeterTypeDialog.axaml" />
   </ItemGroup>
 </Project>

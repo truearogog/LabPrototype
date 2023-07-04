@@ -9,8 +9,8 @@ namespace LabPrototype.Domain.IStores
         event Action<T?> ModelUpdated;
         event Action<int> ModelDeleted;
 
-        void Create(IServiceBase<T> service, T model);
-        void Update(IServiceBase<T> service, T model);
+        T? Create(IServiceBase<T> service, T model);
+        T? Update(IServiceBase<T> service, T model);
         void Delete(IServiceBase<T> service, int modelId);
     }
 }

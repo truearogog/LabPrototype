@@ -40,14 +40,15 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             }
         }
 
-        protected override void OnSubmit()
+        public override void PrepareModel()
         {
             Model.MeasurementTypeId = MeasurementTypes[SelectedMeasurementTypeIndex].Id;
         }
 
         protected override void OnModelSet()
         {
-            SelectedMeasurementTypeIndex = MeasurementTypes.ToList().FindIndex(x => x?.Id.Equals(Model?.MeasurementTypeId) ?? false);
+            var index = MeasurementTypes.ToList().FindIndex(x => x?.Id.Equals(Model?.MeasurementTypeId) ?? false);
+            SelectedMeasurementTypeIndex = (index != -1) ? index : 0;
         }
     }
 }

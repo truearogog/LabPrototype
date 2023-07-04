@@ -21,8 +21,9 @@ namespace LabPrototype.ViewModels.Dialogs
             SettingsFormViewModel = new TSettingsForm();
             SettingsFormViewModel.Activate(CloseCommand, (store, model) =>
             {
-                store.Update(service, model);
+                var updatedModel = store.Update(service, model);
                 Close();
+                return updatedModel;
             });
         }
 
