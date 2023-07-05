@@ -13,9 +13,9 @@ namespace LabPrototype.AppManagers.Stores
 
         public T? Create(IServiceBase<T> service, T model)
         {
-            model = service.Create(model);
-            ModelCreated?.Invoke(model);
-            return model;
+            var createdModel = service.Create(model);
+            ModelCreated?.Invoke(createdModel);
+            return createdModel;
         }
 
         public T? Update(IServiceBase<T> service, T model)
