@@ -5,6 +5,7 @@ namespace LabPrototype.Views.Dialogs.MeasurementTypeSettings
         public CreateMeasurementTypeDialog()
         {
             InitializeComponent();
+            LockSize();
         }
     }
 }

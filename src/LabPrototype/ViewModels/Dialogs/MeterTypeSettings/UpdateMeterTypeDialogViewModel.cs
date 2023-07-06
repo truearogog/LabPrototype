@@ -5,7 +5,11 @@ using LabPrototype.ViewModels.Components.SettingsForms;
 
 namespace LabPrototype.ViewModels.Dialogs.MeterTypeSettings
 {
-    public class UpdateMeterTypeDialogViewModel : UpdateDialogViewModelBase<MeterType, IMeterTypeService, IMeterTypeStore, MeterTypeSettingsFormViewModel>
+    public class UpdateMeterTypeDialogViewModel : UpdateDialogViewModelBase<
+        MeterType, 
+        IMeterTypeService, 
+        IMeterTypeStore,
+        MeterTypeSettingsFormViewModel>
     {
         public UpdateMeterTypeDialogViewModel() : base() { }
     }

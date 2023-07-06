@@ -1,23 +1,20 @@
-﻿using Modbus.Device;
+﻿using NModbus;
+using NModbus.Serial;
 using System.IO.Ports;
 using System.Text;
 
 namespace LabPrototype.ModbusTest
 {
-    internal class Program
+    public class Program
     {
+
         static void Main(string[] args)
         {
-            var serialPort = new SerialPort
-            {
-                PortName = "COM4",
-                BaudRate = 9600,
-                DataBits = 8,
-                Parity = Parity.None,
-                StopBits = StopBits.One,
-            };
-            serialPort.Open();
-            var master = ModbusSerialMaster.CreateRtu(serialPort);
+            using var masterPort = new SerialPort("COM4", 9600, Parity.None, 8, StopBits.One);
+            masterPort.Open();
+
+            var factory = new ModbusFactory();
+            var master = factory.CreateRtuMaster(masterPort);
             
             byte slaveID = 1;
             ushort startAddress = 0;

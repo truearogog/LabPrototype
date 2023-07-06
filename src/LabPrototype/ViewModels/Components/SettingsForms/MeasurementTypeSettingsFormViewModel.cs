@@ -41,11 +41,13 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         public override void PrepareModel()
         {
+            base.PrepareModel();
             Model.ColorSchemeId = ColorSchemes[SelectedColorSchemeIndex].Id;
         }
 
         protected override void OnModelSet()
         {
+            base.OnModelSet();
             SelectedColorSchemeIndex = ColorSchemes.ToList().FindIndex(x => x?.Id.Equals(Model?.ColorSchemeId) ?? false);
         }
     }

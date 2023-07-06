@@ -14,7 +14,7 @@
 	<Panel>
 		<ExperimentalAcrylicBorder Classes="b60" />
 
-		<Grid Margin="10 20" RowDefinitions="auto,*">
+		<Grid Margin="20" RowDefinitions="auto,*">
 			<TextBlock Grid.Row="0" Classes="dialogHeader" Text="New Meter Type" />
 			<settings-forms:MeterTypeSettingsForm Grid.Row="1" DataContext="{Binding SettingsFormViewModel}" />
 		</Grid>

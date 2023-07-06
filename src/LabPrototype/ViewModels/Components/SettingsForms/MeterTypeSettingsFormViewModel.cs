@@ -51,6 +51,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         public override void PrepareModel()
         {
+            base.PrepareModel();
             Model.ColorSchemeId = ColorSchemes[SelectedColorSchemeIndex].Id;
         }
 
@@ -93,6 +94,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         protected override void OnModelSet()
         {
+            base.OnModelSet();
             SelectedColorSchemeIndex = ColorSchemes.ToList().FindIndex(x => x?.Id.Equals(Model?.ColorSchemeId) ?? false);
 
             var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(Model.Id));

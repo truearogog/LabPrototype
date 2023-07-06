@@ -42,11 +42,13 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         public override void PrepareModel()
         {
+            base.PrepareModel();
             Model.MeasurementTypeId = MeasurementTypes[SelectedMeasurementTypeIndex].Id;
         }
 
         protected override void OnModelSet()
         {
+            base.OnModelSet();
             var index = MeasurementTypes.ToList().FindIndex(x => x?.Id.Equals(Model?.MeasurementTypeId) ?? false);
             SelectedMeasurementTypeIndex = (index != -1) ? index : 0;
         }

@@ -5,6 +5,7 @@ namespace LabPrototype.Views.Dialogs.MeterSettings
         public DeleteMeterDialog()
         {
             InitializeComponent();
+            LockSize();
         }
     }
 }

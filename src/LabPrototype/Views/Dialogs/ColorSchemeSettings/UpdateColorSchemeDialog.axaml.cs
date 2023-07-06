@@ -5,6 +5,7 @@ namespace LabPrototype.Views.Dialogs.ColorSchemeSettings
         public UpdateColorSchemeDialog()
         {
             InitializeComponent();
+            LockSize();
         }
     }
 }

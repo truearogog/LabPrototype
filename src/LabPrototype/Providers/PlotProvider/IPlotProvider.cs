@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace LabPrototype.Models.Interfaces
+namespace LabPrototype.Providers.PlotProvider
 {
     public interface IPlotProvider
     {

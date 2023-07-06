@@ -5,25 +5,15 @@
         mc:Ignorable="d"
 		xmlns:settings-forms="using:LabPrototype.Views.Components.SettingsForms"
         x:Class="LabPrototype.Views.Dialogs.MeasurementTypeSettings.UpdateMeasurementTypeDialog"
-        Title="Edit meter"
+        Title="Edit Measurement Type"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-		MinWidth="400"
-		MinHeight="300"
 		SizeToContent="WidthAndHeight">
 	<Panel>
-		<ExperimentalAcrylicBorder IsHitTestVisible="False">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.65" />
-			</ExperimentalAcrylicBorder.Material>
-		</ExperimentalAcrylicBorder>
+		<ExperimentalAcrylicBorder Classes="b60" />
 
 		<Grid Margin="20" RowDefinitions="auto,*">
-			<TextBlock Grid.Row="0" Text="Edit measurement type" FontSize="20" />
+			<TextBlock Grid.Row="0" Classes="dialogHeader" Text="Edit Measurement Type" />
 			<settings-forms:MeasurementTypeSettingsForm Grid.Row="1" DataContext="{Binding SettingsFormViewModel}" />
 		</Grid>
 	</Panel>

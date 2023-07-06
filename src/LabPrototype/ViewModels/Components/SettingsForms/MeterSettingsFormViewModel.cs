@@ -40,11 +40,13 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
 
         public override void PrepareModel()
         {
+            base.PrepareModel();
             Model.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
         }
 
         protected override void OnModelSet()
         {
+            base.OnModelSet();
             SelectedMeterTypeIndex = MeterTypes.ToList().FindIndex(x => x?.Id.Equals(Model?.MeterTypeId) ?? false);
         }
     }

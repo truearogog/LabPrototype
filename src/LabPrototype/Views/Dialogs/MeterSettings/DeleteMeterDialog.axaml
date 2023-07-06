@@ -4,37 +4,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         x:Class="LabPrototype.Views.Dialogs.MeterSettings.DeleteMeterDialog"
-        Title="Delete meter"
+        Title="Delete Meter"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-		MinWidth="200"
+		MinWidth="300"
 		MinHeight="150"
 		SizeToContent="WidthAndHeight">
 	<Panel>
-		<ExperimentalAcrylicBorder IsHitTestVisible="False">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.65" />
-			</ExperimentalAcrylicBorder.Material>
-		</ExperimentalAcrylicBorder>
+		<ExperimentalAcrylicBorder Classes="b60" />
 
 		<Grid RowDefinitions="*, auto" Margin="20">
-			<WrapPanel Grid.Row="0">
-				<WrapPanel.Styles>
-					<Style Selector="TextBlock">
-						<Setter Property="Margin" Value="0 0 7 0" />
-					</Style>
-				</WrapPanel.Styles>
-				<TextBlock Text="Are you sure you want to delete" />
-				<StackPanel Orientation="Horizontal">
-					<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Model.Name}" />
-					<TextBlock Text="?" />
-				</StackPanel>
-			</WrapPanel>
-			
+			<StackPanel  Grid.Row="0" Orientation="Horizontal" Spacing="5">
+				<TextBlock Text="Delete" />
+				<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Model.Name}" />
+				<TextBlock Text="?" />
+			</StackPanel>
+
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
 				<Button Content="Delete" Command="{Binding DeleteCommand}" />
 				<Button Content="Cancel" Command="{Binding CancelCommand}" />

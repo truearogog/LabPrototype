@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.Windows.Input;
 using System.Threading.Tasks;
-using LabPrototype.Models.Interfaces;
 using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System.Collections.Generic;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Framework.Extensions;
+using LabPrototype.Providers.PlotProvider;
 
 namespace LabPrototype.ViewModels.Components
 {

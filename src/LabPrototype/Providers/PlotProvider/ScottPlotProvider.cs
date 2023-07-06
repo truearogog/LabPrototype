@@ -5,9 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using LabPrototype.Models.Interfaces;
 
-namespace LabPrototype.Models.Implementations
+namespace LabPrototype.Providers.PlotProvider
 {
     public class ScottPlotProvider : IPlotProvider
     {
@@ -16,15 +15,15 @@ namespace LabPrototype.Models.Implementations
 
         private Crosshair? _crosshair;
 
-        public bool LockXAxis 
-        { 
+        public bool LockXAxis
+        {
             get => _plot.Configuration.LockHorizontalAxis;
             set => _plot.Configuration.LockHorizontalAxis = value;
         }
 
-        public bool LockYAxis 
-        { 
-            get => _plot.Configuration.LockVerticalAxis; 
+        public bool LockYAxis
+        {
+            get => _plot.Configuration.LockVerticalAxis;
             set => _plot.Configuration.LockVerticalAxis = value;
         }
 

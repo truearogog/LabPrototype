@@ -101,4 +101,8 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Dialogs\MeterTypeSettings\CreateMeterTypeDialog.axaml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

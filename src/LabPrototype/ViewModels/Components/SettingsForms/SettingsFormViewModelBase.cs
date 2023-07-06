@@ -1,5 +1,7 @@
-﻿using LabPrototype.Domain.IStores;
+﻿using AutoMapper;
+using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Framework.Models;
 using ReactiveUI;
 using System;
 using System.Windows.Input;
@@ -22,6 +24,7 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
         }
 
         private readonly TStore _store;
+        private readonly IMapper _mapper;
 
         public ICommand? CancelCommand { get; private set; }
         public ICommand? SubmitCommand { get; private set; }
@@ -29,6 +32,7 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
         public SettingsFormViewModelBase()
         {
             _store = GetRequiredService<TStore>();
+            _mapper = GetRequiredService<IMapper>();
         }
 
         public virtual void Activate(ICommand cancelCommand, Func<TStore, T, T?>? submitAction = null)

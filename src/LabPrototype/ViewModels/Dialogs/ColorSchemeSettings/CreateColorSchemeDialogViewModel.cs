@@ -5,7 +5,11 @@ using LabPrototype.ViewModels.Components.SettingsForms;
 
 namespace LabPrototype.ViewModels.Dialogs.ColorSchemeSettings
 {
-    public class CreateColorSchemeDialogViewModel : CreateDialogViewModelBase<ColorScheme, IColorSchemeService, IColorSchemeStore, ColorSchemeSettingsFormViewModel>
+    public class CreateColorSchemeDialogViewModel : CreateDialogViewModelBase<
+        ColorScheme, 
+        IColorSchemeService, 
+        IColorSchemeStore, 
+        ColorSchemeSettingsFormViewModel>
     {
         public CreateColorSchemeDialogViewModel() : base() { }
     }

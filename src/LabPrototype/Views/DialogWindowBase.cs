@@ -40,8 +40,7 @@ namespace LabPrototype.Views
 
         protected void LockSize()
         {
-            MaxWidth = MinWidth = Width;
-            MaxHeight = MinHeight = Height;
+            CanResize = false;
         }
 
         private void SubscribeToViewModelEvents()

@@ -2,8 +2,8 @@
 {
     public class ColorScheme : PresentationModelBase
     {
-        public string? Name { get; set; }
-        public string? PrimaryColor { get; set; }
-        public string? SecondaryColor { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string PrimaryColor { get; set; } = string.Empty;
+        public string SecondaryColor { get; set; } = string.Empty;
     }
 }

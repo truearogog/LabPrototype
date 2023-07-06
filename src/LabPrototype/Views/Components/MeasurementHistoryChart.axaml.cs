@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using LabPrototype.ViewModels.Components;
-using LabPrototype.Models.Implementations;
-using LabPrototype.Models.Interfaces;
+using LabPrototype.Providers.PlotProvider;
 
 namespace LabPrototype.Views.Components
 {
