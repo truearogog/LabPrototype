@@ -9,11 +9,7 @@ namespace LabPrototype.Framework.Models
         {
         }
 
-        protected TRef ValidateAndSet<TRef>(
-            ref TRef backingField, 
-            TRef newValue, 
-            out ICollection<ValidationResult> results,
-            [CallerMemberName] string? propertyName = null)
+        protected TRef ValidateAndSetOut<TRef>(ref TRef backingField, TRef newValue, out ICollection<ValidationResult> results, [CallerMemberName] string? propertyName = null)
         {
             if (propertyName is null)
             {
@@ -32,7 +28,14 @@ namespace LabPrototype.Framework.Models
             return newValue;
         }
 
-        public bool Validate(out ICollection<ValidationResult> results)
+        protected TRef ValidateAndSetRef<TRef>(ref TRef backingField, TRef newValue, ref ICollection<ValidationResult>? results, [CallerMemberName] string? propertyName = null)
+        {
+            var _newValue = ValidateAndSetOut(ref backingField, newValue, out var _results, propertyName);
+            results = _results;
+            return _newValue;
+        }
+
+        public bool Validate(out ICollection<ValidationResult> results, bool recursive = false)
         {
             results = new List<ValidationResult>();
             return Validator.TryValidateObject(this, new ValidationContext(this), results, true);

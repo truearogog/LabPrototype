@@ -18,17 +18,17 @@
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">
 					<TextBlock	Grid.Column="0" Text="Name" />
-					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Model.Name}" />
+					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
 				</Grid>
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">
 					<TextBlock	Grid.Column="0" Text="Primary Color" />
-					<TextBox	Grid.Column="1" Watermark="Primary Color" Text="{Binding Model.PrimaryColor}" />
+					<TextBox	Grid.Column="1" Watermark="Primary Color" Text="{Binding Form.PrimaryColor}" />
 				</Grid>
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">
 					<TextBlock	Grid.Column="0" Text="Secondary Color" />
-					<TextBox	Grid.Column="1" Watermark="Secondary Color" Text="{Binding Model.SecondaryColor}" />
+					<TextBox	Grid.Column="1" Watermark="Secondary Color" Text="{Binding Form.SecondaryColor}" />
 				</Grid>
 			</StackPanel>
 		</ScrollViewer>

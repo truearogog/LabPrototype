@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LabPrototype.Domain.Entities;
+using LabPrototype.Domain.Models.Forms;
 using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Profiles
@@ -10,6 +11,9 @@ namespace LabPrototype.AppManagers.Profiles
         {
             CreateMap<ColorScheme, ColorSchemeEntity>();
             CreateMap<ColorSchemeEntity, ColorScheme>();
+
+            CreateMap<ColorScheme, ColorSchemeForm>();
+            CreateMap<ColorSchemeForm, ColorScheme>();
         }
     }
 }

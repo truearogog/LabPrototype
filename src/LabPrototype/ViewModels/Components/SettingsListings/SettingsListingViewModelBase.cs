@@ -7,6 +7,7 @@ using LabPrototype.ViewModels.Components.SettingsListingItems;
 using LabPrototype.ViewModels.Models;
 using LabPrototype.Views;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -79,14 +80,17 @@ namespace LabPrototype.ViewModels.Components.SettingsListings
         private void AddModel(T model)
         {
             var viewModel = new TListingItemViewModel();
-            var navigationParameter = new ModelNavigationParameter<T>(model);
-            viewModel.Activate(
-                model,
-                ReactiveCommand.CreateFromTask(async () 
-                    => await _windowService.ShowDialogAsync<TUpdateView, TUpdateViewModel, ModelNavigationParameter<T>>(_parentWindow, navigationParameter)),
-                ReactiveCommand.CreateFromTask(async () 
-                    => await _windowService.ShowDialogAsync<TDeleteView, TDeleteViewModel, ModelNavigationParameter<T>>(_parentWindow, navigationParameter)));
+            viewModel.Model = model;
+            viewModel.Activate(GetOpenModelDialogCommandFactory<TUpdateView, TUpdateViewModel>(), GetOpenModelDialogCommandFactory<TDeleteView, TDeleteViewModel>());
             ListingItems.Add(viewModel);
+        }
+
+        private Func<T, ICommand> GetOpenModelDialogCommandFactory<TView, TViewModel>()
+            where TView : DialogWindowBase, new() 
+            where TViewModel : ParametrizedDialogViewModelBase<ModelNavigationParameter<T>>, new()
+        {
+            return model => ReactiveCommand.CreateFromTask(async () 
+                => await _windowService.ShowDialogAsync<TView, TViewModel, ModelNavigationParameter<T>>(_parentWindow, new ModelNavigationParameter<T>(model)));
         }
 
         private void _ModelCreated(T model)

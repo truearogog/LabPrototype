@@ -1,15 +1,17 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Framework.Models;
 using LabPrototype.ViewModels.Components.ModelSettings;
 
 namespace LabPrototype.ViewModels.Dialogs
 {
-    public class CreateDialogViewModelBase<T, TService, TStore, TSettingsForm> : DialogViewModelBase
+    public class CreateDialogViewModelBase<T, TService, TStore, TForm, TSettingsForm> : DialogViewModelBase
         where T : PresentationModelBase, new()
         where TService : IServiceBase<T>
         where TStore : IStoreBase<T>
-        where TSettingsForm : SettingsFormViewModelBase<T, TStore>, new()
+        where TForm : FormBase, new()
+        where TSettingsForm : SettingsFormViewModelBase<T, TStore, TForm>, new()
     {
         public TSettingsForm SettingsFormViewModel { get; } 
 

@@ -18,12 +18,12 @@
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">
 					<TextBlock	Grid.Column="0" Text="Name" />
-					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Model.Name}" />
+					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
 				</Grid>
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">
 					<TextBlock	Grid.Column="0" Text="Unit" />
-					<TextBox	Grid.Column="1" Watermark="Unit" Text="{Binding Model.Unit}" />
+					<TextBox	Grid.Column="1" Watermark="Unit" Text="{Binding Form.Unit}" />
 				</Grid>
 
 				<Grid Classes="formItem" ColumnDefinitions="auto,*">

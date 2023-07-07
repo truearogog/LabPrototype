@@ -1,5 +1,6 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
+using LabPrototype.Domain.Models.Forms;
 using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace LabPrototype.ViewModels.Components.ModelSettings
 {
-    public class MeterSettingsFormViewModel : SettingsFormViewModelBase<Meter, IMeterStore>
+    public class MeterSettingsFormViewModel : SettingsFormViewModelBase<Meter, IMeterStore, MeterForm>
     {
         private int _selectedMeterTypeIndex;
         public int SelectedMeterTypeIndex
