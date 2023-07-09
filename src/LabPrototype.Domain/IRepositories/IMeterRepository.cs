@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Entities;
+﻿using LabPrototype.Domain.Models.Entities;
 
 namespace LabPrototype.Domain.IRepositories
 {

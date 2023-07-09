@@ -7,8 +7,7 @@
         Title="Delete Measurement Type"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-		MinWidth="300"
-		MinHeight="150"
+		MinWidth="300" MinHeight="150"
 		SizeToContent="WidthAndHeight">
 	<Panel>
 		<ExperimentalAcrylicBorder Classes="b60" />

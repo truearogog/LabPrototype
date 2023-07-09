@@ -1,5 +1,5 @@
-﻿using LabPrototype.Domain.Entities;
-using LabPrototype.Domain.IRepositories;
+﻿using LabPrototype.Domain.IRepositories;
+using LabPrototype.Domain.Models.Entities;
 
 namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 {
@@ -15,6 +15,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             if (entity is null)
                 return Enumerable.Empty<MeasurementTypeEntity>();
             return entity.MeterTypeMeasurementTypes
+                .OrderBy(x => x.SortOrder)
                 .Select(x => x.MeasurementType)
                 .OfType<MeasurementTypeEntity>();
         }

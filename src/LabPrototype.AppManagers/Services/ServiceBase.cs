@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using LabPrototype.Domain.Entities;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IRepositories;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.Models.Entities;
 
 namespace LabPrototype.AppManagers.Services
 {

@@ -1,7 +1,7 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Framework.Models;
+using LabPrototype.Models.Forms;
 using LabPrototype.ViewModels.Components.ModelSettings;
 
 namespace LabPrototype.ViewModels.Dialogs

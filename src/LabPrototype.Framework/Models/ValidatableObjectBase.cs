@@ -1,12 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LabPrototype.Framework.Factories;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
 namespace LabPrototype.Framework.Models
 {
-    public class ValidatableObjectBase
+    public class ValidatableObjectBase<TException, TExceptionFactory>
+        where TException : Exception
+        where TExceptionFactory : IExceptionFactory<TException, ValidationResult>, new()
     {
+        private readonly TExceptionFactory _exceptionFactory;
+
         protected ValidatableObjectBase()
         {
+            _exceptionFactory = new TExceptionFactory();
         }
 
         protected TRef ValidateAndSetOut<TRef>(ref TRef backingField, TRef newValue, out ICollection<ValidationResult> results, [CallerMemberName] string? propertyName = null)
@@ -28,11 +34,14 @@ namespace LabPrototype.Framework.Models
             return newValue;
         }
 
-        protected TRef ValidateAndSetRef<TRef>(ref TRef backingField, TRef newValue, ref ICollection<ValidationResult>? results, [CallerMemberName] string? propertyName = null)
+        protected TRef ValidateAndSetThrow<TRef>(ref TRef backingField, TRef newValue, [CallerMemberName] string? propertyName = null)
         {
-            var _newValue = ValidateAndSetOut(ref backingField, newValue, out var _results, propertyName);
-            results = _results;
-            return _newValue;
+            ValidateAndSetOut(ref backingField, newValue, out var _results, propertyName);
+            if (_results.Any())
+            {
+                throw _exceptionFactory.GetException(_results.First());
+            }
+            return newValue;
         }
 
         public bool Validate(out ICollection<ValidationResult> results, bool recursive = false)

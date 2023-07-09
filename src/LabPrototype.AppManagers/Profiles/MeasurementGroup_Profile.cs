@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LabPrototype.Domain.Entities;
+using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Profiles

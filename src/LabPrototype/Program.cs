@@ -22,9 +22,10 @@ using LabPrototype.Domain.IStores;
 using LabPrototype.AppManagers.Profiles;
 using System.Collections.Generic;
 using System.Linq;
-using LabPrototype.Domain.Entities;
 using LabPrototype.Services.FlowMeasurementGroupProvider;
 using LabPrototype.Services.WindowService;
+using LabPrototype.Domain.Models.Entities;
+using LabPrototype.Models.Profiles;
 
 namespace LabPrototype
 {
@@ -59,7 +60,6 @@ namespace LabPrototype
 
                 // seed measurement groups
                 // SeedMeasurementGroups();
-                
                 
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
             }
@@ -194,7 +194,13 @@ namespace LabPrototype
                     typeof(MeasurementType_Profile),
                     typeof(Meter_Profile),
                     typeof(MeterType_Profile),
-                    typeof(MeterTypeMeasurementType_Profile)
+                    typeof(MeterTypeMeasurementType_Profile),
+
+                    typeof(ColorSchemeForm_Profile),
+                    typeof(MeasurementTypeForm_Profile),
+                    typeof(MeterForm_Profile),
+                    typeof(MeterTypeForm_Profile),
+                    typeof(MeterTypeMeasurementTypeForm_Profile),
                 };
                 var config = new MapperConfiguration(cfg => {
                     foreach (var profileType in profileTypes)

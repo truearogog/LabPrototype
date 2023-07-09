@@ -1,4 +1,4 @@
-﻿namespace LabPrototype.Domain.Entities
+﻿namespace LabPrototype.Domain.Models.Entities
 {
     public abstract class EntityBase
     {

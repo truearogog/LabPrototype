@@ -3,45 +3,36 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
-	MinWidth="400" MinHeight="300"
-	MaxWidth="400" MaxHeight="300"
 	x:Class="LabPrototype.Views.Components.SettingsForms.MeasurementTypeSettingsForm">
 
 	<Grid RowDefinitions="*, auto">
-		<ScrollViewer
-			Grid.Row="0"
-			HorizontalScrollBarVisibility="Hidden"
-			VerticalScrollBarVisibility="Auto">
+		<StackPanel Grid.Row="0" Classes="formStackPanel">
 
-			<StackPanel Classes="formStackPanel">
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Name" />
+				<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
+			</Grid>
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Name" />
-					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
-				</Grid>
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Unit" />
+				<TextBox	Grid.Column="1" Watermark="Unit" Text="{Binding Form.Unit}" />
+			</Grid>
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Unit" />
-					<TextBox	Grid.Column="1" Watermark="Unit" Text="{Binding Form.Unit}" />
-				</Grid>
-
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Color Scheme" />
-					<ComboBox	Grid.Column="1" Items="{Binding ColorSchemes}" SelectedIndex="{Binding SelectedColorSchemeIndex}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-									<Border Classes="colorPresenter" Background="{Binding PrimaryColor}" />
-									<Border Classes="colorPresenter" Background="{Binding SecondaryColor}" />
-								</StackPanel>
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
-					</ComboBox>
-				</Grid>
-			</StackPanel>
-		</ScrollViewer>
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Color Scheme" />
+				<ComboBox	Grid.Column="1" Items="{Binding ColorSchemes}" SelectedIndex="{Binding SelectedColorSchemeIndex}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+								<Border Classes="colorPresenter" Background="{Binding PrimaryColor}" />
+								<Border Classes="colorPresenter" Background="{Binding SecondaryColor}" />
+							</StackPanel>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</Grid>
+		</StackPanel>
 
 		<StackPanel Grid.Row="1" Classes="formButtonPanel">
 			<Button Content="Submit" Command="{Binding SubmitCommand}" />

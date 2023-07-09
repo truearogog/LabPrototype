@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Entities;
+﻿using LabPrototype.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LabPrototype.Infrastructure.DataAccessLayer.Configurations

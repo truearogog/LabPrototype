@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using LabPrototype.Domain.Entities;
-using LabPrototype.Domain.Models.Forms;
+using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Profiles
@@ -11,9 +10,6 @@ namespace LabPrototype.AppManagers.Profiles
         {
             CreateMap<MeterType, MeterTypeEntity>();
             CreateMap<MeterTypeEntity, MeterType>();
-
-            CreateMap<MeterType, MeterTypeForm>();
-            CreateMap<MeterTypeForm, MeterType>();
         }
     }
 }

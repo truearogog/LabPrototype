@@ -1,7 +1,7 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
-using LabPrototype.Domain.Models.Forms;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Models.Forms;
 using LabPrototype.ViewModels.Components.ModelSettings;
 using ReactiveUI;
 using System.Collections.Generic;
@@ -58,7 +58,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         protected override void AfterSubmit(MeterType? model)
         {
-            if (model != default)
+            if (model is not null)
             {
                 var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(model.Id));
 
@@ -98,7 +98,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             base.OnModelSet();
             SelectedColorSchemeIndex = ColorSchemes.ToList().FindIndex(x => x?.Id.Equals(Model?.ColorSchemeId) ?? false);
 
-            var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(Model.Id));
+            var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(Model.Id)).OrderBy(x => x.SortOrder);
             CreateMeterTypeMeasurementTypeForms(meterTypeMeasurementTypes);
         }
 

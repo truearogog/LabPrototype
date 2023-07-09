@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Framework.Models;
+using LabPrototype.Models.Forms;
 using ReactiveUI;
 using System;
 using System.Windows.Input;
@@ -73,12 +73,13 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
 
         public virtual void PrepareModel()
         {
-            Model = _mapper.Map<T>(Form);
+            _model = _mapper.Map<T>(_form);
         }
 
         protected virtual void OnModelSet()
         {
-            Form = _mapper.Map<TForm>(Model);
+            _form = _mapper.Map<TForm>(_model);
+            this.RaisePropertyChanged(nameof(Form));
         }
     }
 }

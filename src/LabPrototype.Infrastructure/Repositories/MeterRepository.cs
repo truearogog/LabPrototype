@@ -1,5 +1,5 @@
-﻿using LabPrototype.Domain.Entities;
-using LabPrototype.Domain.IRepositories;
+﻿using LabPrototype.Domain.IRepositories;
+using LabPrototype.Domain.Models.Entities;
 
 namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 {

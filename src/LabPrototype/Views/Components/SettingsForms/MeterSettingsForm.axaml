@@ -3,47 +3,82 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
-	MinWidth="400" MinHeight="300"
-	MaxWidth="400" MaxHeight="300"
     x:Class="LabPrototype.Views.Components.SettingsForms.MeterSettingsForm">
 
 	<Grid RowDefinitions="*, auto">
-		<ScrollViewer
-			Grid.Row="0"
-			HorizontalScrollBarVisibility="Hidden"
-			VerticalScrollBarVisibility="Auto">
-			
-			<StackPanel Classes="formStackPanel">
+		<StackPanel Grid.Row="0" Classes="formStackPanel">
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Serial code" />
-					<TextBox	Grid.Column="1" Watermark="Serial code" Text="{Binding Form.SerialCode}" />
-				</Grid>
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Serial code" />
+				<TextBox	Grid.Column="1" Watermark="Serial code" Text="{Binding Form.SerialCode}" />
+			</Grid>
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Name" />
-					<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
-				</Grid>
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Name" />
+				<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.Name}" />
+			</Grid>
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Address" />
-					<TextBox	Grid.Column="1" Watermark="Address" Text="{Binding Form.Address}" />
-				</Grid>
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Address" />
+				<TextBox	Grid.Column="1" Watermark="Address" Text="{Binding Form.Address}" />
+			</Grid>
 
-				<Grid Classes="formItem" ColumnDefinitions="auto,*">
-					<TextBlock	Grid.Column="0" Text="Meter Type" />
-					<ComboBox	Grid.Column="1" Items="{Binding MeterTypes}" SelectedIndex="{Binding SelectedMeterTypeIndex}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Description}" />
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
-					</ComboBox>
-				</Grid>
-			</StackPanel>
-		</ScrollViewer>
+			<!---->
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock		Grid.Column="0" Text="Meter Nr" />
+				<NumericUpDown	Grid.Column="1" Watermark="Meter Nr" Value="{Binding Form.MeterNr}" Minimum="1" Maximum="256" AllowSpin="False" ShowButtonSpinner="False" />
+			</Grid>
 
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Port Name" />
+				<TextBox	Grid.Column="1" Watermark="PortName" Text="{Binding Form.PortName}" />
+			</Grid>
+
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock		Grid.Column="0" Text="Baud Rate" />
+				<NumericUpDown	Grid.Column="1" Watermark="Baud Rate" Value="{Binding Form.BaudRate}" Minimum="0" AllowSpin="False" ShowButtonSpinner="False" />
+			</Grid>
+
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Parity" />
+				<ComboBox	Grid.Column="1" Items="{Binding Parities}" SelectedIndex="{Binding SelectedParityIndex}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Name}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</Grid>
+
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock		Grid.Column="0" Text="Data Bits" />
+				<NumericUpDown	Grid.Column="1" Watermark="Data Bits" Value="{Binding Form.DataBits}" Minimum="0" AllowSpin="False" ShowButtonSpinner="False" />
+			</Grid>
+
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Stop Bits" />
+				<ComboBox	Grid.Column="1" Items="{Binding StopBits}" SelectedIndex="{Binding SelectedStopBitsIndex}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Name}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</Grid>
+
+			<!---->
+			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+				<TextBlock	Grid.Column="0" Text="Meter Type" />
+				<ComboBox	Grid.Column="1" Items="{Binding MeterTypes}" SelectedIndex="{Binding SelectedMeterTypeIndex}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Description}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</Grid>
+		</StackPanel>
+		
 		<StackPanel Grid.Row="1" Classes="formButtonPanel">
 			<Button Content="Submit" Command="{Binding SubmitCommand}" />
 			<Button Content="Cancel" Command="{Binding CancelCommand}" />

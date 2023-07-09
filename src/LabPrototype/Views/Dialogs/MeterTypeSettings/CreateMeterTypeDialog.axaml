@@ -8,8 +8,6 @@
         Title="New Meter Type"
 		TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-		MinWidth="520" MinHeight="400"
-		MaxWidth="520" MaxHeight="600"
 		SizeToContent="WidthAndHeight">
 	<Panel>
 		<ExperimentalAcrylicBorder Classes="b60" />

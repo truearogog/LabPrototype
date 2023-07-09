@@ -1,6 +1,4 @@
-﻿using LabPrototype.Framework.Models;
-
-namespace LabPrototype.Domain.Models.Forms
+﻿namespace LabPrototype.Models.Forms
 {
     public class MeterTypeMeasurementTypeForm : FormBase
     {
