@@ -2,11 +2,6 @@
 {
     public class ModelNavigationParameter<T> : NavigationParameterBase
     {
-        public T? Model { get; }
-
-        public ModelNavigationParameter(T? model)
-        {
-            Model = model;
-        }
+        public T? Model { get; init; } = default;
     }
 }

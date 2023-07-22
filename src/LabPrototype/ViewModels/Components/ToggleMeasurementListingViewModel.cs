@@ -1,5 +1,8 @@
-﻿using LabPrototype.Domain.IServices;
+﻿using LabPrototype.AppManagers.Services;
+using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
+using LabPrototype.Domain.Models.Presentation.Measurements;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,49 +13,60 @@ namespace LabPrototype.ViewModels.Components
     {
         public event Action<int, bool>? OnChecked;
 
-        public ObservableCollection<MeasurementListingItemViewModel> Items { get; set; } = new();
+        public ObservableCollection<ToggleMeasurementListingItemViewModel> ToggleMeasurementListingItems { get; set; } = new();
 
         private readonly IMeterTypeService _meterTypeService;
-        private readonly IColorSchemeService _colorSchemeService;
+        private readonly IMeterTypeMeasurementTypeService _meterTypeMeasurementTypeService;
 
         public ToggleMeasurementListingViewModel()
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _colorSchemeService = GetRequiredService<IColorSchemeService>();
+            _meterTypeMeasurementTypeService = GetRequiredService<IMeterTypeMeasurementTypeService>();
         }
 
         public override void Dispose()
         {
-            foreach (var item in Items)
+            foreach (var item in ToggleMeasurementListingItems)
             {
                 item.Dispose();
             }
             base.Dispose();
         }
 
-        public void UpdateMeter(Meter? meter)
+        public void Update(Meter? meter, Func<Measurement, double>? valueSelector = null)
         {
             if (meter is not null)
             {
-                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId) ?? Enumerable.Empty<MeasurementType>();
+                var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(meter.Id));
 
-                Items.Clear();
+                var measurementTypes = 
+                    _meterTypeService
+                    .GetMeasurementTypes(meter.MeterTypeId)
+                    .OrderBy(x => meterTypeMeasurementTypes.FirstOrDefault(y => y.MeasurementTypeId.Equals(x.Id))?.SortOrder ?? int.MaxValue)
+                    ?? Enumerable.Empty<MeasurementType>();
 
-                var dateTimeColorScheme = _colorSchemeService.GetById(9);
-                Items.Add(new ToggleMeasurementListingItemViewModel(
-                    this, 
+                ToggleMeasurementListingItems.Clear();
+
+                var dateTimeColorScheme = new ColorScheme { PrimaryColor = "#2c3e50", SecondaryColor = "#34495e" };
+                ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(
                     new MeasurementType() { Name = "Date/time", ColorScheme = dateTimeColorScheme }, 
-                    measurementGroup => measurementGroup.Created.ToString()));
+                    this,
+                    measurementGroup => measurementGroup.DateTime.ToString()));
+
                 foreach (var measurementType in measurementTypes)
                 {
-                    Items.Add(new ToggleMeasurementListingItemViewModel(this, measurementType));
+                    ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(measurementType, this, measurementGroup =>
+                    {
+                        var measurement = measurementGroup.Measurements?.FirstOrDefault(x => x.MeasurementTypeId.Equals(measurementType.Id));
+                        return measurement is not null ? valueSelector?.Invoke(measurement).ToString() : null;
+                    }));
                 }
             }
         }
 
         public void UpdateMeasurementGroup(MeasurementGroup measurement)
         {
-            foreach (var item in Items)
+            foreach (var item in ToggleMeasurementListingItems)
             {
                 item.Update(measurement);
             }

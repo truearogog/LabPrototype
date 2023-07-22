@@ -13,28 +13,17 @@
         Background="Transparent">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" MinWidth="250" />
+			<ColumnDefinition Width="*" MinWidth="280" />
 			<ColumnDefinition Width="4*" />
 		</Grid.ColumnDefinitions>
 
 		<Grid x:Name="OverlayGrid" ZIndex="-1" Background="Black" Opacity="0.7" IsVisible="False" />
 
-		<ExperimentalAcrylicBorder Grid.Column="0">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.8" />
-			</ExperimentalAcrylicBorder.Material>
+		<ExperimentalAcrylicBorder Grid.Column="0" Classes="b80">
 
 			<Grid RowDefinitions="auto,auto,*">
 				<Border Grid.Row="0" Classes="detailHeader">
-					<TextBlock
-						Text="{Binding Meter.Name}"
-						FontSize="24"
-						TextTrimming="CharacterEllipsis"
-						ToolTip.Tip="{Binding Meter.Name}" />
+					<TextBlock Text="{Binding Meter.Name}" FontSize="24" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Meter.Name}" />
 				</Border>
 
 				<WrapPanel
@@ -52,27 +41,63 @@
 
 				<ScrollViewer Grid.Row="2">
 					<StackPanel>
-						<components:MeterDetailListing DataContext="{Binding MeterDetailListingViewModel}" />
+						<Border Classes="detailHeader">
+							<TextBlock Text="Details" />
+						</Border>
+						
+						<StackPanel Spacing="10" Margin="10">
+							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
+								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Serial Code" />
+								<TextBlock	Grid.Column="1" Classes="detailItemValue" 
+											Text="{Binding Meter.SerialCode}" ToolTip.Tip="{Binding Meter.SerialCode}" MinWidth="150" />
+							</Grid>
+							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
+								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Name" />
+								<TextBlock	Grid.Column="1" Classes="detailItemValue" 
+											Text="{Binding Meter.Name}" ToolTip.Tip="{Binding Meter.Name}" MinWidth="150" />
+							</Grid>
+							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
+								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Address" />
+								<TextBlock	Grid.Column="1" Classes="detailItemValue"
+											Text="{Binding Meter.Address}" ToolTip.Tip="{Binding Meter.Address}" MinWidth="150" />
+							</Grid>
+							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
+								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Archive" />
+								<ComboBox	Grid.Column="1" Items="{Binding ArchiveViewModels}" MinWidth="150"
+											SelectedIndex="{Binding SelectedArchiveViewModelIndex}" HorizontalAlignment="Right">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Value.Name}" VerticalAlignment="Center" 
+													   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Value.Name}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</Grid>
+							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
+								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Display Mode" />
+								<ComboBox	Grid.Column="1" Items="{Binding MeasurementDisplayModes}" MinWidth="150"
+											SelectedIndex="{Binding SelectedMeasurementDisplayModeIndex}" HorizontalAlignment="Right">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Name}" VerticalAlignment="Center" 
+													   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Name}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</Grid>
+							
+						</StackPanel>
+						
 						<components:FlowMeasurementListing DataContext="{Binding FlowMeasurementListingViewModel}" />
 					</StackPanel>
 				</ScrollViewer>
 			</Grid>
 		</ExperimentalAcrylicBorder>
 
-		<ExperimentalAcrylicBorder Grid.Column="1">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.8" />
-			</ExperimentalAcrylicBorder.Material>
-
-			<Grid RowDefinitions="auto, *">
-				<components:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
-
-				<components:MeasurementHistoryChart Grid.Row="1" DataContext="{Binding MeasurementHistoryChartViewModel}" />
-				<components:MeasurementHistoryTable Grid.Row="1" DataContext="{Binding MeasurementHistoryTableViewModel}" />
+		<ExperimentalAcrylicBorder Grid.Column="1" Classes="b80">
+			<Grid>
+				<components:MeasurementHistoryChart DataContext="{Binding MeasurementHistoryChartViewModel}" />
+				<components:MeasurementHistoryTable DataContext="{Binding MeasurementHistoryTableViewModel}" />
 			</Grid>
 		</ExperimentalAcrylicBorder>
 	</Grid>

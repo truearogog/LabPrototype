@@ -4,12 +4,22 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-				x:Class="LabPrototype.Views.Components.MeasurementHistoryTable">
-		<DataGrid
-			x:Name="TableControl"
-			AutoGenerateColumns="False"
-			Items="{Binding Measurements}"
-			HeadersVisibility="None"
-			ColumnWidth="*"
-			IsVisible="{Binding IsVisible}"/>
+				x:Class="LabPrototype.Views.Components.MeasurementHistoryTable">	
+	<DataGrid
+		IsVisible="{Binding IsVisible}"
+		x:Name="TableControl"
+		AutoGenerateColumns="False"
+		Items="{Binding MeasurementGroups}"
+		VerticalScrollBarVisibility="Visible"
+		ColumnWidth="*"
+		GridLinesVisibility="All"
+		IsReadOnly="True">
+		<DataGrid.Styles>
+			<Style Selector="DataGridColumnHeader > Grid > Grid">
+				<Setter Property="HorizontalAlignment" Value="Stretch" />
+				<Setter Property="VerticalAlignment" Value="Stretch" />
+				<Setter Property="Margin" Value="0" />
+			</Style>
+		</DataGrid.Styles>
+	</DataGrid>
 </UserControl>

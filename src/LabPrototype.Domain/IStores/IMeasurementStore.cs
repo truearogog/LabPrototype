@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Models.Presentation;
+﻿using LabPrototype.Domain.Models.Presentation.Measurements;
 
 namespace LabPrototype.Domain.IStores
 {

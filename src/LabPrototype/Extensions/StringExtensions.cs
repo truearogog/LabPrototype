@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
-namespace LabPrototype.Framework.Extensions
+namespace LabPrototype.Extensions
 {
     public static class StringExtensions
     {

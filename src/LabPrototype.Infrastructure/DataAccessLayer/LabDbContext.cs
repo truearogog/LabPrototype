@@ -16,6 +16,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer
         public DbSet<MeasurementTypeEntity> MeasurementTypes { get; set; }
         public DbSet<MeasurementGroupEntity> MeasurementGroups { get; set; }
         public DbSet<MeterTypeMeasurementTypeEntity> MeterTypeMeasurementTypes { get; set; }
+        public DbSet<MeasurementGroupArchiveEntity> MeasurementGroupArchives { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -7,55 +7,46 @@
     </Design.PreviewWith>
 
 	<Style Selector="ExperimentalAcrylicBorder.b10">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.1" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b20">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.2" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b30">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.3" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b40">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.4" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b50">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.5" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b60">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.6" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b70">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.7" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b80">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.8" />
 		</Setter>
 	</Style>
 	<Style Selector="ExperimentalAcrylicBorder.b90">
-		<Setter Property="IsHitTestVisible" Value="False" />
 		<Setter Property="Material">
 			<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="Black" TintOpacity="1" MaterialOpacity="0.9" />
 		</Setter>

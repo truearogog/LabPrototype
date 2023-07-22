@@ -8,7 +8,7 @@ namespace LabPrototype.AppManagers.Stores
         where T : PresentationModelBase
     {
         public event Action<T>? ModelCreated;
-        public event Action<T?>? ModelUpdated;
+        public event Action<T>? ModelUpdated;
         public event Action<int>? ModelDeleted;
 
         public T? Create(IServiceBase<T> service, T model)
@@ -21,7 +21,10 @@ namespace LabPrototype.AppManagers.Stores
         public T? Update(IServiceBase<T> service, T model)
         {
             var updatedModel = service.Update(model);
-            ModelUpdated?.Invoke(updatedModel);
+            if (updatedModel is not null)
+            {
+                ModelUpdated?.Invoke(updatedModel);
+            }
             return updatedModel;
         }
 

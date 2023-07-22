@@ -12,11 +12,11 @@ namespace LabPrototype.Views
         protected WindowBase()
         {
             SubscribeToViewEvents();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         protected virtual void OnOpened()
         {
-
         }
 
         private void OnOpened(object? sender, EventArgs e)

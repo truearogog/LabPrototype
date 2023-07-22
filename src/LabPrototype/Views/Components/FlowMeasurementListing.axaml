@@ -10,7 +10,7 @@
 			<TextBlock Text="Flow" />
 		</Border>
 		<ItemsRepeater 
-			Items="{Binding MeasurementListingItemViewModels}" 
+			Items="{Binding FlowMeasurementListingItems}" 
 			ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
 			Margin="10">
 			<ItemsRepeater.Layout>

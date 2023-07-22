@@ -1,5 +1,4 @@
-﻿using LabPrototype.AppManagers.Stores;
-using LabPrototype.Domain.IServices;
+﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.WindowService;
@@ -90,7 +89,7 @@ namespace LabPrototype.ViewModels.Components.SettingsListings
             where TViewModel : ParametrizedDialogViewModelBase<ModelNavigationParameter<T>>, new()
         {
             return model => ReactiveCommand.CreateFromTask(async () 
-                => await _windowService.ShowDialogAsync<TView, TViewModel, ModelNavigationParameter<T>>(_parentWindow, new ModelNavigationParameter<T>(model)));
+                => await _windowService.ShowDialogAsync<TView, TViewModel, ModelNavigationParameter<T>>(_parentWindow, new ModelNavigationParameter<T> { Model = model }));
         }
 
         private void _ModelCreated(T model)

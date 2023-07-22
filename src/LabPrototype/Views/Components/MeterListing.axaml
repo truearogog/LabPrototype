@@ -8,14 +8,7 @@
 				x:Class="LabPrototype.Views.Components.MeterListing">
 	
 	<Grid RowDefinitions="auto,*">
-		<ExperimentalAcrylicBorder Grid.Row="0">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.7" />
-			</ExperimentalAcrylicBorder.Material>
+		<ExperimentalAcrylicBorder Grid.Row="0" Classes="b70">
 
 			<Grid ColumnDefinitions="*,auto" Margin="20 10">
 				<TextBlock Grid.Column="0" Text="Your meters" FontSize="24" VerticalAlignment="Center" />
@@ -29,14 +22,7 @@
 			</Grid>
 		</ExperimentalAcrylicBorder>
 
-		<ExperimentalAcrylicBorder Grid.Row="1">
-			<ExperimentalAcrylicBorder.Material>
-				<ExperimentalAcrylicMaterial
-					BackgroundSource="Digger"
-					TintColor="Black"
-					TintOpacity="1"
-					MaterialOpacity="0.6" />
-			</ExperimentalAcrylicBorder.Material>
+		<ExperimentalAcrylicBorder Grid.Row="1" Classes="b60">
 
 			<ItemsControl
 				Items="{Binding Items}"

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\LabPrototype.Framework\LabPrototype.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
 </Project>

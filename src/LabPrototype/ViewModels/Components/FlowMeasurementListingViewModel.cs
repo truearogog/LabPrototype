@@ -1,6 +1,7 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Services.FlowMeasurementGroupProvider;
+using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
+using LabPrototype.Providers.FlowMeasurementGroupProvider;
 using System.Collections.ObjectModel;
 
 namespace LabPrototype.ViewModels.Components
@@ -11,45 +12,30 @@ namespace LabPrototype.ViewModels.Components
         private readonly IFlowMeasurementGroupProvider _flowMeasurementGroupProvider;
 
         private int _meterId;
-        public ObservableCollection<MeasurementListingItemViewModel> MeasurementListingItemViewModels { get; set; } = new();
+        public ObservableCollection<FlowMeasurementListingItemViewModel> FlowMeasurementListingItems { get; set; } = new();
 
         public FlowMeasurementListingViewModel()
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
             _flowMeasurementGroupProvider = GetRequiredService<IFlowMeasurementGroupProvider>();
-            _flowMeasurementGroupProvider.MeasurementGroupUpdated += _MeasurementGroupUpdated;
-
-            if (_flowMeasurementGroupProvider.IsRunning == false)
-            {
-                _flowMeasurementGroupProvider.Start();
-            }
         }
 
         public override void Dispose()
         {
             _flowMeasurementGroupProvider.MeasurementGroupUpdated -= _MeasurementGroupUpdated;
+            _flowMeasurementGroupProvider.Stop(_meterId);
 
             base.Dispose();
         }
 
-        private void _MeasurementGroupUpdated(MeasurementGroup measurementGroup)
+        private void _MeasurementGroupUpdated(FlowMeasurementGroup measurementGroup)
         {
             if (measurementGroup is not null && measurementGroup.MeterId.Equals(_meterId))
             {
-                foreach (var measurementListingItemViewModel in MeasurementListingItemViewModels)
+                foreach (var flowMeasurementListingItem in FlowMeasurementListingItems)
                 {
-                    measurementListingItemViewModel.Update(measurementGroup);
+                    flowMeasurementListingItem.Update(measurementGroup);
                 }
-            }
-        }
-
-        private void CreateMeasurements(Meter meter)
-        {
-            MeasurementListingItemViewModels.Clear();
-            var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
-            foreach (var measurementType in measurementTypes)
-            {
-                MeasurementListingItemViewModels.Add(new MeasurementListingItemViewModel(measurementType));
             }
         }
 
@@ -59,6 +45,22 @@ namespace LabPrototype.ViewModels.Components
             {
                 _meterId = meter.Id;
                 CreateMeasurements(meter);
+
+                if (_flowMeasurementGroupProvider.IsRunning(_meterId) == false)
+                {
+                    _flowMeasurementGroupProvider.MeasurementGroupUpdated += _MeasurementGroupUpdated;
+                    _flowMeasurementGroupProvider.Start(_meterId);
+                }
+            }
+        }
+
+        private void CreateMeasurements(Meter meter)
+        {
+            FlowMeasurementListingItems.Clear();
+            var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
+            foreach (var measurementType in measurementTypes)
+            {
+                FlowMeasurementListingItems.Add(new FlowMeasurementListingItemViewModel(measurementType));
             }
         }
     }

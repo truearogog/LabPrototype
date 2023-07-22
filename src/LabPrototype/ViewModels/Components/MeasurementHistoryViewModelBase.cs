@@ -14,11 +14,11 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _isVisible, value);
         }
 
-        public event Action<IEnumerable<MeasurementType>, IEnumerable<int>>? UpdateViewCalled;
+        public event Action<IEnumerable<MeasurementType>>? UpdateViewCalled;
 
-        protected void UpdateView(IEnumerable<MeasurementType> measurementTypes, IEnumerable<int> typeIndexes)
+        protected void UpdateView(IEnumerable<MeasurementType> measurementTypes)
         {
-            UpdateViewCalled?.Invoke(measurementTypes, typeIndexes);
+            UpdateViewCalled?.Invoke(measurementTypes);
         }
     }
 }

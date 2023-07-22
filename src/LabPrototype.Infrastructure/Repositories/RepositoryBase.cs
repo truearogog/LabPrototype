@@ -17,12 +17,16 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
 
         public T Create(T entity)
         {
+            entity.Created = DateTime.UtcNow;
+            entity.Updated = DateTime.UtcNow;
             DbSet.Add(entity);
             DbContext.SaveChanges();
             return entity;
         }
         public async Task<T> CreateAsync(T entity)
         {
+            entity.Created = DateTime.UtcNow;
+            entity.Updated = DateTime.UtcNow;
             await DbSet.AddAsync(entity);
             await DbContext.SaveChangesAsync();
             return entity;
@@ -31,6 +35,8 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
         {
             foreach (var entity in entities)
             {
+                entity.Created = DateTime.UtcNow;
+                entity.Updated = DateTime.UtcNow;
                 DbSet.Add(entity);
             }
             DbContext.SaveChanges();
@@ -40,8 +46,8 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
         {
             foreach (var entity in entities)
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = DateTime.Now;
+                entity.Created = DateTime.UtcNow;
+                entity.Updated = DateTime.UtcNow;
                 await DbSet.AddAsync(entity);
             }
             await DbContext.SaveChangesAsync();
@@ -54,7 +60,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             {
                 return default;
             }
-            entity.Updated = DateTime.Now;
+            entity.Updated = DateTime.UtcNow;
             DbContext.Entry(entry).CurrentValues.SetValues(entity);
             DbContext.SaveChanges();
             return entity;
@@ -66,7 +72,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             {
                 return default;
             }
-            entity.Updated = DateTime.Now;
+            entity.Updated = DateTime.UtcNow;
             DbContext.Entry(entry).CurrentValues.SetValues(entity);
             await DbContext.SaveChangesAsync();
             return entity;
@@ -99,7 +105,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
                 {
                     continue;
                 }
-                entity.Updated = DateTime.Now;
+                entity.Updated = DateTime.UtcNow;
                 DbContext.Entry(entry).CurrentValues.SetValues(entity);
 
                 updatedEntities.Add(entity);

@@ -1,5 +1,4 @@
-﻿using DynamicData;
-using LabPrototype.Domain.IServices;
+﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Framework.Helpers;
@@ -39,11 +38,17 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
             set => this.RaiseAndSetIfChanged(ref _selectedStopBitsIndex, value);
         }
 
+        private readonly IMeterService _meterService;
         private readonly IMeterTypeService _meterTypeService;
+        private readonly IMeasurementGroupArchiveService _measurementGroupArchiveService;
+        private readonly IMeasurementGroupArchiveStore _measurementGroupArchiveStore;
 
         public MeterSettingsFormViewModel() : base()
         {
+            _meterService = GetRequiredService<IMeterService>();
             _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _measurementGroupArchiveService = GetRequiredService<IMeasurementGroupArchiveService>();
+            _measurementGroupArchiveStore = GetRequiredService<IMeasurementGroupArchiveStore>();
 
             var meterTypes = _meterTypeService.GetAll();
             CreateMeterTypes(meterTypes);
@@ -89,6 +94,72 @@ namespace LabPrototype.ViewModels.Components.ModelSettings
             Model.MeterTypeId = MeterTypes[SelectedMeterTypeIndex].Id;
             Model.Parity = Parities[SelectedParityIndex].Value;
             Model.StopBits = StopBits[SelectedStopBitsIndex].Value;
+        }
+
+        protected override void AfterSubmit(Meter? model)
+        {
+            base.AfterSubmit(model);
+
+            if (model is not null)
+            {
+                var measurementGroupArchives = new[]
+                {
+                    new MeasurementGroupArchive
+                    {
+                        Name = "10 minutes",
+                        DiscretizationMinutes = 10,
+                        MinDiscretizationMinutes = 1,
+                        MaxDescretizationMinutes = 10,
+                        DiscretizationMonths = 0,
+                        Order = 1,
+                        IsActive = true,
+                        IsEditable = true,
+                        MeterId = model.Id,
+                    },
+                    new MeasurementGroupArchive
+                    {
+                        Name = "60 minutes",
+                        DiscretizationMinutes = 60,
+                        MinDiscretizationMinutes = 10,
+                        MaxDescretizationMinutes = 60,
+                        DiscretizationMonths = 0,
+                        Order = 2,
+                        IsActive = true,
+                        IsEditable = true,
+                        MeterId = model.Id,
+                    },
+                    new MeasurementGroupArchive
+                    {
+                        Name = "24 hours",
+                        DiscretizationMinutes = 1440,
+                        MinDiscretizationMinutes = 0,
+                        MaxDescretizationMinutes = 0,
+                        DiscretizationMonths = 0,
+                        Order = 3,
+                        IsActive = true,
+                        IsEditable = false,
+                        MeterId = model.Id,
+                    },
+                    new MeasurementGroupArchive
+                    {
+                        Name = "30 days",
+                        DiscretizationMinutes = 0,
+                        MinDiscretizationMinutes = 0,
+                        MaxDescretizationMinutes = 0,
+                        DiscretizationMonths = 1,
+                        Order = 4,
+                        IsActive = true,
+                        IsEditable = false,
+                        MeterId = model.Id,
+                    },
+                };
+
+                foreach (var measurementGroupArchive in measurementGroupArchives)
+                {
+                    _measurementGroupArchiveStore.Create(_measurementGroupArchiveService, measurementGroupArchive);
+                }
+                _meterService.Update(model);
+            }
         }
 
         protected override void OnModelSet()

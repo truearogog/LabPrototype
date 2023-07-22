@@ -25,14 +25,14 @@ namespace LabPrototype.ViewModels.Components
         {
             _windowService = GetRequiredService<IWindowService>();
 
-            Meter = meter;
+            _meter = meter;
 
             OpenMeterCommand = ReactiveCommand.Create(OpenMeter);
         }
 
         private void OpenMeter()
         {
-            var parameter = new ModelNavigationParameter<Meter>(Meter);
+            var parameter = new ModelNavigationParameter<Meter> { Model = Meter };
             _windowService.ShowWindow<MeterWindow, MeterWindowViewModel, ModelNavigationParameter<Meter>>(parameter);
         }
     }

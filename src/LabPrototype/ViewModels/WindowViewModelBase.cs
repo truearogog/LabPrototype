@@ -7,11 +7,11 @@ namespace LabPrototype.ViewModels
 {
     public abstract class WindowViewModelBase : ViewModelBase
     {
-        public event EventHandler CloseRequested;
-        public event EventHandler EnableRequested;
-        public event EventHandler DisableRequested;
+        public event EventHandler? CloseRequested;
+        public event EventHandler? EnableRequested;
+        public event EventHandler? DisableRequested;
 
-        public Func<WindowBase> GetWindow { get; set; }
+        public Func<WindowBase>? GetWindow { get; set; }
 
         public ICommand CloseCommand { get; }
 

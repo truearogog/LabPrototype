@@ -1,19 +1,22 @@
-﻿using LabPrototype.Domain.IStores;
+﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Services.WindowService;
+using LabPrototype.Models;
 using LabPrototype.ViewModels.Components;
-using LabPrototype.ViewModels.Dialogs.MeterSettings;
 using LabPrototype.ViewModels.Models;
-using LabPrototype.Views.Dialogs.MeterSettings;
+using LabPrototype.Views.Dialogs.MeasurementTypeSettings;
 using ReactiveUI;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace LabPrototype.ViewModels.Main
 {
     public class MeterWindowViewModel : ParametrizedWindowViewModelBase<ModelNavigationParameter<Meter>>
     {
-        private readonly IWindowService _windowService;
+        private readonly IMeasurementGroupArchiveService _measurementGroupArchiveService;
+        private readonly IMeasurementGroupArchiveStore _measurementGroupArchiveStore;
         private readonly IMeterStore _meterStore;
 
         private Meter? _meter = null;
@@ -23,47 +26,83 @@ namespace LabPrototype.ViewModels.Main
             set => this.RaiseAndSetIfChanged(ref _meter, value);
         }
 
-        public MeterDetailListingViewModel MeterDetailListingViewModel { get; }
+        private int _selectedArchiveViewModelIndex;
+        public int SelectedArchiveViewModelIndex
+        {
+            get => _selectedArchiveViewModelIndex;
+            set
+            {
+                var _val = _selectedArchiveViewModelIndex;
+                if (_val != this.RaiseAndSetIfChanged(ref _selectedArchiveViewModelIndex, value))
+                {
+                    UpdateMeasurementHistory();
+                }
+            }
+        }
+
+        public ObservableCollection<ValueViewModelBase<MeasurementGroupArchive>> ArchiveViewModels { get; set; } = new();
+
+        private int _selectedMeasurementDisplayModeIndex;
+        public int SelectedMeasurementDisplayModeIndex
+        {
+            get => _selectedMeasurementDisplayModeIndex;
+            set
+            {
+                var _val = _selectedMeasurementDisplayModeIndex;
+                if (_val != this.RaiseAndSetIfChanged(ref _selectedMeasurementDisplayModeIndex, value))
+                {
+                    UpdateMeasurementHistory();
+                }
+            }
+        }
+
+        public ObservableCollection<MeasurementDisplayMode> MeasurementDisplayModes { get; set; } = new();
+
         public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
 
-        public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
         public MeasurementHistoryChartViewModel MeasurementHistoryChartViewModel { get; }
         public MeasurementHistoryTableViewModel MeasurementHistoryTableViewModel { get; }
 
         public ICommand SelectChartCommand { get; }
         public ICommand SelectTableCommand { get; }
-        public ICommand OpenUpdateMeterCommand { get; }
-        public ICommand OpenDeleteMeterCommand { get; }
 
         public MeterWindowViewModel()
         {
-            _windowService = GetRequiredService<IWindowService>();
+            _measurementGroupArchiveService = GetRequiredService<IMeasurementGroupArchiveService>();
+
+            _measurementGroupArchiveStore = GetRequiredService<IMeasurementGroupArchiveStore>();
+            _measurementGroupArchiveStore.ModelCreated += _ArchiveCreated;
+            _measurementGroupArchiveStore.ModelUpdated += _ArchiveUpdated;
+            _measurementGroupArchiveStore.ModelDeleted += _ArchiveDeleted;
 
             _meterStore = GetRequiredService<IMeterStore>();
             _meterStore.ModelUpdated += _MeterUpdated;
             _meterStore.ModelDeleted += _MeterDeleted;
 
-            MeterDetailListingViewModel = new MeterDetailListingViewModel();
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel();
 
-            ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel();
-            MeasurementHistoryChartViewModel = new MeasurementHistoryChartViewModel(ToggleMeasurementListingViewModel) { IsVisible = true };
+            MeasurementHistoryChartViewModel = new MeasurementHistoryChartViewModel() { IsVisible = true };
             MeasurementHistoryTableViewModel = new MeasurementHistoryTableViewModel() { IsVisible = false };
 
             SelectChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
             SelectTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
-            OpenUpdateMeterCommand = ReactiveCommand.CreateFromTask(OpenUpdateMeterDialogAsync);
-            OpenDeleteMeterCommand = ReactiveCommand.CreateFromTask(OpenDeleteMeterDialogAsync);
+
+            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Average", x => x.Average));
+            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Summary", x => x.Summary));
         }
 
         public override void Activate(ModelNavigationParameter<Meter> parameter)
         {
             Meter = parameter.Model;
-            MeterDetailListingViewModel.UpdateMeter(Meter);
-            FlowMeasurementListingViewModel.UpdateMeter(Meter);
-            ToggleMeasurementListingViewModel.UpdateMeter(Meter);
-            MeasurementHistoryChartViewModel.UpdateMeter(Meter);
-            MeasurementHistoryTableViewModel.UpdateMeter(Meter);
+
+            if (Meter is not null)
+            {
+                var archives = _measurementGroupArchiveService.GetAll(x => x.MeterId.Equals(Meter.Id));
+                CreateArchives(archives);
+                this.RaisePropertyChanged(nameof(SelectedArchiveViewModelIndex));
+                UpdateMeasurementHistory();
+                FlowMeasurementListingViewModel.UpdateMeter(Meter);
+            }
         }
 
         public override void Dispose()
@@ -71,33 +110,72 @@ namespace LabPrototype.ViewModels.Main
             _meterStore.ModelUpdated -= _MeterUpdated;
             _meterStore.ModelDeleted -= _MeterDeleted;
 
-            MeterDetailListingViewModel.Dispose();
+            _measurementGroupArchiveStore.ModelCreated -= _ArchiveCreated;
+            _measurementGroupArchiveStore.ModelUpdated -= _ArchiveUpdated;
+            _measurementGroupArchiveStore.ModelDeleted -= _ArchiveDeleted;
+
             FlowMeasurementListingViewModel.Dispose();
-            ToggleMeasurementListingViewModel.Dispose();
             MeasurementHistoryChartViewModel.Dispose();
             MeasurementHistoryTableViewModel.Dispose();
         }
 
         private void _MeterUpdated(Meter? meter)
         {
-            if (meter is not null && Meter is not null)
+            if (meter is not null && Meter is not null && Meter.Id.Equals(meter.Id))
             {
-                if (Meter.Id.Equals(meter.Id))
-                {
-                    Activate(new ModelNavigationParameter<Meter>(meter));
-                }
+                Activate(new ModelNavigationParameter<Meter> { Model = meter });
             }
         }
 
         private void _MeterDeleted(int id)
         {
-            if (Meter is not null)
+            if (Meter is not null && Meter.Id.Equals(id))
             {
-                if (Meter.Id.Equals(id))
+                Close();
+            }
+        }
+
+        private void _ArchiveCreated(MeasurementGroupArchive archive)
+        {
+            if (Meter is not null && archive.MeterId.Equals(Meter.Id))
+            {
+                CreateArchive(archive);
+            }
+        }
+
+        private void _ArchiveUpdated(MeasurementGroupArchive? archive)
+        {
+            if (Meter is not null && archive is not null && archive.MeterId.Equals(Meter.Id))
+            {
+                var archiveViewModel = ArchiveViewModels.FirstOrDefault(x => archive.Id.Equals(x.Value?.Id ?? 0));
+                if (archiveViewModel is not null)
                 {
-                    Close();
+                    archiveViewModel.Value = archive;
                 }
             }
+        }
+
+        private void _ArchiveDeleted(int archiveId)
+        {
+            var archiveViewModel = ArchiveViewModels.FirstOrDefault(x => archiveId.Equals(x.Value?.Id ?? 0));
+            if (archiveViewModel is not null)
+            {
+                ArchiveViewModels.Remove(archiveViewModel);
+            }
+        }
+
+        private void CreateArchives(IEnumerable<MeasurementGroupArchive> archives)
+        {
+            ArchiveViewModels.Clear();
+            foreach (var archive in archives)
+            {
+                CreateArchive(archive);
+            }
+        }
+
+        private void CreateArchive(MeasurementGroupArchive archive)
+        {
+            ArchiveViewModels.Add(new ValueViewModelBase<MeasurementGroupArchive> { Value = archive });
         }
 
         private void SelectMeasurementChart()
@@ -112,16 +190,12 @@ namespace LabPrototype.ViewModels.Main
             MeasurementHistoryTableViewModel.IsVisible = true;
         }
 
-        private async Task OpenUpdateMeterDialogAsync()
+        private void UpdateMeasurementHistory()
         {
-            var parameter = new ModelNavigationParameter<Meter>(Meter);
-            await _windowService.ShowDialogAsync<UpdateMeterDialog, UpdateMeterDialogViewModel, ModelNavigationParameter<Meter>>(this, parameter);
-        }
-
-        private async Task OpenDeleteMeterDialogAsync()
-        {
-            var parameter = new ModelNavigationParameter<Meter>(Meter);
-            await _windowService.ShowDialogAsync<DeleteMeterDialog, DeleteMeterDialogViewModel, ModelNavigationParameter<Meter>>(this, parameter);
+            var selectedMeasurementDisplayMode = MeasurementDisplayModes.ElementAtOrDefault(SelectedMeasurementDisplayModeIndex);
+            var selectedArchive = ArchiveViewModels.ElementAtOrDefault(SelectedArchiveViewModelIndex);
+            MeasurementHistoryChartViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode.ValueSelector);
+            MeasurementHistoryTableViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode.ValueSelector);
         }
     }
 }

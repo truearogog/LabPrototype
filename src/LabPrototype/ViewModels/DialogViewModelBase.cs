@@ -9,7 +9,7 @@ namespace LabPrototype.ViewModels
     public abstract class DialogViewModelBase<TResult> : ViewModelBase
         where TResult : DialogResultBase
     {
-        public event EventHandler<DialogResultEventArgs<TResult>> CloseRequested;
+        public event EventHandler<DialogResultEventArgs<TResult>>? CloseRequested;
 
         public ICommand CloseCommand { get; }
 
@@ -24,7 +24,7 @@ namespace LabPrototype.ViewModels
         {
             var args = new DialogResultEventArgs<TResult>(result);
 
-            CloseRequested.Raise(this, args);
+            CloseRequested?.Raise(this, args);
         }
     }
 

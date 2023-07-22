@@ -15,6 +15,7 @@ namespace LabPrototype.Views
         protected DialogWindowBase()
         {
             SubscribeToViewEvents();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         protected virtual void OnOpened()

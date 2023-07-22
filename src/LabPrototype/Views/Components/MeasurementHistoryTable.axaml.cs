@@ -1,10 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
-using LabPrototype.Domain.Models;
+using Avalonia.Media;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.ViewModels.Components;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LabPrototype.Views.Components;
 
@@ -25,7 +25,7 @@ public partial class MeasurementHistoryTable : UserControl
             }
         };
 
-        DetachedFromVisualTree += (s, e) =>
+        DetachedFromLogicalTree += (s, e) =>
         {
             if (_vm != null)
             {
@@ -34,19 +34,51 @@ public partial class MeasurementHistoryTable : UserControl
         };
     }
 
-    private void UpdateTable(IEnumerable<MeasurementType> measurementTypes, IEnumerable<int> measurementTypeIds)
+    private void UpdateTable(IEnumerable<MeasurementType> measurementTypes)
     {
         TableControl.Columns.Clear();
 
-        int i = 0;
-        foreach (var measurementTypeId in measurementTypeIds)
+        var headerTemplateFactory = (string color) => new FuncDataTemplate<string>((value, namescope) =>
         {
-            var measurementType = measurementTypes.First(x => x.Id.Equals(measurementTypeId));
-            var column = new DataGridTextColumn()
-            {
-                Binding = new Binding($"{nameof(MeasurementGroup.Measurements)}[{i++}]"),
+            var colorBrush = new SolidColorBrush(Color.Parse(color));
+            return new TextBlock {
+                FontSize = 20,
+                [!TextBlock.TextProperty] = new Binding(".", BindingMode.OneWay),
+                Foreground = colorBrush,
             };
-            TableControl.Columns.Add(column);
+        });
+
+        // add date/time column
+        TableControl.Columns.Add(new DataGridTextColumn
+        {
+            Header = "Date/time",
+            CanUserSort = true,
+            CanUserReorder = true,
+            HeaderTemplate = headerTemplateFactory("#ffffff"),
+            Binding = new Binding
+            {
+                Path = $"{nameof(MeasurementHistoryTableViewModel._MeasurementGroup.DateTime)}",
+                StringFormat = "{0}",
+                Mode = BindingMode.OneWay,
+            },
+        });
+
+        var i = 0;
+        foreach (var measurementType in measurementTypes)
+        {
+            TableControl.Columns.Add(new DataGridTextColumn
+            {
+                Header = measurementType.Name,
+                CanUserSort = true,
+                CanUserReorder = true,
+                HeaderTemplate = headerTemplateFactory(measurementType.ColorScheme?.PrimaryColor ?? "#ffffff"),
+                Binding = new Binding
+                {
+                    Path = $"{nameof(MeasurementHistoryTableViewModel._MeasurementGroup.Values)}[{i++}]",
+                    StringFormat = "{0}",
+                    Mode = BindingMode.OneWay,
+                },
+            });
         }
     }
 }

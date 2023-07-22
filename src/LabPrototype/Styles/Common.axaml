@@ -3,7 +3,6 @@
 		xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<Design.PreviewWith>
 		<Border Padding="20">
-			
 		</Border>
 	</Design.PreviewWith>
 	
@@ -44,12 +43,25 @@
 		<Setter Property="Opacity" Value="0.2" />
 	</Style>
 	<Style Selector="Border.detailHeader">
-		<Setter Property="Background" Value="Black" />
+		<Setter Property="Background" Value="#1e1f20" />
 		<Setter Property="Padding" Value="10 5" />
 		<Setter Property="Height" Value="30" />
 	</Style>
 	<Style Selector="Border.detailHeader TextBlock">
 		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="18" />
+	</Style>
+	<Style Selector=":is(Panel).detailItem">
+	</Style>
+	<Style Selector=":is(Panel).detailItem > TextBlock">
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="TextBlock.detailItemName">
+		
+	</Style>
+	<Style Selector="TextBlock.detailItemValue">
+		<Setter Property="TextAlignment" Value="Right" />
+		<Setter Property="TextTrimming" Value="CharacterEllipsis" />
 	</Style>
 	<Style Selector="Border.colorPresenter">
 		<Setter Property="Width" Value="20" />

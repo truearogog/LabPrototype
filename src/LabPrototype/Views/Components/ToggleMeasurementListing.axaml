@@ -5,7 +5,7 @@
 			 xmlns:local="using:LabPrototype.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="LabPrototype.Views.Components.ToggleMeasurementListing">
-	<ItemsControl Items="{Binding Items}" MinHeight="40">
+	<ItemsControl Items="{Binding ToggleMeasurementListingItems}" MinHeight="40">
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
 				<local:ToggleMeasurementListingItem />

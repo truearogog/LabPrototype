@@ -2,7 +2,7 @@
 using LabPrototype.Domain.IRepositories;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Entities;
-using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 
 namespace LabPrototype.AppManagers.Services
 {

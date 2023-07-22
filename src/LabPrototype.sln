@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.AppManagers", "LabPrototype.AppManagers\LabPrototype.AppManagers.csproj", "{F61E7516-713F-4CB5-B816-195F41955892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPrototype.ModbusTest", "LabPrototype.ModbusTest\LabPrototype.ModbusTest.csproj", "{9D1A74A2-0E53-40E0-BCA8-6575FFA14597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.ModbusTest", "LabPrototype.ModbusTest\LabPrototype.ModbusTest.csproj", "{9D1A74A2-0E53-40E0-BCA8-6575FFA14597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

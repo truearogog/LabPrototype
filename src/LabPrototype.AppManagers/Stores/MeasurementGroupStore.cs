@@ -1,5 +1,5 @@
 ﻿using LabPrototype.Domain.IStores;
-using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 
 namespace LabPrototype.AppManagers.Stores
 {

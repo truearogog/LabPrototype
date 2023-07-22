@@ -13,7 +13,6 @@ namespace LabPrototype.Services.WindowService
     {
         public WindowService()
         {
-
         }
 
         public Window ShowWindow<TView, TViewModel>()
@@ -127,7 +126,8 @@ namespace LabPrototype.Services.WindowService
         private async Task<TResult> ShowDialogAsync<TResult>(DialogWindowBase<TResult> window, WindowViewModelBase parent)
             where TResult : DialogResultBase
         {
-            var parentWindow = parent.GetWindow();
+            var parentWindow = parent.GetWindow?.Invoke() 
+                ?? throw new MemberAccessException($"{nameof(WindowViewModelBase)} -> {nameof(WindowViewModelBase.GetWindow)} is null!");
             parent.Disable();
             var result = await window.ShowDialog<TResult>(parentWindow);
             parent.Enable();

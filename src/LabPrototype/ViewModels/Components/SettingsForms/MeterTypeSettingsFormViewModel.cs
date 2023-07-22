@@ -58,6 +58,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         protected override void AfterSubmit(MeterType? model)
         {
+            base.AfterSubmit(model);
             if (model is not null)
             {
                 var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(model.Id));

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LabPrototype.Domain.Models.Entities;
-using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 
 namespace LabPrototype.AppManagers.Profiles
 {
