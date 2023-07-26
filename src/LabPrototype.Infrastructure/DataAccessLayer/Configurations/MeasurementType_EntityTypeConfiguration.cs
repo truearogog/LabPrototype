@@ -14,11 +14,7 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Configurations
                 .WithMany(x => x.MeasurementTypes);
 
             builder
-                .HasMany(x => x.MeterTypeMeasurementTypes)
-                .WithOne(x => x.MeasurementType);
-
-            builder
-                .HasMany(x => x.Measurements)
+                .HasMany(x => x.MeasurementGroupSchemaMeasurementTypes)
                 .WithOne(x => x.MeasurementType);
 
             builder

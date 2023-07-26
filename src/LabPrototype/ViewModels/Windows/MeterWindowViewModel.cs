@@ -87,8 +87,8 @@ namespace LabPrototype.ViewModels.Main
             SelectChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
             SelectTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
 
-            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Average", x => x.Average));
-            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Summary", x => x.Summary));
+            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Average", x => x.AverageValues));
+            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Summary", x => x.SummaryValues));
         }
 
         public override void Activate(ModelNavigationParameter<Meter> parameter)

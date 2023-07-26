@@ -14,10 +14,15 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Repositories
             var entity = GetById(id);
             if (entity is null)
                 return Enumerable.Empty<MeasurementTypeEntity>();
-            return entity.MeterTypeMeasurementTypes
-                .OrderBy(x => x.SortOrder)
+
+            var latestSchema = entity.MeasurementGroupSchemas
+                .OrderByDescending(x => x.Created)
+                .FirstOrDefault();
+
+            return latestSchema?
+                .MeasurementGroupSchemaMeasurementTypes
                 .Select(x => x.MeasurementType)
-                .OfType<MeasurementTypeEntity>();
+                .OfType<MeasurementTypeEntity>() ?? Enumerable.Empty<MeasurementTypeEntity>();
         }
     }
 }

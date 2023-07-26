@@ -6,7 +6,9 @@
         public string PrimaryColor { get; set; } = string.Empty;
         public string SecondaryColor { get; set; } = string.Empty;
 
-        public virtual ICollection<MeasurementTypeEntity> MeasurementTypes { get; set; } = new List<MeasurementTypeEntity>();
-        public virtual ICollection<MeterTypeEntity> MeterTypes { get; set; } = new List<MeterTypeEntity>();
+        public virtual ICollection<MeasurementTypeEntity> MeasurementTypes { get; set; } 
+            = new List<MeasurementTypeEntity>();
+        public virtual ICollection<MeterTypeEntity> MeterTypes { get; set; } 
+            = new List<MeterTypeEntity>();
     }
 }

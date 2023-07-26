@@ -15,17 +15,17 @@
 		</ExperimentalAcrylicBorder.Material>
 
 		<TabControl>
+			<TabItem Header="Color Schemes">
+				<settings-listings:ColorSchemeSettingsListing DataContext="{Binding ColorSchemeSettingsListingViewModel}" />
+			</TabItem>
 			<TabItem Header="Meters">
 				<settings-listings:MeterSettingsListing DataContext="{Binding MeterSettingsListingViewModel}" />
 			</TabItem>
-			<TabItem Header="Meter Types">
+			<TabItem Header="Meter Types" IsEnabled="False">
 				<settings-listings:MeterTypeSettingsListing DataContext="{Binding MeterTypeSettingsListingViewModel} " />
 			</TabItem>
-			<TabItem Header="Measurement Types">
+			<TabItem Header="Measurement Types" IsEnabled="False">
 				<settings-listings:MeasurementTypeSettingsListing DataContext="{Binding MeasurementTypeSettingsListingViewModel}" />
-			</TabItem>
-			<TabItem Header="Color Schemes">
-				<settings-listings:ColorSchemeSettingsListing DataContext="{Binding ColorSchemeSettingsListingViewModel}" />
 			</TabItem>
 		</TabControl>
 	</ExperimentalAcrylicBorder>

@@ -1,6 +1,6 @@
-﻿using LabPrototype.Domain.IServices;
+﻿using LabPrototype.AppManagers.Services;
+using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.Models.Presentation.Measurements;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace LabPrototype.ViewModels.Components
     {
         private readonly IMeasurementGroupService _measurementGroupService;
         private readonly IMeterTypeService _meterTypeService;
-        private readonly IMeterTypeMeasurementTypeService _meterTypeMeasurementTypeService;
+        private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
 
         public struct _MeasurementGroup
         {
@@ -32,7 +32,7 @@ namespace LabPrototype.ViewModels.Components
         {
             _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
             _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _meterTypeMeasurementTypeService = GetRequiredService<IMeterTypeMeasurementTypeService>();
+            _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
         }
 
         public override void Dispose()
@@ -40,45 +40,48 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        public void Update(Meter? meter, MeasurementGroupArchive? archive, Func<Measurement, double>? valueSelector = null)
+        public void Update(Meter? meter, MeasurementGroupArchive? archive, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
         {
             if (meter is not null && archive is not null)
             {
                 var measurementGroups = _measurementGroupService.GetAll(x => x.MeasurementGroupArchiveId.Equals(archive.Id));
                 if (measurementGroups.Any())
                 {
-                    var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(meter.Id));
-
-                    // measurement types ordered by sort order
-                    var measurementTypes = 
-                        _meterTypeService
-                        .GetMeasurementTypes(meter.MeterTypeId)
-                        .OrderBy(x => meterTypeMeasurementTypes.FirstOrDefault(y => y.MeasurementTypeId.Equals(x.Id))?.SortOrder ?? int.MaxValue);
-
-                    // create dictionary to know which mt in what place
-                    var measurementTypeDictionary = new Dictionary<int, int>();
-                    var i = 0;
-                    foreach (var measurementType in measurementTypes)
+                    // create dictionary that contains schema id -> measurement type -> from to index
+                    var schemas = _measurementGroupSchemaService.GetAll(x => x.MeterTypeId.Equals(meter.MeterTypeId));
+                    var currentSchema = schemas.OrderByDescending(x => x.Created).First();
+                    var schemaTypeIndexes = new Dictionary<int, Dictionary<int, int>>();
+                    foreach (var schema in schemas)
                     {
-                        measurementTypeDictionary[measurementType.Id] = i++;
+                        var typeIndexes = new Dictionary<int, int>();
+                        var measurements = _measurementGroupSchemaService.GetMeasurementTypes(schema.Id);
+                        var i = 0;
+                        foreach (var measurement in measurements)
+                        {
+                            typeIndexes.Add(measurement.Id, i++);
+                        }
+                        schemaTypeIndexes.Add(schema.Id, typeIndexes);
                     }
 
-                    // create sorted arrays of measurenents
+                    // get current schema measurement types
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                     var measurementGroupArray = new _MeasurementGroup[measurementGroups.Count()];
-                    i = 0;
+                    var j = 0;
                     foreach (var measurementGroup in measurementGroups)
                     {
-                        measurementGroupArray[i] = new _MeasurementGroup(measurementGroup.DateTime, measurementTypes.Count());
-                        foreach (var measurement in measurementGroup.Measurements ?? Enumerable.Empty<Measurement>())
+                        var group = groupSelector?.Invoke(measurementGroup);
+                        var _measurementGroup = new _MeasurementGroup(measurementGroup.DateTime, group?.Count() ?? 0);
+                        foreach (var measurementType in measurementTypes)
                         {
-                            var index = measurementTypeDictionary[measurement.MeasurementTypeId];
-                            measurementGroupArray[i].Values[index] = valueSelector?.Invoke(measurement) ?? 0d;
+                            var index = schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId][measurementType.Id];
+                            var currentIndex = schemaTypeIndexes[currentSchema.Id][measurementType.Id];
+                            _measurementGroup.Values[currentIndex] = group?.ElementAt(index) ?? 0;
                         }
-                        i++;
+                        measurementGroupArray[j++] = _measurementGroup;
                     }
 
                     MeasurementGroups = measurementGroupArray;
-                    UpdateView(measurementTypes.AsEnumerable());
+                    UpdateView(measurementTypes);
                     this.RaisePropertyChanged(nameof(MeasurementGroups));
                 }
             }

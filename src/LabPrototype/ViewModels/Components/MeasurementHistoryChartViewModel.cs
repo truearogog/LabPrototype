@@ -5,11 +5,11 @@ using ReactiveUI;
 using System.Collections.Generic;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Providers.PlotProvider;
-using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 using System;
-using LabPrototype.Domain.Models.Presentation.Measurements;
 using LabPrototype.Extensions;
 using System.Drawing;
+using static LabPrototype.ViewModels.Components.MeasurementHistoryTableViewModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace LabPrototype.ViewModels.Components
 {
@@ -17,6 +17,7 @@ namespace LabPrototype.ViewModels.Components
     {
         private readonly IMeterTypeService _meterTypeService;
         private readonly IMeasurementGroupService _measurementGroupService;
+        private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
 
         private bool _lockXAxis;
         public bool LockXAxis
@@ -59,6 +60,7 @@ namespace LabPrototype.ViewModels.Components
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
             _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
+            _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
 
             ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel();
             ToggleMeasurementListingViewModel.OnChecked += _OnChecked;
@@ -75,15 +77,13 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        public void Update(Meter? meter, MeasurementGroupArchive? archive, Func<Measurement, double>? valueSelector = null)
+        public void Update(Meter meter, MeasurementGroupArchive archive, Func<MeasurementGroup, IEnumerable<double>>? valueSelector = null)
         {
             if (meter is not null && archive is not null)
             {
                 ToggleMeasurementListingViewModel.Update(meter, valueSelector);
-
-                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                 _measurementGroups = _measurementGroupService.GetAll(x => x.MeasurementGroupArchiveId.Equals(archive.Id));
-                CreateSeries(measurementTypes, valueSelector);
+                CreateSeries(meter, valueSelector);
                 PlotProvider?.AddCrosshair();
             }
         }
@@ -97,7 +97,7 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void CreateSeries(IEnumerable<MeasurementType> measurementTypes, Func<Measurement, double>? valueSelector = null)
+        private void CreateSeries(Meter meter, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
         {
             if (PlotProvider is not null)
             {
@@ -105,15 +105,39 @@ namespace LabPrototype.ViewModels.Components
 
                 if (_measurementGroups is not null && _measurementGroups.Any())
                 {
-                    var xs = _measurementGroups.Select(x => x.DateTime.ToOADate()).ToArray();
+                    // create dictionary that contains schema id -> measurement type -> array index
+                    var schemas = _measurementGroupSchemaService.GetAll(x => x.MeterTypeId.Equals(meter.MeterTypeId));
+                    var schemaTypeIndexes = new Dictionary<int, Dictionary<int, int>>();
+                    foreach (var schema in schemas)
+                    {
+                        var typeIndexes = new Dictionary<int, int>();
+                        var measurements = _measurementGroupSchemaService.GetMeasurementTypes(schema.Id);
+                        var i = 0;
+                        foreach (var measurement in measurements)
+                        {
+                            typeIndexes.Add(measurement.Id, i++);
+                        }
+                        schemaTypeIndexes.Add(schema.Id, typeIndexes);
+                    }
 
+                    var xs = _measurementGroups.Select(x => x.DateTime.ToOADate()).ToArray();
+                    var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                     foreach (var measurementType in measurementTypes)
                     {
-                        var measurements = _measurementGroups?
-                            .Select(x => x.Measurements?.First(y => y.MeasurementTypeId.Equals(measurementType.Id)))
-                            .OfType<Measurement>() ?? Enumerable.Empty<Measurement>();
-
-                        var ys = measurements.Select(x => valueSelector?.Invoke(x) ?? 0d).ToArray();
+                        var ys = new double[xs.Length];
+                        var i = 0;
+                        foreach (var measurementGroup in _measurementGroups ?? Enumerable.Empty<MeasurementGroup>())
+                        {
+                            if (schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId].TryGetValue(measurementType.Id, out var index))
+                            {
+                                var group = groupSelector?.Invoke(measurementGroup);
+                                ys[i++] = group?.ElementAt(index) ?? 0;
+                            }
+                            else
+                            {
+                                ys[i++] = 0;
+                            }
+                        }
                         var color = measurementType.ColorScheme?.PrimaryColor?.ToColor() ?? Color.White;
                         PlotProvider.AddPlot(measurementType.Id, xs, ys, color);
                     }

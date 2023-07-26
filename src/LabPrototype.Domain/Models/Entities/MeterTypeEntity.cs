@@ -8,7 +8,9 @@
         public int ColorSchemeId { get; set; }
         public virtual ColorSchemeEntity? ColorScheme { get; set; }
 
-        public virtual ICollection<MeterTypeMeasurementTypeEntity> MeterTypeMeasurementTypes { get; set; } = new List<MeterTypeMeasurementTypeEntity>();
-        public virtual ICollection<MeterEntity> Meters { get; set; } = new List<MeterEntity>();
+        public virtual ICollection<MeasurementGroupSchemaEntity> MeasurementGroupSchemas { get; set; } 
+            = new List<MeasurementGroupSchemaEntity>();
+        public virtual ICollection<MeterEntity> Meters { get; set; } 
+            = new List<MeterEntity>();
     }
 }

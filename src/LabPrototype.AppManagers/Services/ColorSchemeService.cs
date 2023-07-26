@@ -6,7 +6,9 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Services
 {
-    public class ColorSchemeService : ServiceBase<ColorSchemeEntity, ColorScheme, IColorSchemeRepository>, IColorSchemeService
+    public class ColorSchemeService : 
+        ServiceBase<ColorSchemeEntity, ColorScheme, IColorSchemeRepository>, 
+        IColorSchemeService
     {
         public ColorSchemeService(IMapper mapper, IColorSchemeRepository repository) : base(mapper, repository)
         {

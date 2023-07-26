@@ -45,7 +45,7 @@
 							<TextBlock Text="Details" />
 						</Border>
 						
-						<StackPanel Spacing="10" Margin="10">
+						<StackPanel Spacing="10" Margin="10">							
 							<Grid Classes="detailItem" ColumnDefinitions="auto,*">
 								<TextBlock	Grid.Column="0" Classes="detailItemName" Text="Serial Code" />
 								<TextBlock	Grid.Column="1" Classes="detailItemValue" 

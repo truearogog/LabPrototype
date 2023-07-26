@@ -1,6 +1,4 @@
-﻿using LabPrototype.Domain.Models.Presentation.Measurements;
-
-namespace LabPrototype.Domain.Models.Presentation.MeasurementGroups
+﻿namespace LabPrototype.Domain.Models.Presentation.MeasurementGroups
 {
     public class FlowMeasurementGroup
     {

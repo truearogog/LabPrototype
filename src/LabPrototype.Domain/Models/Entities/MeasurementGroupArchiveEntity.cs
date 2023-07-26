@@ -14,6 +14,7 @@
         public int MeterId { get; set; }
         public virtual MeterEntity? Meter { get; set; }
 
-        public virtual ICollection<MeasurementGroupEntity> MeasurementGroups { get; set; } = new List<MeasurementGroupEntity>();
+        public virtual ICollection<MeasurementGroupEntity> MeasurementGroups { get; set; } 
+            = new List<MeasurementGroupEntity>();
     }
 }

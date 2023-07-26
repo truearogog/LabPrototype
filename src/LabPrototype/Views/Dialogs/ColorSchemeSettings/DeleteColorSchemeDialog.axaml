@@ -13,7 +13,7 @@
 		<ExperimentalAcrylicBorder Classes="b60" />
 
 		<Grid RowDefinitions="*, auto" Margin="20">
-			<StackPanel  Grid.Row="0" Orientation="Horizontal" Spacing="5">
+			<StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5">
 				<TextBlock Text="Delete" />
 				<TextBlock FontWeight="Bold" Foreground="#e74c3c" Text="{Binding Model.Name}" />
 				<TextBlock Text="?" />

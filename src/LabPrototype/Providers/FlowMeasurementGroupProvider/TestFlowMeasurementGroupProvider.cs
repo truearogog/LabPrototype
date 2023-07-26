@@ -1,6 +1,6 @@
 ﻿using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
-using LabPrototype.Domain.Models.Presentation.Measurements;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

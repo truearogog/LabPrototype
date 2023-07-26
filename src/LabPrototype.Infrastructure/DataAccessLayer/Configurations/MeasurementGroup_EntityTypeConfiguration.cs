@@ -10,12 +10,28 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Configurations
             base.Configure(builder);
 
             builder
+                .Property(x => x.AverageValues)
+                .HasConversion(
+                    v => v.SelectMany(value => BitConverter.GetBytes(value)).ToArray(),
+                    v => Enumerable.Range(0, v.Length / sizeof(double))
+                            .Select(offset => BitConverter.ToDouble(v, offset * sizeof(double)))
+                            .ToArray());
+
+            builder
+                .Property(x => x.SummaryValues)
+                .HasConversion(
+                    v => v.SelectMany(value => BitConverter.GetBytes(value)).ToArray(),
+                    v => Enumerable.Range(0, v.Length / sizeof(double))
+                            .Select(offset => BitConverter.ToDouble(v, offset * sizeof(double)))
+                            .ToArray());
+
+            builder
                 .HasOne(x => x.MeasurementGroupArchive)
                 .WithMany(x => x.MeasurementGroups);
 
             builder
-                .HasMany(x => x.Measurements)
-                .WithOne(x => x.MeasurementGroup);
+                .HasOne(x => x.MeasurementGroupSchema)
+                .WithMany(x => x.MeasurementGroups);
         }
     }
 }

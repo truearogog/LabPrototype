@@ -67,7 +67,7 @@
 			</Grid>
 
 			<!---->
-			<Grid Classes="formItem" ColumnDefinitions="auto,*">
+			<Grid Classes="formItem" ColumnDefinitions="auto,*" IsVisible="False" >
 				<TextBlock	Grid.Column="0" Text="Meter Type" />
 				<ComboBox	Grid.Column="1" Items="{Binding MeterTypes}" SelectedIndex="{Binding SelectedMeterTypeIndex}">
 					<ComboBox.ItemTemplate>

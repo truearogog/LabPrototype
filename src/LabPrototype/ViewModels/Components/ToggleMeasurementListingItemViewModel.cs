@@ -1,6 +1,4 @@
 ﻿using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
-using LabPrototype.Domain.Models.Presentation.Measurements;
 using ReactiveUI;
 using System;
 using System.Linq;

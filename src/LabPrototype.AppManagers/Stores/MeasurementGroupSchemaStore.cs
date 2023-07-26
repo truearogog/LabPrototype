@@ -3,7 +3,7 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Stores
 {
-    public class MeterTypeMeasurementTypeStore : StoreBase<MeterTypeMeasurementType>, IMeterTypeMeasurementTypeStore
+    public class MeasurementGroupSchemaStore : StoreBase<MeasurementGroupSchema>, IMeasurementGroupSchemaStore
     {
     }
 }

@@ -6,11 +6,11 @@ using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.AppManagers.Services
 {
-    public class MeterTypeService : 
-        ServiceBase<MeterTypeEntity, MeterType, IMeterTypeRepository>, 
-        IMeterTypeService
+    public class MeasurementGroupSchemaService : 
+        ServiceBase<MeasurementGroupSchemaEntity, MeasurementGroupSchema, IMeasurementGroupSchemaRepository>, 
+        IMeasurementGroupSchemaService
     {
-        public MeterTypeService(IMapper mapper, IMeterTypeRepository repository) : base(mapper, repository)
+        public MeasurementGroupSchemaService(IMapper mapper, IMeasurementGroupSchemaRepository repository) : base(mapper, repository)
         {
         }
 

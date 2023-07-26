@@ -1,4 +1,4 @@
-﻿namespace LabPrototype.Domain.Models.Presentation.Measurements
+﻿namespace LabPrototype.Domain.Models.Presentation
 {
     public class FlowMeasurement
     {

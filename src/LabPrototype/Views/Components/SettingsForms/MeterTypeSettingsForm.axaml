@@ -41,7 +41,7 @@
 					Grid.Column="1"
 					Classes="smallButton"
 					Padding="10 5"
-					Command="{Binding AddMeterTypeMeasurementTypeCommand}">
+					Command="{Binding AddMeasurementGroupSchemeMeasurementTypeCommand}">
 					<StackPanel>
 						<material:MaterialIcon Kind="Plus" Width="20" Height="20" />
 						<TextBlock VerticalAlignment="Center" Text="Add" />
@@ -50,7 +50,7 @@
 			</Grid>
 
 			<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" MaxHeight="300">
-				<ItemsRepeater Items="{Binding MeterTypeMeasurementTypeForms}" Background="Transparent" MaxWidth="350">
+				<ItemsRepeater Items="{Binding MeasurementGroupSchemaMeasurementTypeForms}" Background="Transparent" MaxWidth="350">
 
 					<ItemsRepeater.Layout>
 						<StackLayout Spacing="10" Orientation="Vertical" />
@@ -61,6 +61,8 @@
 							<Border Background="#1e1f20" Padding="5" CornerRadius="5">
 								<Grid ColumnDefinitions="*, auto">
 									<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
+										<TextBlock Text="Measurement type" VerticalAlignment="Center" />
+										
 										<ComboBox
 											Items="{Binding MeasurementTypes}"
 											SelectedIndex="{Binding SelectedMeasurementTypeIndex}">
@@ -71,15 +73,6 @@
 												</DataTemplate>
 											</ComboBox.ItemTemplate>
 										</ComboBox>
-
-										<StackPanel Classes="formItem" Orientation="Horizontal" Spacing="5">
-											<TextBlock Text="Sort order" MinWidth="0" />
-											<NumericUpDown
-												Value="{Binding Form.SortOrder}"
-												Minimum="0"
-												AllowSpin="False"
-												ShowButtonSpinner="False" />
-										</StackPanel>
 									</StackPanel>
 
 									<Button Grid.Column="1" Classes="smallButton" Padding="10 5" Command="{Binding CancelCommand}">

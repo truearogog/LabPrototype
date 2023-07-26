@@ -61,6 +61,7 @@ public partial class MeasurementHistoryTable : UserControl
                 StringFormat = "{0}",
                 Mode = BindingMode.OneWay,
             },
+            MinWidth = 150,
         });
 
         var i = 0;
@@ -78,6 +79,7 @@ public partial class MeasurementHistoryTable : UserControl
                     StringFormat = "{0}",
                     Mode = BindingMode.OneWay,
                 },
+                MinWidth = 150,
             });
         }
     }

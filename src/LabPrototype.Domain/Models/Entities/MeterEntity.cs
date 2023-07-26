@@ -18,6 +18,7 @@ namespace LabPrototype.Domain.Models.Entities
         public int MeterTypeId { get; set; }
         public virtual MeterTypeEntity? MeterType { get; set; }
 
-        public virtual ICollection<MeasurementGroupArchiveEntity> MeasurementGroupArchives { get; set; } = new List<MeasurementGroupArchiveEntity>();
+        public virtual ICollection<MeasurementGroupArchiveEntity> MeasurementGroupArchives { get; set; } 
+            = new List<MeasurementGroupArchiveEntity>();
     }
 }

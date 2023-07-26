@@ -2,7 +2,7 @@
 
 namespace LabPrototype.Domain.IStores
 {
-    public interface IMeterTypeMeasurementTypeStore : IStoreBase<MeterTypeMeasurementType>
+    public interface IMeasurementGroupSchemaStore : IStoreBase<MeasurementGroupSchema>
     {
     }
 }

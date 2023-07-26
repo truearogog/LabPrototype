@@ -10,7 +10,10 @@ using System.Linq;
 
 namespace LabPrototype.ViewModels.Components.SettingsForms
 {
-    public class MeterTypeMeasurementTypeSettingsFormViewModel : SettingsFormViewModelBase<MeterTypeMeasurementType, IMeterTypeMeasurementTypeStore, MeterTypeMeasurementTypeForm>
+    public class MeasurementGroupSchemaMeasurementTypeSettingsFormViewModel : SettingsFormViewModelBase<
+        MeasurementGroupSchemaMeasurementType,
+        IMeasurementGroupSchemaMeasurementTypeStore, 
+        MeasurementGroupSchemaMeasurementTypeForm>
     {
 
         private int _selectedMeasurementTypeIndex;
@@ -24,7 +27,7 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
 
         private readonly IMeasurementTypeService _measurementTypeService;
 
-        public MeterTypeMeasurementTypeSettingsFormViewModel() : base()
+        public MeasurementGroupSchemaMeasurementTypeSettingsFormViewModel() : base()
         {
             _measurementTypeService = GetRequiredService<IMeasurementTypeService>();
 

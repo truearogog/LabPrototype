@@ -1,10 +1,10 @@
 ﻿using LabPrototype.AppManagers.Services;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
-using LabPrototype.Domain.Models.Presentation.Measurements;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
@@ -16,12 +16,12 @@ namespace LabPrototype.ViewModels.Components
         public ObservableCollection<ToggleMeasurementListingItemViewModel> ToggleMeasurementListingItems { get; set; } = new();
 
         private readonly IMeterTypeService _meterTypeService;
-        private readonly IMeterTypeMeasurementTypeService _meterTypeMeasurementTypeService;
+        private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
 
         public ToggleMeasurementListingViewModel()
         {
             _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _meterTypeMeasurementTypeService = GetRequiredService<IMeterTypeMeasurementTypeService>();
+            _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
         }
 
         public override void Dispose()
@@ -32,33 +32,42 @@ namespace LabPrototype.ViewModels.Components
             }
             base.Dispose();
         }
-
-        public void Update(Meter? meter, Func<Measurement, double>? valueSelector = null)
+        
+        public void Update(Meter meter, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
         {
             if (meter is not null)
             {
-                var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(meter.Id));
-
-                var measurementTypes = 
-                    _meterTypeService
-                    .GetMeasurementTypes(meter.MeterTypeId)
-                    .OrderBy(x => meterTypeMeasurementTypes.FirstOrDefault(y => y.MeasurementTypeId.Equals(x.Id))?.SortOrder ?? int.MaxValue)
-                    ?? Enumerable.Empty<MeasurementType>();
-
                 ToggleMeasurementListingItems.Clear();
 
                 var dateTimeColorScheme = new ColorScheme { PrimaryColor = "#2c3e50", SecondaryColor = "#34495e" };
                 ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(
-                    new MeasurementType() { Name = "Date/time", ColorScheme = dateTimeColorScheme }, 
+                    new MeasurementType() { Name = "Date/time", ColorScheme = dateTimeColorScheme },
                     this,
                     measurementGroup => measurementGroup.DateTime.ToString()));
 
+                // create dictionary that contains schema id -> measurement type -> array index
+                var schemas = _measurementGroupSchemaService.GetAll(x => x.MeterTypeId.Equals(meter.MeterTypeId));
+                var schemaTypeIndexes = new Dictionary<int, Dictionary<int, int>>();
+                foreach (var schema in schemas)
+                {
+                    var typeIndexes = new Dictionary<int, int>();
+                    var measurements = _measurementGroupSchemaService.GetMeasurementTypes(schema.Id);
+                    var i = 0;
+                    foreach (var measurement in measurements)
+                    {
+                        typeIndexes.Add(measurement.Id, i++);
+                    }
+                    schemaTypeIndexes.Add(schema.Id, typeIndexes);
+                }
+
+                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                 foreach (var measurementType in measurementTypes)
                 {
                     ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(measurementType, this, measurementGroup =>
                     {
-                        var measurement = measurementGroup.Measurements?.FirstOrDefault(x => x.MeasurementTypeId.Equals(measurementType.Id));
-                        return measurement is not null ? valueSelector?.Invoke(measurement).ToString() : null;
+                        var index = schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId][measurementType.Id];
+                        var group = groupSelector?.Invoke(measurementGroup);
+                        return group?.ElementAt(index).ToString() ?? null;
                     }));
                 }
             }

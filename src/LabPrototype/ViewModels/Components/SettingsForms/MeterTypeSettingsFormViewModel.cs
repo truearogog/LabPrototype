@@ -4,6 +4,7 @@ using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Models.Forms;
 using LabPrototype.ViewModels.Components.ModelSettings;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,24 +22,28 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
         }
 
         public ObservableCollection<ColorScheme> ColorSchemes { get; set; } = new();
-        public ObservableCollection<MeterTypeMeasurementTypeSettingsFormViewModel> MeterTypeMeasurementTypeForms { get; set; } = new();
+        public ObservableCollection<MeasurementGroupSchemaMeasurementTypeSettingsFormViewModel> MeasurementGroupSchemaMeasurementTypeForms { get; set; } = new();
 
         private readonly IColorSchemeService _colorSchemeService;
-        private readonly IMeterTypeMeasurementTypeService _meterTypeMeasurementTypeService;
-        private readonly IMeterTypeMeasurementTypeStore _meterTypeMeasurementTypeStore;
+        private readonly IMeasurementGroupSchemaService _measurementGroupSchemeService;
+        private readonly IMeasurementGroupSchemaStore _measurementGroupSchemeStore;
+        private readonly IMeasurementGroupSchemaMeasurementTypeService _measurementGroupSchemaMeasurementTypeService;
+        private readonly IMeasurementGroupSchemaMeasurementTypeStore _measurementGroupSchemaMeasurementTypeStore;
 
-        public ICommand AddMeterTypeMeasurementTypeCommand { get; }
+        public ICommand AddMeasurementGroupSchemeMeasurementTypeCommand { get; }
 
         public MeterTypeSettingsFormViewModel() : base()
         {
             _colorSchemeService = GetRequiredService<IColorSchemeService>();
-            _meterTypeMeasurementTypeService = GetRequiredService<IMeterTypeMeasurementTypeService>();
-            _meterTypeMeasurementTypeStore = GetRequiredService<IMeterTypeMeasurementTypeStore>();
+            _measurementGroupSchemeService = GetRequiredService<IMeasurementGroupSchemaService>();
+            _measurementGroupSchemeStore = GetRequiredService<IMeasurementGroupSchemaStore>();
+            _measurementGroupSchemaMeasurementTypeService = GetRequiredService<IMeasurementGroupSchemaMeasurementTypeService>();
+            _measurementGroupSchemaMeasurementTypeStore = GetRequiredService<IMeasurementGroupSchemaMeasurementTypeStore>();
 
             var colorSchemes = _colorSchemeService.GetAll();
             CreateColorSchemes(colorSchemes);
 
-            AddMeterTypeMeasurementTypeCommand = ReactiveCommand.Create(() => AddMeterTypeMeasurementTypeForm());
+            AddMeasurementGroupSchemeMeasurementTypeCommand = ReactiveCommand.Create(() => AddMeasurementGroupSchemeMeasurementTypeForm());
         }
 
         private void CreateColorSchemes(IEnumerable<ColorScheme> colorSchemes)
@@ -61,35 +66,21 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             base.AfterSubmit(model);
             if (model is not null)
             {
-                var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(model.Id));
+                // create new measurement group scheme
+                var measurementGroupSchema = new MeasurementGroupSchema { MeterTypeId = model.Id };
+                measurementGroupSchema = _measurementGroupSchemeStore.Create(_measurementGroupSchemeService, measurementGroupSchema) ?? throw new Exception();
 
-                MeterTypeMeasurementTypeForms.ToList().ForEach(x => {
+                MeasurementGroupSchemaMeasurementTypeForms.ToList().ForEach(x =>
+                {
                     x.PrepareModel();
-                    x.Model.MeterTypeId = model.Id;
+                    x.Model.MeasurementGroupSchemaId = measurementGroupSchema.Id;
                 });
+                var measurementGroupSchemaMeasurementTypes = MeasurementGroupSchemaMeasurementTypeForms.Select(x => x.Model);
+                measurementGroupSchemaMeasurementTypes.ToList().ForEach(x => x.Id = 0);
 
-                var meterTypeMeasurementTypesToCreate = MeterTypeMeasurementTypeForms
-                    .Select(x => x.Model)
-                    .Where(x => x.Id == default);
-                foreach (var meterTypeMeasurementTypeToCreate in meterTypeMeasurementTypesToCreate)
+                foreach (var measurementGroupSchemaMeasurementType in measurementGroupSchemaMeasurementTypes)
                 {
-                    _meterTypeMeasurementTypeStore.Create(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToCreate);
-                }
-
-                var meterTypeMeasurementTypesToUpdate = MeterTypeMeasurementTypeForms
-                    .Select(x => x.Model)
-                    .Where(x => meterTypeMeasurementTypes.Any(y => y.Id.Equals(x.Id)));
-                foreach (var meterTypeMeasurementTypeToUpdate in meterTypeMeasurementTypesToUpdate)
-                {
-                    _meterTypeMeasurementTypeStore.Update(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeToUpdate);
-                }
-
-                var meterTypeMeasurementTypeIdsToDelete = meterTypeMeasurementTypes
-                    .Select(x => x.Id)
-                    .Where(x => MeterTypeMeasurementTypeForms.Any(y => y.Model.Id.Equals(x)) == false);
-                foreach (var meterTypeMeasurementTypeIdToDelete in meterTypeMeasurementTypeIdsToDelete)
-                {
-                    _meterTypeMeasurementTypeStore.Delete(_meterTypeMeasurementTypeService, meterTypeMeasurementTypeIdToDelete);
+                    _measurementGroupSchemaMeasurementTypeStore.Create(_measurementGroupSchemaMeasurementTypeService, measurementGroupSchemaMeasurementType);
                 }
             }
         }
@@ -99,26 +90,33 @@ namespace LabPrototype.ViewModels.Components.SettingsForms
             base.OnModelSet();
             SelectedColorSchemeIndex = ColorSchemes.ToList().FindIndex(x => x?.Id.Equals(Model?.ColorSchemeId) ?? false);
 
-            var meterTypeMeasurementTypes = _meterTypeMeasurementTypeService.GetAll(x => x.MeterTypeId.Equals(Model.Id)).OrderBy(x => x.SortOrder);
-            CreateMeterTypeMeasurementTypeForms(meterTypeMeasurementTypes);
+            var latestScheme = _measurementGroupSchemeService
+                .GetAll(x => x.MeterTypeId.Equals(Model.Id))
+                .OrderByDescending(x => x.Created)
+                .FirstOrDefault();
+            var measurementGroupSchemeMeasurementTypes = _measurementGroupSchemaMeasurementTypeService
+                .GetAll(x => x.MeasurementGroupSchemaId.Equals(latestScheme?.Id ?? 0));
+            CreateMeasurementGroupSchemeMeasurementTypeForms(measurementGroupSchemeMeasurementTypes);
         }
 
-        private void CreateMeterTypeMeasurementTypeForms(IEnumerable<MeterTypeMeasurementType> meterTypeMeasurementTypes)
+        private void CreateMeasurementGroupSchemeMeasurementTypeForms(IEnumerable<MeasurementGroupSchemaMeasurementType> measurementGroupSchemeMeasurementTypes)
         {
-            MeterTypeMeasurementTypeForms.Clear();
-            foreach (var meterTypeMeasurementType in meterTypeMeasurementTypes)
+            MeasurementGroupSchemaMeasurementTypeForms.Clear();
+            foreach (var measurementGroupSchemeMeasurementType in measurementGroupSchemeMeasurementTypes)
             {
-                AddMeterTypeMeasurementTypeForm(meterTypeMeasurementType);
+                AddMeasurementGroupSchemeMeasurementTypeForm(measurementGroupSchemeMeasurementType);
             }
         }
 
-        private void AddMeterTypeMeasurementTypeForm(MeterTypeMeasurementType? meterTypeMeasurementType = null)
+        private void AddMeasurementGroupSchemeMeasurementTypeForm(MeasurementGroupSchemaMeasurementType? measurementGroupSchemeMeasurementType = null)
         {
-            var viewModel = new MeterTypeMeasurementTypeSettingsFormViewModel();
-            viewModel.Model = meterTypeMeasurementType ?? new MeterTypeMeasurementType() { MeterTypeId = Model.Id };
-            var deleteCommand = ReactiveCommand.Create(() => MeterTypeMeasurementTypeForms.Remove(viewModel));
+            var viewModel = new MeasurementGroupSchemaMeasurementTypeSettingsFormViewModel
+            {
+                Model = measurementGroupSchemeMeasurementType ?? new MeasurementGroupSchemaMeasurementType(),
+            };
+            var deleteCommand = ReactiveCommand.Create(() => MeasurementGroupSchemaMeasurementTypeForms.Remove(viewModel));
             viewModel.Activate(deleteCommand, null);
-            MeterTypeMeasurementTypeForms.Add(viewModel);
+            MeasurementGroupSchemaMeasurementTypeForms.Add(viewModel);
         }
     }
 }

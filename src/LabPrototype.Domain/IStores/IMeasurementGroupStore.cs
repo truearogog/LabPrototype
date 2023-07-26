@@ -1,4 +1,4 @@
-﻿using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
+﻿using LabPrototype.Domain.Models.Presentation;
 
 namespace LabPrototype.Domain.IStores
 {
