@@ -1,6 +1,5 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,12 +13,12 @@ namespace LabPrototype.Providers.FlowMeasurementGroupProvider
         private readonly IMeterService _meterService;
         private readonly IMeterTypeService _meterTypeService;
 
-        public event Action<FlowMeasurementGroup>? MeasurementGroupUpdated;
+        public event Action<DisplayMeasurementGroup>? MeasurementGroupUpdated;
         
         private readonly Random _random;
 
         private IDictionary<int, Timer> _timers = new ConcurrentDictionary<int, Timer>();
-        private IDictionary<int, FlowMeasurementGroup> _measurementGroups = new ConcurrentDictionary<int, FlowMeasurementGroup>();
+        private IDictionary<int, DisplayMeasurementGroup> _measurementGroups = new ConcurrentDictionary<int, DisplayMeasurementGroup>();
 
         public TestFlowMeasurementGroupProvider(IMeterService meterService, IMeterTypeService meterTypeService)
         {
@@ -37,10 +36,10 @@ namespace LabPrototype.Providers.FlowMeasurementGroupProvider
                 var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                 if (measurementTypes.Any())
                 {
-                    var measurementGroup = new FlowMeasurementGroup { MeterId = meterId, Measurements = new List<FlowMeasurement>() };
+                    var measurementGroup = new DisplayMeasurementGroup { MeterId = meterId, Measurements = new List<DisplayMeasurement>() };
                     foreach (var measurementType in measurementTypes)
                     {
-                        var measurement = new FlowMeasurement { MeasurementTypeId = measurementType.Id, Value = 0 };
+                        var measurement = new DisplayMeasurement { MeasurementTypeId = measurementType.Id, Value = 0 };
                         measurementGroup.Measurements?.Add(measurement);
                     }
                     _measurementGroups.TryAdd(meterId, measurementGroup);
@@ -50,7 +49,7 @@ namespace LabPrototype.Providers.FlowMeasurementGroupProvider
                     {
                         if (_measurementGroups.TryGetValue(meterId, out var measurementGroup))
                         {
-                            foreach (var measurement in measurementGroup.Measurements ?? Array.Empty<FlowMeasurement>())
+                            foreach (var measurement in measurementGroup.Measurements ?? Array.Empty<DisplayMeasurement>())
                             {
                                 measurement.Value += _random.Next(-10, 11);
                             }

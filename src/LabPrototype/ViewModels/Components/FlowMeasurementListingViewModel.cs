@@ -1,6 +1,5 @@
 ﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Presentation;
-using LabPrototype.Domain.Models.Presentation.MeasurementGroups;
 using LabPrototype.Providers.FlowMeasurementGroupProvider;
 using System.Collections.ObjectModel;
 
@@ -28,9 +27,9 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        private void _MeasurementGroupUpdated(FlowMeasurementGroup measurementGroup)
+        private void _MeasurementGroupUpdated(DisplayMeasurementGroup measurementGroup)
         {
-            if (measurementGroup is not null && measurementGroup.MeterId.Equals(_meterId))
+            if (measurementGroup is not null && measurementGroup.MeterId == _meterId)
             {
                 foreach (var flowMeasurementListingItem in FlowMeasurementListingItems)
                 {

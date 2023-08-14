@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
 {
-    public class FlowMeasurementListingItemViewModel : ViewModelBase
+    public class IntegralMeasurementListingItemViewModel : ViewModelBase
     {
         private MeasurementType _measurementType;
         public MeasurementType MeasurementType
@@ -20,7 +20,7 @@ namespace LabPrototype.ViewModels.Components
             set => this.RaiseAndSetIfChanged(ref _value, value);
         }
 
-        public FlowMeasurementListingItemViewModel(MeasurementType measurementType)
+        public IntegralMeasurementListingItemViewModel(MeasurementType measurementType)
         {
             _measurementType = measurementType;
         }

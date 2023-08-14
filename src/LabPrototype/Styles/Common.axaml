@@ -45,7 +45,7 @@
 	<Style Selector="Border.detailHeader">
 		<Setter Property="Background" Value="#1e1f20" />
 		<Setter Property="Padding" Value="10 5" />
-		<Setter Property="Height" Value="30" />
+		<Setter Property="Height" Value="35" />
 	</Style>
 	<Style Selector="Border.detailHeader TextBlock">
 		<Setter Property="VerticalAlignment" Value="Center" />

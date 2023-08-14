@@ -1,23 +1,26 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Input;
 using LabPrototype.Domain.Models.Presentation;
-using ReactiveUI;
-using System.Collections.Generic;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Providers.PlotProvider;
-using System;
+using LabPrototype.Domain.IRepositories;
+using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Extensions;
+using ReactiveUI;
+using LabPrototype.Providers.IntegrationCacheProvider;
+using LabPrototype.Models;
 using System.Drawing;
-using static LabPrototype.ViewModels.Components.MeasurementHistoryTableViewModel;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Threading.Tasks;
 
 namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryChartViewModel : MeasurementHistoryViewModelBase
     {
         private readonly IMeterTypeService _meterTypeService;
-        private readonly IMeasurementGroupService _measurementGroupService;
+        private readonly IMeasurementGroupRepository _measurementGroupRepository;
         private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
+        private readonly IMeasurementCacheProvider _measurementCacheProvider;
 
         private bool _lockXAxis;
         public bool LockXAxis
@@ -50,17 +53,21 @@ namespace LabPrototype.ViewModels.Components
         public IPlotProvider? PlotProvider { get; set; } = null;
 
         public ToggleMeasurementListingViewModel ToggleMeasurementListingViewModel { get; }
+        private IntegralMeasurementListingViewModel _integralMeasurementListingViewModel;
 
         public ICommand ToggleLockXAxisCommand { get; }
         public ICommand ToggleLockYAxisCommand { get; }
 
-        private IEnumerable<MeasurementGroup>? _measurementGroups = null;
+        private IEnumerable<MeasurementGroupEntity>? _measurementGroups = null;
 
-        public MeasurementHistoryChartViewModel()
+        public MeasurementHistoryChartViewModel(IntegralMeasurementListingViewModel integralMeasurementListingViewModel)
         {
+            _integralMeasurementListingViewModel = integralMeasurementListingViewModel;
+
             _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
+            _measurementGroupRepository = GetRequiredService<IMeasurementGroupRepository>();
             _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
+            _measurementCacheProvider = GetRequiredService<IMeasurementCacheProvider>();
 
             ToggleMeasurementListingViewModel = new ToggleMeasurementListingViewModel();
             ToggleMeasurementListingViewModel.OnChecked += _OnChecked;
@@ -72,18 +79,17 @@ namespace LabPrototype.ViewModels.Components
         public override void Dispose()
         {
             ToggleMeasurementListingViewModel.OnChecked -= _OnChecked;
-
             ToggleMeasurementListingViewModel.Dispose();
             base.Dispose();
         }
 
-        public void Update(Meter meter, MeasurementGroupArchive archive, Func<MeasurementGroup, IEnumerable<double>>? valueSelector = null)
+        public void Update(Meter? meter, MeasurementGroupArchive? archive, MeasurementDisplayMode displayMode)
         {
             if (meter is not null && archive is not null)
             {
-                ToggleMeasurementListingViewModel.Update(meter, valueSelector);
-                _measurementGroups = _measurementGroupService.GetAll(x => x.MeasurementGroupArchiveId.Equals(archive.Id));
-                CreateSeries(meter, valueSelector);
+                ToggleMeasurementListingViewModel.Update(meter, displayMode);
+                _measurementGroups = _measurementGroupRepository.GetAll().Where(x => x.MeasurementGroupArchiveId.Equals(archive.Id)).ToList();
+                CreateSeries(meter, archive, displayMode);
                 PlotProvider?.AddCrosshair();
             }
         }
@@ -97,7 +103,13 @@ namespace LabPrototype.ViewModels.Components
             }
         }
 
-        private void CreateSeries(Meter meter, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
+        public void UpdateSelectionEdges(double? selectionMin, double? selectionMax)
+        {
+            _integralMeasurementListingViewModel.UpdateSelectionEdges(selectionMin, selectionMax);
+            Task.Run(_integralMeasurementListingViewModel.UpdateSelectionIntegration);
+        }
+
+        private void CreateSeries(Meter meter, MeasurementGroupArchive archive, MeasurementDisplayMode displayMode)
         {
             if (PlotProvider is not null)
             {
@@ -120,26 +132,37 @@ namespace LabPrototype.ViewModels.Components
                         schemaTypeIndexes.Add(schema.Id, typeIndexes);
                     }
 
-                    var xs = _measurementGroups.Select(x => x.DateTime.ToOADate()).ToArray();
+                    var _xs = _measurementGroups.Select(x => x.DateTime.ToOADate()).ToArray();
                     var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
                     foreach (var measurementType in measurementTypes)
                     {
-                        var ys = new double[xs.Length];
-                        var i = 0;
-                        foreach (var measurementGroup in _measurementGroups ?? Enumerable.Empty<MeasurementGroup>())
-                        {
-                            if (schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId].TryGetValue(measurementType.Id, out var index))
-                            {
-                                var group = groupSelector?.Invoke(measurementGroup);
-                                ys[i++] = group?.ElementAt(index) ?? 0;
-                            }
-                            else
-                            {
-                                ys[i++] = 0;
-                            }
-                        }
+                        var xsys = _measurementCacheProvider.GetMeasurements(meter.Id, archive.Id, displayMode, measurementType.Id);
                         var color = measurementType.ColorScheme?.PrimaryColor?.ToColor() ?? Color.White;
-                        PlotProvider.AddPlot(measurementType.Id, xs, ys, color);
+                        if (xsys == default)
+                        {
+                            var ys = new double[_xs.Length];
+                            var i = 0;
+                            foreach (var measurementGroup in _measurementGroups ?? Enumerable.Empty<MeasurementGroupEntity>())
+                            {
+                                if (schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId].TryGetValue(measurementType.Id, out var index))
+                                {
+                                    var group = displayMode.ValueSelector?.Invoke(measurementGroup);
+                                    ys[i++] = group?.ElementAt(index) ?? 0;
+                                }
+                                else
+                                {
+                                    ys[i++] = 0;
+                                }
+                            }
+
+                            _measurementCacheProvider.AddMeasurements(meter.Id, archive.Id, displayMode, measurementType.Id, _xs, ys);
+                            PlotProvider.AddPlot(measurementType.Id, _xs, ys, color);
+                        }
+                        else
+                        {
+                            var (xs, ys) = xsys;
+                            PlotProvider.AddPlot(measurementType.Id, xs.ToArray(), ys.ToArray(), color);
+                        }
                     }
                 }
             }

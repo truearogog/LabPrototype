@@ -1,6 +1,8 @@
-﻿using LabPrototype.AppManagers.Services;
+﻿using LabPrototype.Domain.IRepositories;
 using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace LabPrototype.ViewModels.Components
 {
     public class MeasurementHistoryTableViewModel : MeasurementHistoryViewModelBase
     {
-        private readonly IMeasurementGroupService _measurementGroupService;
+        private readonly IMeasurementGroupRepository _measurementGroupRepository;
         private readonly IMeterTypeService _meterTypeService;
         private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
 
@@ -30,7 +32,7 @@ namespace LabPrototype.ViewModels.Components
 
         public MeasurementHistoryTableViewModel()
         {
-            _measurementGroupService = GetRequiredService<IMeasurementGroupService>();
+            _measurementGroupRepository = GetRequiredService<IMeasurementGroupRepository>();
             _meterTypeService = GetRequiredService<IMeterTypeService>();
             _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
         }
@@ -40,11 +42,11 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
 
-        public void Update(Meter? meter, MeasurementGroupArchive? archive, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
+        public void Update(Meter? meter, MeasurementGroupArchive? archive, MeasurementDisplayMode displayMode)
         {
             if (meter is not null && archive is not null)
             {
-                var measurementGroups = _measurementGroupService.GetAll(x => x.MeasurementGroupArchiveId.Equals(archive.Id));
+                var measurementGroups = _measurementGroupRepository.GetAll().Where(x => x.MeasurementGroupArchiveId.Equals(archive.Id)).ToList();
                 if (measurementGroups.Any())
                 {
                     // create dictionary that contains schema id -> measurement type -> from to index
@@ -69,7 +71,7 @@ namespace LabPrototype.ViewModels.Components
                     var j = 0;
                     foreach (var measurementGroup in measurementGroups)
                     {
-                        var group = groupSelector?.Invoke(measurementGroup);
+                        var group = displayMode.ValueSelector?.Invoke(measurementGroup);
                         var _measurementGroup = new _MeasurementGroup(measurementGroup.DateTime, group?.Count() ?? 0);
                         foreach (var measurementType in measurementTypes)
                         {

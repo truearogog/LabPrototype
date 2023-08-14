@@ -1,6 +1,8 @@
 ﻿using LabPrototype.AppManagers.Services;
 using LabPrototype.Domain.IServices;
+using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +35,7 @@ namespace LabPrototype.ViewModels.Components
             base.Dispose();
         }
         
-        public void Update(Meter meter, Func<MeasurementGroup, IEnumerable<double>>? groupSelector = null)
+        public void Update(Meter meter, MeasurementDisplayMode displayMode)
         {
             if (meter is not null)
             {
@@ -66,14 +68,14 @@ namespace LabPrototype.ViewModels.Components
                     ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(measurementType, this, measurementGroup =>
                     {
                         var index = schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId][measurementType.Id];
-                        var group = groupSelector?.Invoke(measurementGroup);
+                        var group = displayMode.ValueSelector?.Invoke(measurementGroup);
                         return group?.ElementAt(index).ToString() ?? null;
                     }));
                 }
             }
         }
 
-        public void UpdateMeasurementGroup(MeasurementGroup measurement)
+        public void UpdateMeasurementGroup(MeasurementGroupEntity measurement)
         {
             foreach (var item in ToggleMeasurementListingItems)
             {

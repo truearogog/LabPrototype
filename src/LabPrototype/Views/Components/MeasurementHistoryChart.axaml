@@ -10,7 +10,7 @@
 	<Grid RowDefinitions="auto, *, auto" IsVisible="{Binding IsVisible}">
 		<local:ToggleMeasurementListing Grid.Row="0" DataContext="{Binding ToggleMeasurementListingViewModel}" />
 		<ScottPlot:AvaPlot Grid.Row="1" x:Name="ChartControl" />
-		<StackPanel Grid.Row="2" Orientation="Horizontal" Classes="smallButtonPanel">
+		<StackPanel Grid.Row="2" Orientation="Horizontal" Classes="smallButtonPanel" IsVisible="False">
 			<Button Classes="smallButton" Command="{Binding ToggleLockXAxisCommand}">
 				<StackPanel>
 					<material:MaterialIcon Kind="Axis" IsVisible="{Binding !LockXAxis}" />

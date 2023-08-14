@@ -85,10 +85,10 @@
 									</ComboBox.ItemTemplate>
 								</ComboBox>
 							</Grid>
-							
 						</StackPanel>
 						
 						<components:FlowMeasurementListing DataContext="{Binding FlowMeasurementListingViewModel}" />
+						<components:IntegralMeasurementListing DataContext="{Binding IntegralMeasurementListingViewModel} " />
 					</StackPanel>
 				</ScrollViewer>
 			</Grid>

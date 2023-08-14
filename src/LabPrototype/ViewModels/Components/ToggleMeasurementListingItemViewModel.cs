@@ -1,4 +1,5 @@
-﻿using LabPrototype.Domain.Models.Presentation;
+﻿using LabPrototype.Domain.Models.Entities;
+using LabPrototype.Domain.Models.Presentation;
 using ReactiveUI;
 using System;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace LabPrototype.ViewModels.Components
         public bool HasValue => Value is not null;
 
         private ToggleMeasurementListingViewModel? _toggleMeasurementListingViewModel;
-        private Func<MeasurementGroup, string?>? _valueSelector = null;
+        private Func<MeasurementGroupEntity, string?>? _valueSelector = null;
 
         public bool IsChecked { get; set; } = true;
         public ICommand ToggledCommand { get; }
@@ -33,7 +34,7 @@ namespace LabPrototype.ViewModels.Components
         public ToggleMeasurementListingItemViewModel(
             MeasurementType measurementType,
             ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, 
-            Func<MeasurementGroup, string?>? valueSelector = null)
+            Func<MeasurementGroupEntity, string?>? valueSelector = null)
         {
             _measurementType = measurementType;
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;
@@ -54,7 +55,7 @@ namespace LabPrototype.ViewModels.Components
             _toggleMeasurementListingViewModel?.UpdateMeasurementAttribute(MeasurementType.Id, IsChecked);
         }
 
-        public void Update(MeasurementGroup measurementGroup)
+        public void Update(MeasurementGroupEntity measurementGroup)
         {
             Value = _valueSelector?.Invoke(measurementGroup);
             this.RaisePropertyChanged(nameof(HasValue));

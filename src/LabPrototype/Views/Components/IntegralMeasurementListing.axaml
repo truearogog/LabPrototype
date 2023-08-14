@@ -4,22 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:LabPrototype.Views.Components;assembly=LabPrototype"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="LabPrototype.Views.Components.FlowMeasurementListing">
+             x:Class="LabPrototype.Views.Components.IntegralMeasurementListing">	
 	<StackPanel>
 		<Border Classes="detailHeader">
-			<TextBlock Text="Flow" />
+			<TextBlock Text="Integral" />
 		</Border>
-		
+
 		<StackPanel Margin="10" Spacing="10">
+			<StackPanel Spacing="5">
+				<TextBlock Text="Integrate From" />
+				<local:DateTimePicker DataContext="{Binding SelectionStartDateTimePickerViewModel}" />
+			</StackPanel>
+			<StackPanel Spacing="5">
+				<TextBlock Text="Integrate To" />
+				<local:DateTimePicker DataContext="{Binding SelectionEndDateTimePickerViewModel}" />
+			</StackPanel>
 			<ItemsRepeater
-				Items="{Binding FlowMeasurementListingItems}"
+				Items="{Binding IntegralMeasurementListingItems}"
 				ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 				<ItemsRepeater.Layout>
 					<StackLayout Spacing="10" Orientation="Vertical" />
 				</ItemsRepeater.Layout>
 				<ItemsRepeater.ItemTemplate>
 					<DataTemplate>
-						<local:FlowMeasurementListingItem />
+						<local:IntegralMeasurementListingItem />
 					</DataTemplate>
 				</ItemsRepeater.ItemTemplate>
 			</ItemsRepeater>

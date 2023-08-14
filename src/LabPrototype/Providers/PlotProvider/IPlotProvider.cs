@@ -2,19 +2,39 @@
 
 namespace LabPrototype.Providers.PlotProvider
 {
+    public enum Edge
+    {
+        None,
+        Left,
+        Right
+    }
+
     public interface IPlotProvider
     {
         void AddPlot(int plotId, double[] xs, double[] ys, Color color);
         void ClearPlots();
         void SetPlotVisibility(int plotId, bool visible);
-        public bool LockXAxis { get; set; }
-        public bool LockYAxis { get; set; }
+        bool LockXAxis { get; set; }
+        bool LockYAxis { get; set; }
+        bool LowQuality { get; set; }
 
         void AddCrosshair();
         void ShowCrosshair();
         void HideCrosshair();
         void SetCrosshairPosition(double x, double y);
 
-        (double, double, int) GetPointNearestX(double x);
+        Edge GetPlotEdge();
+        Edge GetSelectionEdge();
+        void StartSelection();
+        void PanSelection();
+        Edge PanSelectionEdge(Edge edge);
+        void RemoveSelection();
+        bool HasSelection { get; }
+        double? SelectionMin { get; }
+        double? SelectionMax { get; }
+
+        void AxisPan(double dx, double dy);
+
+        (double x, double y, int index) GetPointNearestX(double x);
     }
 }

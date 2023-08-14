@@ -4,7 +4,6 @@ using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Models;
 using LabPrototype.ViewModels.Components;
 using LabPrototype.ViewModels.Models;
-using LabPrototype.Views.Dialogs.MeasurementTypeSettings;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,6 +35,7 @@ namespace LabPrototype.ViewModels.Main
                 if (_val != this.RaiseAndSetIfChanged(ref _selectedArchiveViewModelIndex, value))
                 {
                     UpdateMeasurementHistory();
+                    UpdateIntegrationArchive();
                 }
             }
         }
@@ -52,6 +52,7 @@ namespace LabPrototype.ViewModels.Main
                 if (_val != this.RaiseAndSetIfChanged(ref _selectedMeasurementDisplayModeIndex, value))
                 {
                     UpdateMeasurementHistory();
+                    UpdateIntegrationDisplayMode();
                 }
             }
         }
@@ -59,6 +60,7 @@ namespace LabPrototype.ViewModels.Main
         public ObservableCollection<MeasurementDisplayMode> MeasurementDisplayModes { get; set; } = new();
 
         public FlowMeasurementListingViewModel FlowMeasurementListingViewModel { get; }
+        public IntegralMeasurementListingViewModel IntegralMeasurementListingViewModel { get; }
 
         public MeasurementHistoryChartViewModel MeasurementHistoryChartViewModel { get; }
         public MeasurementHistoryTableViewModel MeasurementHistoryTableViewModel { get; }
@@ -80,8 +82,9 @@ namespace LabPrototype.ViewModels.Main
             _meterStore.ModelDeleted += _MeterDeleted;
 
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel();
+            IntegralMeasurementListingViewModel = new IntegralMeasurementListingViewModel();
 
-            MeasurementHistoryChartViewModel = new MeasurementHistoryChartViewModel() { IsVisible = true };
+            MeasurementHistoryChartViewModel = new MeasurementHistoryChartViewModel(IntegralMeasurementListingViewModel) { IsVisible = true };
             MeasurementHistoryTableViewModel = new MeasurementHistoryTableViewModel() { IsVisible = false };
 
             SelectChartCommand = ReactiveCommand.Create(SelectMeasurementChart);
@@ -101,7 +104,10 @@ namespace LabPrototype.ViewModels.Main
                 CreateArchives(archives);
                 this.RaisePropertyChanged(nameof(SelectedArchiveViewModelIndex));
                 UpdateMeasurementHistory();
+                UpdateIntegrationArchive();
+                UpdateIntegrationDisplayMode();
                 FlowMeasurementListingViewModel.UpdateMeter(Meter);
+                IntegralMeasurementListingViewModel.UpdateMeter(Meter);
             }
         }
 
@@ -115,6 +121,7 @@ namespace LabPrototype.ViewModels.Main
             _measurementGroupArchiveStore.ModelDeleted -= _ArchiveDeleted;
 
             FlowMeasurementListingViewModel.Dispose();
+            IntegralMeasurementListingViewModel.Dispose();
             MeasurementHistoryChartViewModel.Dispose();
             MeasurementHistoryTableViewModel.Dispose();
         }
@@ -194,8 +201,20 @@ namespace LabPrototype.ViewModels.Main
         {
             var selectedMeasurementDisplayMode = MeasurementDisplayModes.ElementAtOrDefault(SelectedMeasurementDisplayModeIndex);
             var selectedArchive = ArchiveViewModels.ElementAtOrDefault(SelectedArchiveViewModelIndex);
-            MeasurementHistoryChartViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode.ValueSelector);
-            MeasurementHistoryTableViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode.ValueSelector);
+            MeasurementHistoryChartViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode);
+            MeasurementHistoryTableViewModel.Update(Meter, selectedArchive?.Value, selectedMeasurementDisplayMode);
+        }
+
+        private void UpdateIntegrationArchive()
+        {
+            var selectedArchive = ArchiveViewModels.ElementAtOrDefault(SelectedArchiveViewModelIndex);
+            IntegralMeasurementListingViewModel.UpdateIntegrationArchive(selectedArchive!.Value!.Id);
+        }
+
+        private void UpdateIntegrationDisplayMode()
+        {
+            var selectedMeasurementDisplayMode = MeasurementDisplayModes.ElementAtOrDefault(SelectedMeasurementDisplayModeIndex);
+            IntegralMeasurementListingViewModel.UpdateIntegrationDisplayMode(selectedMeasurementDisplayMode);
         }
     }
 }

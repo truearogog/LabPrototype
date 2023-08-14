@@ -10,6 +10,7 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
+    <None Remove="appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,13 +88,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <UpToDateCheckInput Remove="Views\Dialogs\MeterTypeSettings\CreateMeterTypeDialog.axaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Dialogs\MeterTypeSettings\CreateMeterTypeDialog.axaml" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

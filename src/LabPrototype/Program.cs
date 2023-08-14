@@ -2,31 +2,33 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
-using Splat;
-using System;
-using System.Threading;
-using System.Globalization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Core;
-using LabPrototype.Framework.Extensions;
-using LabPrototype.Domain.Models.Configurations;
-using LabPrototype.Infrastructure.DataAccessLayer;
-using LabPrototype.Domain.IRepositories;
-using LabPrototype.Infrastructure.DataAccessLayer.Repositories;
-using LabPrototype.Domain.IServices;
+using LabPrototype.AppManagers.Profiles;
 using LabPrototype.AppManagers.Services;
 using LabPrototype.AppManagers.Stores;
+using LabPrototype.Domain.IRepositories;
+using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
-using LabPrototype.AppManagers.Profiles;
-using System.Collections.Generic;
-using LabPrototype.Services.WindowService;
+using LabPrototype.Domain.Models.Configurations;
+using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Framework.Extensions;
+using LabPrototype.Infrastructure.DataAccessLayer;
+using LabPrototype.Infrastructure.DataAccessLayer.Repositories;
+using LabPrototype.Infrastructure.Repositories;
 using LabPrototype.Models.Profiles;
 using LabPrototype.Providers.FlowMeasurementGroupProvider;
-using LabPrototype.Infrastructure.Repositories;
-using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Providers.IntegrationCacheProvider;
+using LabPrototype.Providers.MeasurementIntegrationCacheProvider;
+using LabPrototype.Services.WindowService;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Core;
+using Splat;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 namespace LabPrototype
 {
@@ -57,7 +59,6 @@ namespace LabPrototype
                     context.Database.EnsureCreated();
                 }
 
-                // seed measurement groups
                 // Seed(1);
                 
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
@@ -272,6 +273,7 @@ namespace LabPrototype
             services.RegisterLazySingleton<IWindowService>(() => new WindowService());
             services.RegisterLazySingleton<IFlowMeasurementGroupProvider>(() =>
                 new TestFlowMeasurementGroupProvider(resolver.GetRequiredService<IMeterService>(), resolver.GetRequiredService<IMeterTypeService>()));
+            services.RegisterLazySingleton<IMeasurementCacheProvider>(() => new MeasurementCacheProvider());
         }
 
         private static AppBuilder BuildAvaloniaApp() =>
