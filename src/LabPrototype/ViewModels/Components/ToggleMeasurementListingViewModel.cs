@@ -1,12 +1,10 @@
-﻿using LabPrototype.AppManagers.Services;
-using LabPrototype.Domain.IServices;
+﻿using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.Models.Entities;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LabPrototype.ViewModels.Components
@@ -17,13 +15,11 @@ namespace LabPrototype.ViewModels.Components
 
         public ObservableCollection<ToggleMeasurementListingItemViewModel> ToggleMeasurementListingItems { get; set; } = new();
 
-        private readonly IMeterTypeService _meterTypeService;
-        private readonly IMeasurementGroupSchemaService _measurementGroupSchemaService;
+        private readonly IMeterService _meterTypeService;
 
         public ToggleMeasurementListingViewModel()
         {
-            _meterTypeService = GetRequiredService<IMeterTypeService>();
-            _measurementGroupSchemaService = GetRequiredService<IMeasurementGroupSchemaService>();
+            _meterTypeService = GetRequiredService<IMeterService>();
         }
 
         public override void Dispose()
@@ -41,36 +37,21 @@ namespace LabPrototype.ViewModels.Components
             {
                 ToggleMeasurementListingItems.Clear();
 
-                var dateTimeColorScheme = new ColorScheme { PrimaryColor = "#2c3e50", SecondaryColor = "#34495e" };
                 ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(
-                    new MeasurementType() { Name = "Date/time", ColorScheme = dateTimeColorScheme },
+                    new MeasurementType() { Name = "Date/time", PrimaryColor = "#2c3e50", SecondaryColor = "#34495e" },
                     this,
                     measurementGroup => measurementGroup.DateTime.ToString()));
 
-                // create dictionary that contains schema id -> measurement type -> array index
-                var schemas = _measurementGroupSchemaService.GetAll(x => x.MeterTypeId.Equals(meter.MeterTypeId));
-                var schemaTypeIndexes = new Dictionary<int, Dictionary<int, int>>();
-                foreach (var schema in schemas)
-                {
-                    var typeIndexes = new Dictionary<int, int>();
-                    var measurements = _measurementGroupSchemaService.GetMeasurementTypes(schema.Id);
-                    var i = 0;
-                    foreach (var measurement in measurements)
-                    {
-                        typeIndexes.Add(measurement.Id, i++);
-                    }
-                    schemaTypeIndexes.Add(schema.Id, typeIndexes);
-                }
-
-                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
+                var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.Id);
+                var measurementTypeIndex = 0;
                 foreach (var measurementType in measurementTypes)
                 {
                     ToggleMeasurementListingItems.Add(new ToggleMeasurementListingItemViewModel(measurementType, this, measurementGroup =>
                     {
-                        var index = schemaTypeIndexes[measurementGroup.MeasurementGroupSchemaId][measurementType.Id];
                         var group = displayMode.ValueSelector?.Invoke(measurementGroup);
-                        return group?.ElementAt(index).ToString() ?? null;
+                        return group?.ElementAt(measurementTypeIndex).ToString() ?? string.Empty;
                     }));
+                    ++measurementTypeIndex;
                 }
             }
         }

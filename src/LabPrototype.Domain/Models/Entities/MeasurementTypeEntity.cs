@@ -1,14 +1,15 @@
 ﻿namespace LabPrototype.Domain.Models.Entities
 {
-    public class MeasurementTypeEntity : EntityBase
+    public class MeasurementTypeEntity : EntityBase, IColorSchemeEntity
     {
         public string Name { get; set; } = string.Empty;
         public string Unit { get; set; } = string.Empty;
+        public string IntegrationUnit { get; set; } = string.Empty;
 
-        public int ColorSchemeId { get; set; }
-        public virtual ColorSchemeEntity? ColorScheme { get; set; }
+        public string PrimaryColor { get; set; } = string.Empty;
+        public string SecondaryColor { get; set; } = string.Empty;
 
-        public virtual ICollection<MeasurementGroupSchemaMeasurementTypeEntity> MeasurementGroupSchemaMeasurementTypes { get; set; } 
-            = new List<MeasurementGroupSchemaMeasurementTypeEntity>();
+        public int MeterId { get; set; }
+        public virtual MeterEntity? Meter { get; set; }
     }
 }

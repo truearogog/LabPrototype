@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
+    <ProjectReference Include="..\LabPrototype.Modbus\LabPrototype.Modbus.csproj" />
   </ItemGroup>
 
 </Project>

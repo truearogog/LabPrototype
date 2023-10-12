@@ -72,7 +72,7 @@ public partial class MeasurementHistoryTable : UserControl
                 Header = measurementType.Name,
                 CanUserSort = true,
                 CanUserReorder = true,
-                HeaderTemplate = headerTemplateFactory(measurementType.ColorScheme?.PrimaryColor ?? "#ffffff"),
+                HeaderTemplate = headerTemplateFactory(measurementType.PrimaryColor ?? "#ffffff"),
                 Binding = new Binding
                 {
                     Path = $"{nameof(MeasurementHistoryTableViewModel._MeasurementGroup.Values)}[{i++}]",

@@ -7,7 +7,7 @@ namespace LabPrototype.ViewModels.Components
 {
     public class FlowMeasurementListingViewModel : ViewModelBase
     {
-        private readonly IMeterTypeService _meterTypeService;
+        private readonly IMeterService _meterService;
         private readonly IFlowMeasurementGroupProvider _flowMeasurementGroupProvider;
 
         private int _meterId;
@@ -15,7 +15,7 @@ namespace LabPrototype.ViewModels.Components
 
         public FlowMeasurementListingViewModel()
         {
-            _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _meterService = GetRequiredService<IMeterService>();
             _flowMeasurementGroupProvider = GetRequiredService<IFlowMeasurementGroupProvider>();
         }
 
@@ -56,7 +56,7 @@ namespace LabPrototype.ViewModels.Components
         private void CreateMeasurements(Meter meter)
         {
             FlowMeasurementListingItems.Clear();
-            var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
+            var measurementTypes = _meterService.GetMeasurementTypes(meter.Id);
             foreach (var measurementType in measurementTypes)
             {
                 FlowMeasurementListingItems.Add(new FlowMeasurementListingItemViewModel(measurementType));

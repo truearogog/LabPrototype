@@ -14,19 +14,19 @@ namespace LabPrototype.ViewModels.Main
         }
 
         public MeterListingViewModel MeterListingViewModel { get; }
-        public ModelSettingsViewModel ModelSettingsViewModel { get; }
+        public AppSettingsViewModel AppSettingsViewModel { get; }
 
         public ICommand SelectMeterListingCommand { get; }
-        public ICommand SelectModelSettingsCommand { get; }
+        public ICommand SelectSettingsCommand { get; }
 
         public MainWindowViewModel()
         {
             MeterListingViewModel = new MeterListingViewModel(this);
-            ModelSettingsViewModel = new ModelSettingsViewModel(this);
+            AppSettingsViewModel = new AppSettingsViewModel(this);
             CurrentViewModel = MeterListingViewModel;
 
             SelectMeterListingCommand = ReactiveCommand.Create(() => CurrentViewModel = MeterListingViewModel);
-            SelectModelSettingsCommand = ReactiveCommand.Create(() => CurrentViewModel = ModelSettingsViewModel);
+            SelectSettingsCommand = ReactiveCommand.Create(() => CurrentViewModel = AppSettingsViewModel);
         }
 
         public override void Dispose()

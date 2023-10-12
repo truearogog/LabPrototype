@@ -28,10 +28,6 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Configurations
             builder
                 .HasOne(x => x.MeasurementGroupArchive)
                 .WithMany(x => x.MeasurementGroups);
-
-            builder
-                .HasOne(x => x.MeasurementGroupSchema)
-                .WithMany(x => x.MeasurementGroups);
         }
     }
 }

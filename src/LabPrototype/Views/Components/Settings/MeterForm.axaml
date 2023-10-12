@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="LabPrototype.Views.Components.Settings.MeterForm">
+		<TabControl>
+			<TabItem Header="Information">
+				<StackPanel Classes="formStackPanel">
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Serial code" />
+						<TextBox	Grid.Column="1" Watermark="Serial code" Text="{Binding Form.InformationForm.SerialCode}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Name" />
+						<TextBox	Grid.Column="1" Watermark="Name" Text="{Binding Form.InformationForm.Name}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Address" />
+						<TextBox	Grid.Column="1" Watermark="Address" Text="{Binding Form.InformationForm.Address}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Meter Nr" />
+						<NumericUpDown	Grid.Column="1" Watermark="Meter Nr" Value="{Binding Form.InformationForm.MeterNr}" Minimum="1" Maximum="256" AllowSpin="False" ShowButtonSpinner="False" />
+					</Grid>
+
+					<!---->
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Use serial connection" />
+						<CheckBox		Grid.Column="1" IsChecked="{Binding Form.UseSerialConnection}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Use internet connection" />
+						<CheckBox		Grid.Column="1" IsChecked="{Binding Form.UseInternetConnection}" />
+					</Grid>
+				</StackPanel>
+			</TabItem>
+
+			<TabItem Header="Serial">
+				<StackPanel Classes="formStackPanel">
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Port Name" />
+						<TextBox	Grid.Column="1" Watermark="PortName" Text="{Binding Form.SerialConnectionForm.PortName}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Baud Rate" />
+						<NumericUpDown	Grid.Column="1" Watermark="Baud Rate" Value="{Binding Form.SerialConnectionForm.BaudRate}" Minimum="0" AllowSpin="False" ShowButtonSpinner="False" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Parity" />
+						<ComboBox	Grid.Column="1" Items="{Binding Parities}" SelectedIndex="{Binding SelectedParityIndex}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Name}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Data Bits" />
+						<NumericUpDown	Grid.Column="1" Watermark="Data Bits" Value="{Binding Form.SerialConnectionForm.DataBits}" Minimum="0" AllowSpin="False" ShowButtonSpinner="False" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Stop Bits" />
+						<ComboBox	Grid.Column="1" Items="{Binding StopBits}" SelectedIndex="{Binding SelectedStopBitsIndex}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Name}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+					</Grid>
+				</StackPanel>
+			</TabItem>
+
+			<TabItem Header="Internet">
+				<StackPanel Classes="formStackPanel">
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock	Grid.Column="0" Text="Ip Address" />
+						<TextBox	Grid.Column="1" Watermark="Ip Address" Text="{Binding Form.InternetConnectionForm.IpAddress}" />
+					</Grid>
+
+					<Grid Classes="formItem" ColumnDefinitions="auto,*">
+						<TextBlock		Grid.Column="0" Text="Port" />
+						<NumericUpDown	Grid.Column="1" Watermark="Port" Value="{Binding Form.InternetConnectionForm.Port}" Minimum="0" AllowSpin="False" ShowButtonSpinner="False" />
+					</Grid>
+				</StackPanel>
+			</TabItem>
+		</TabControl>
+</UserControl>

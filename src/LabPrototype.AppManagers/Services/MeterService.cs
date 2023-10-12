@@ -13,5 +13,11 @@ namespace LabPrototype.AppManagers.Services
         public MeterService(IMapper mapper, IMeterRepository repository) : base(mapper, repository)
         {
         }
+
+        public IEnumerable<MeasurementType> GetMeasurementTypes(int id)
+        {
+            var entities = Repository.GetMany(id, x => x.MeasurementTypes);
+            return Mapper.Map<IEnumerable<MeasurementType>>(entities);
+        }
     }
 }

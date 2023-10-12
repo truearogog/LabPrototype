@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.AppManagers", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.ModbusTest", "LabPrototype.ModbusTest\LabPrototype.ModbusTest.csproj", "{9D1A74A2-0E53-40E0-BCA8-6575FFA14597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPrototype.Modbus", "LabPrototype.Modbus\LabPrototype.Modbus.csproj", "{C70AB7A7-7F7E-4CEF-84F2-73418417D654}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabPrototype.Modbus", "LabPrototype.Modbus\LabPrototype.Modbus.csproj", "{C70AB7A7-7F7E-4CEF-84F2-73418417D654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabPrototype.IoC", "LabPrototype.IoC\LabPrototype.IoC.csproj", "{B2FEE336-FE09-4160-9E07-B113B40EB9FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,18 @@ Global
 		{C70AB7A7-7F7E-4CEF-84F2-73418417D654}.Release|x64.Build.0 = Release|Any CPU
 		{C70AB7A7-7F7E-4CEF-84F2-73418417D654}.Release|x86.ActiveCfg = Release|Any CPU
 		{C70AB7A7-7F7E-4CEF-84F2-73418417D654}.Release|x86.Build.0 = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Debug|x86.Build.0 = Debug|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|x64.Build.0 = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|x86.ActiveCfg = Release|Any CPU
+		{B2FEE336-FE09-4160-9E07-B113B40EB9FF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

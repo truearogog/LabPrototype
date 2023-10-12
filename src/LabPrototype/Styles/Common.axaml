@@ -87,7 +87,7 @@
 	</Style>
 	<Style Selector=".formItem > TextBlock">
 		<Setter Property="Margin" Value="0 5" />
-		<Setter Property="MinWidth" Value="150" />
+		<Setter Property="MinWidth" Value="165" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 	</Style>

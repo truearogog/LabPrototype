@@ -14,8 +14,8 @@ namespace LabPrototype.ViewModels.Main
 {
     public class MeterWindowViewModel : ParametrizedWindowViewModelBase<ModelNavigationParameter<Meter>>
     {
-        private readonly IMeasurementGroupArchiveService _measurementGroupArchiveService;
-        private readonly IMeasurementGroupArchiveStore _measurementGroupArchiveStore;
+        private readonly IArchiveService _measurementGroupArchiveService;
+        private readonly IArchiveStore _measurementGroupArchiveStore;
         private readonly IMeterStore _meterStore;
 
         private Meter? _meter = null;
@@ -40,7 +40,7 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        public ObservableCollection<ValueViewModelBase<MeasurementGroupArchive>> ArchiveViewModels { get; set; } = new();
+        public ObservableCollection<ValueViewModelBase<Archive>> ArchiveViewModels { get; set; } = new();
 
         private int _selectedMeasurementDisplayModeIndex;
         public int SelectedMeasurementDisplayModeIndex
@@ -70,9 +70,9 @@ namespace LabPrototype.ViewModels.Main
 
         public MeterWindowViewModel()
         {
-            _measurementGroupArchiveService = GetRequiredService<IMeasurementGroupArchiveService>();
+            _measurementGroupArchiveService = GetRequiredService<IArchiveService>();
 
-            _measurementGroupArchiveStore = GetRequiredService<IMeasurementGroupArchiveStore>();
+            _measurementGroupArchiveStore = GetRequiredService<IArchiveStore>();
             _measurementGroupArchiveStore.ModelCreated += _ArchiveCreated;
             _measurementGroupArchiveStore.ModelUpdated += _ArchiveUpdated;
             _measurementGroupArchiveStore.ModelDeleted += _ArchiveDeleted;
@@ -91,7 +91,7 @@ namespace LabPrototype.ViewModels.Main
             SelectTableCommand = ReactiveCommand.Create(SelectMeasurementTable);
 
             MeasurementDisplayModes.Add(new MeasurementDisplayMode("Average", x => x.AverageValues));
-            MeasurementDisplayModes.Add(new MeasurementDisplayMode("Summary", x => x.SummaryValues));
+            // MeasurementDisplayModes.Add(new MeasurementDisplayMode("Summary", x => x.SummaryValues));
         }
 
         public override void Activate(ModelNavigationParameter<Meter> parameter)
@@ -142,7 +142,7 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void _ArchiveCreated(MeasurementGroupArchive archive)
+        private void _ArchiveCreated(Archive archive)
         {
             if (Meter is not null && archive.MeterId.Equals(Meter.Id))
             {
@@ -150,7 +150,7 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void _ArchiveUpdated(MeasurementGroupArchive? archive)
+        private void _ArchiveUpdated(Archive? archive)
         {
             if (Meter is not null && archive is not null && archive.MeterId.Equals(Meter.Id))
             {
@@ -171,7 +171,7 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void CreateArchives(IEnumerable<MeasurementGroupArchive> archives)
+        private void CreateArchives(IEnumerable<Archive> archives)
         {
             ArchiveViewModels.Clear();
             foreach (var archive in archives)
@@ -180,9 +180,9 @@ namespace LabPrototype.ViewModels.Main
             }
         }
 
-        private void CreateArchive(MeasurementGroupArchive archive)
+        private void CreateArchive(Archive archive)
         {
-            ArchiveViewModels.Add(new ValueViewModelBase<MeasurementGroupArchive> { Value = archive });
+            ArchiveViewModels.Add(new ValueViewModelBase<Archive> { Value = archive });
         }
 
         private void SelectMeasurementChart()

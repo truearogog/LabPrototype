@@ -34,7 +34,7 @@ namespace LabPrototype.ViewModels.Components
         public ToggleMeasurementListingItemViewModel(
             MeasurementType measurementType,
             ToggleMeasurementListingViewModel toggleMeasurementListingViewModel, 
-            Func<MeasurementGroupEntity, string?>? valueSelector = null)
+            Func<MeasurementGroupEntity, string>? valueSelector = null)
         {
             _measurementType = measurementType;
             _toggleMeasurementListingViewModel = toggleMeasurementListingViewModel;

@@ -2,20 +2,16 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
-using LabPrototype.AppManagers.Profiles;
 using LabPrototype.AppManagers.Services;
 using LabPrototype.AppManagers.Stores;
 using LabPrototype.Domain.IRepositories;
 using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Configurations;
-using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Framework.Extensions;
 using LabPrototype.Infrastructure.DataAccessLayer;
-using LabPrototype.Infrastructure.DataAccessLayer.Repositories;
 using LabPrototype.Infrastructure.Repositories;
-using LabPrototype.Models.Profiles;
-using LabPrototype.Providers.FlowMeasurementGroupProvider;
+using LabPrototype.IoC;
 using LabPrototype.Providers.IntegrationCacheProvider;
 using LabPrototype.Providers.MeasurementIntegrationCacheProvider;
 using LabPrototype.Services.WindowService;
@@ -25,9 +21,7 @@ using Serilog;
 using Serilog.Core;
 using Splat;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
 
 namespace LabPrototype
@@ -66,48 +60,6 @@ namespace LabPrototype
             finally
             {
                 mutex.ReleaseMutex();
-            }
-        }
-
-        private static void Seed(int id)
-        {
-            var mgService = Locator.Current.GetRequiredService<IMeasurementGroupService>();
-            var aService = Locator.Current.GetRequiredService<IMeasurementGroupArchiveService>();
-            var metService = Locator.Current.GetRequiredService<IMeterTypeService>();
-            var sService = Locator.Current.GetRequiredService<IMeasurementGroupSchemaService>();
-            var random = new Random();
-
-            var mts = metService.GetMeasurementTypes(id);
-            var a = aService.GetAll(x => x.MeterId == id);
-            var s = sService.GetAll(x => x.MeterTypeId == id).OrderByDescending(x => x.Created).First();
-            foreach (var archive in a)
-            {
-                // create measurement groups
-                var mgs = new List<MeasurementGroup>();
-                var dateTime = DateTime.UtcNow;
-                var _mts = new (double, double)[mts.Count()];
-                for (var i = 0; i < 1000; ++i)
-                {
-                    var avg = new double[mts.Count()];
-                    _mts.Select(x => x.Item1).ToArray().CopyTo(avg, 0);
-                    var sum = new double[mts.Count()];
-                    _mts.Select(x => x.Item2).ToArray().CopyTo(sum, 0);
-                    for (var j = 0; j < _mts.Length; ++j)
-                    {
-                        _mts[j].Item1 += random.Next(-5, 6);
-                        _mts[j].Item2 += random.Next(-5, 6);
-                    }
-                    var mg = new MeasurementGroup
-                    {
-                        MeasurementGroupArchiveId = archive.Id,
-                        MeasurementGroupSchemaId = s.Id,
-                        DateTime = archive.DiscretizationMonths == 0 ? dateTime.AddMinutes(archive.DiscretizationMinutes * i) : dateTime.AddMonths(archive.DiscretizationMonths * i),
-                        AverageValues = avg,
-                        SummaryValues = sum,
-                    };
-                    mgs.Add(mg);
-                }
-                mgService.CreateRange(mgs);
             }
         }
 
@@ -158,9 +110,7 @@ namespace LabPrototype
                 return new DbContextOptionsBuilder().UseSqlite(databaseConfiguration.ConnectionString).Options;
             });
 
-            services.RegisterLazySingleton(() => new LabDbContextFactory(
-                resolver.GetRequiredService<DbContextOptions>()
-            ));
+            services.RegisterLazySingleton(() => new LabDbContextFactory(resolver.GetRequiredService<DbContextOptions>()));
         }
 
         private static void RegisterLogging(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
@@ -183,96 +133,44 @@ namespace LabPrototype
 
         private static void RegisterAutoMapper(IMutableDependencyResolver services)
         {
-            services.RegisterLazySingleton<IMapper>(() =>
-            {
-                var profileTypes = new List<Type> {
-                    typeof(ColorScheme_Profile),
-                    typeof(MeasurementGroup_Profile),
-                    typeof(MeasurementGroupArchive_Profile),
-                    typeof(MeasurementGroupSchema_Profile),
-                    typeof(MeasurementGroupSchemaMeasurementType_Profile),
-                    typeof(MeasurementType_Profile),
-                    typeof(Meter_Profile),
-                    typeof(MeterType_Profile),
-
-                    typeof(ColorSchemeForm_Profile),
-                    typeof(MeasurementTypeForm_Profile),
-                    typeof(MeterForm_Profile),
-                    typeof(MeterTypeForm_Profile),
-                    typeof(MeasurementGroupSchemaMeasurementTypeForm_Profile),
-                };
-                var config = new MapperConfiguration(cfg =>
-                {
-                    foreach (var profileType in profileTypes)
-                    {
-                        cfg.AddProfile(profileType);
-                    }
-                });
-                return new Mapper(config);
-            });
+            services.RegisterLazySingleton<IMapper>(() => new Mapper(AutoMapperConfiguration.Build()));
         }
 
         private static void RegisterRepositories(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.Register<IColorSchemeRepository>(() => 
-                new ColorSchemeRepository(ResolveDbContext(resolver)));
-            services.Register<IMeasurementGroupArchiveRepository>(() =>
-                new MeasurementGroupArchiveRepository(ResolveDbContext(resolver)));
-            services.Register<IMeasurementGroupRepository>(() => 
-                new MeasurementGroupRepository(ResolveDbContext(resolver)));
-            services.Register<IMeasurementTypeRepository>(() => 
-                new MeasurementTypeRepository(ResolveDbContext(resolver)));
-            services.Register<IMeterRepository>(() => 
-                new MeterRepository(ResolveDbContext(resolver)));
-            services.Register<IMeterTypeRepository>(() => 
-                new MeterTypeRepository(ResolveDbContext(resolver)));
-            services.Register<IMeasurementGroupSchemaRepository>(() => 
-                new MeasurementGroupSchemaRepository(ResolveDbContext(resolver)));
-            services.Register<IMeasurementGroupSchemaMeasurementTypeRepository>(() => 
-                new MeasurementGroupSchemaMeasurementTypeRepository(ResolveDbContext(resolver)));
+            services.Register<IArchiveRepository>(() => new ArchiveRepository(ResolveDbContext(resolver)));
+            services.Register<IMeasurementGroupRepository>(() => new MeasurementGroupRepository(ResolveDbContext(resolver)));
+            services.Register<IMeasurementTypeRepository>(() => new MeasurementTypeRepository(ResolveDbContext(resolver)));
+            services.Register<IMeterRepository>(() => new MeterRepository(ResolveDbContext(resolver)));
         }
 
         private static LabDbContext ResolveDbContext(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<LabDbContextFactory>().Create();
 
         private static void RegisterDataServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.Register<IColorSchemeService>(() => 
-                new ColorSchemeService(ResolveMapper(resolver), resolver.GetRequiredService<IColorSchemeRepository>()));
             services.Register<IMeasurementGroupService>(() => 
                 new MeasurementGroupService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupRepository>()));
-            services.Register<IMeasurementGroupArchiveService>(() =>
-                new MeasurementGroupArchiveService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupArchiveRepository>()));
+            services.Register<IArchiveService>(() =>
+                new ArchiveService(ResolveMapper(resolver), resolver.GetRequiredService<IArchiveRepository>()));
             services.Register<IMeasurementTypeService>(() => 
                 new MeasurementTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementTypeRepository>()));
             services.Register<IMeterService>(() => 
                 new MeterService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterRepository>()));
-            services.Register<IMeterTypeService>(() => 
-                new MeterTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeterTypeRepository>()));
-            services.Register<IMeasurementGroupSchemaService>(() => 
-                new MeasurementGroupSchemaService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupSchemaRepository>()));
-            services.Register<IMeasurementGroupSchemaMeasurementTypeService>(() => 
-                new MeasurementGroupSchemaMeasurementTypeService(ResolveMapper(resolver), resolver.GetRequiredService<IMeasurementGroupSchemaMeasurementTypeRepository>()));
         }
 
         private static IMapper ResolveMapper(IReadonlyDependencyResolver resolver) => resolver.GetRequiredService<IMapper>();
         
         private static void RegisterStores(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.RegisterLazySingleton<IColorSchemeStore>(() => new ColorSchemeStore());
             services.RegisterLazySingleton<IMeasurementGroupStore>(() => new MeasurementGroupStore());
-            services.RegisterLazySingleton<IMeasurementGroupArchiveStore>(() => new MeasurementGroupArchiveStore());
+            services.RegisterLazySingleton<IArchiveStore>(() => new ArchiveStore());
             services.RegisterLazySingleton<IMeasurementTypeStore>(() => new MeasurementTypeStore());
             services.RegisterLazySingleton<IMeterStore>(() => new MeterStore());
-            services.RegisterLazySingleton<IMeterTypeStore>(() => new MeterTypeStore());
-            services.RegisterLazySingleton<IMeasurementGroupSchemaStore>(() => new MeasurementGroupSchemaStore());
-            services.RegisterLazySingleton<IMeasurementGroupSchemaMeasurementTypeStore>(() => new MeasurementGroupSchemaMeasurementTypeStore());
         }
 
         private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
             services.RegisterLazySingleton<IWindowService>(() => new WindowService());
-            services.RegisterLazySingleton<IFlowMeasurementGroupProvider>(() =>
-                new TestFlowMeasurementGroupProvider(resolver.GetRequiredService<IMeterService>(), resolver.GetRequiredService<IMeterTypeService>()));
             services.RegisterLazySingleton<IMeasurementCacheProvider>(() => new MeasurementCacheProvider());
         }
 

@@ -5,10 +5,7 @@
         private bool _isExecuting;
         public bool IsExecuting
         {
-            get
-            {
-                return _isExecuting;
-            }
+            get => _isExecuting;
             private set
             {
                 _isExecuting = value;

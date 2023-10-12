@@ -12,7 +12,7 @@ namespace LabPrototype.ViewModels.Components
 {
     public class IntegralMeasurementListingViewModel : ViewModelBase
     {
-        private readonly IMeterTypeService _meterTypeService;
+        private readonly IMeterService _meterService;
         private readonly IMeasurementCacheProvider _measurementCacheProvider;
 
         public ObservableCollection<IntegralMeasurementListingItemViewModel> IntegralMeasurementListingItems { get; set; } = new();
@@ -26,7 +26,7 @@ namespace LabPrototype.ViewModels.Components
 
         public IntegralMeasurementListingViewModel()
         {
-            _meterTypeService = GetRequiredService<IMeterTypeService>();
+            _meterService = GetRequiredService<IMeterService>();
             _measurementCacheProvider = GetRequiredService<IMeasurementCacheProvider>();
 
             SelectionStartDateTimePickerViewModel = new DateTimePickerViewModel();
@@ -60,7 +60,7 @@ namespace LabPrototype.ViewModels.Components
         private void CreateMeasurements(Meter meter)
         {
             IntegralMeasurementListingItems.Clear();
-            var measurementTypes = _meterTypeService.GetMeasurementTypes(meter.MeterTypeId);
+            var measurementTypes = _meterService.GetMeasurementTypes(meter.Id);
             foreach (var measurementType in measurementTypes)
             {
                 IntegralMeasurementListingItems.Add(new IntegralMeasurementListingItemViewModel(measurementType));

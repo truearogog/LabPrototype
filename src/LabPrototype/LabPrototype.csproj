@@ -43,6 +43,7 @@
     <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
     <ProjectReference Include="..\LabPrototype.Framework\LabPrototype.Framework.csproj" />
     <ProjectReference Include="..\LabPrototype.Infrastructure\LabPrototype.Infrastructure.csproj" />
+    <ProjectReference Include="..\LabPrototype.IoC\LabPrototype.IoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,20 +56,20 @@
     <Compile Update="Views\Components\MeasurementHistoryTable.axaml.cs">
       <DependentUpon>MeasurementHistoryTable.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Components\ModelSettings.axaml.cs">
-      <DependentUpon>ModelSettings.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Components\SettingsForms\MeterSettingsForm.axaml.cs">
-      <DependentUpon>MeterSettingsForm.axaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\Components\FlowMeasurementListingItem.axaml.cs">
       <DependentUpon>FlowMeasurementListingItem.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Components\MeterListingItem.axaml.cs">
       <DependentUpon>MeterListingItem.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Components\SettingsForms\MeasurementTypeSettingsForm.axaml.cs">
-      <DependentUpon>MeasurementTypeSettingsForm.axaml</DependentUpon>
+    <Compile Update="Views\Components\Settings\MeterFormCreate.axaml.cs">
+      <DependentUpon>MeterFormCreate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Components\Settings\MeterForm.axaml.cs">
+      <DependentUpon>MeterForm.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Components\Settings\MeterFormUpdate.axaml.cs">
+      <DependentUpon>MeterFormUpdate.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Components\ToggleMeasurementListingItem.axaml.cs">
       <DependentUpon>ToggleMeasurementListingItem.axaml</DependentUpon>
@@ -79,25 +80,14 @@
     <Compile Update="Views\Components\MeterListing.axaml.cs">
       <DependentUpon>MeterListing.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Dialogs\MeasurementTypeSettings\CreateMeasurementTypeDialog.axaml.cs">
-      <DependentUpon>CreateMeasurementTypeDialog.axaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\Windows\MeterWindow.axaml.cs">
       <DependentUpon>MeterWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Dialogs\MeterTypeSettings\CreateMeterTypeDialog.axaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataTemplates\" />
   </ItemGroup>
 </Project>

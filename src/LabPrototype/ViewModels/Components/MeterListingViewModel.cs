@@ -2,8 +2,8 @@
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Services.WindowService;
-using LabPrototype.ViewModels.Dialogs.MeterSettings;
-using LabPrototype.Views.Dialogs.MeterSettings;
+using LabPrototype.ViewModels.Dialogs.Settings;
+using LabPrototype.Views.Dialogs.Settings;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,7 +52,7 @@ namespace LabPrototype.ViewModels.Components
         }
 
         private async Task ShowCreateMeterDialogAsync() 
-            => await _windowService.ShowDialogAsync<CreateMeterDialog, CreateMeterDialogViewModel>(_parentWindow);
+            => await _windowService.ShowDialogAsync<MeterCreateDialog, MeterCreateDialogViewModel>(_parentWindow);
 
         private void AddMeters(IEnumerable<Meter> meters)
         {

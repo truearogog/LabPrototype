@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace LabPrototype.Framework.Models
 {
-    public class ValidatableObjectBase<TException, TExceptionFactory>
+    public class ValidatableObjectBase<TException, TExceptionFactory> : IValidatableObject
         where TException : Exception
         where TExceptionFactory : IExceptionFactory<TException, ValidationResult>, new()
     {
@@ -44,27 +44,20 @@ namespace LabPrototype.Framework.Models
             return newValue;
         }
 
-        public bool Validate(out ICollection<ValidationResult> results, bool recursive = false)
+        protected TRef ValidateAndSetThrowIf<TRef>(ref TRef backingField, TRef newValue, bool condition, [CallerMemberName] string? propertyName = null)
         {
-            results = new List<ValidationResult>();
-            if (recursive)
+            if (condition)
             {
-                var type = GetType();
-                var props = type.GetProperties().Where(x => x.DeclaringType?.IsAssignableFrom(type) ?? false);
-                foreach (var prop in props)
-                {
-                    var value = prop.GetValue(this, null) as ValidatableObjectBase<TException, TExceptionFactory>;
-                    if (value is not null)
-                    {
-                        value.Validate(out var _results);
-                        foreach (var _result in _results)
-                        {
-                            results.Add(_result);
-                        }
-                    }
-                }
+                return ValidateAndSetThrow(ref backingField, newValue, propertyName);
             }
-            return Validator.TryValidateObject(this, new ValidationContext(this), results, true);
+            return backingField;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            Validator.TryValidateObject(this, new ValidationContext(this), results, true);
+            return results;
         }
     }
 }

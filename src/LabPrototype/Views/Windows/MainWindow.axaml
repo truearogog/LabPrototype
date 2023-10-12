@@ -29,7 +29,7 @@
 						<TextBlock VerticalAlignment="Center" Text="Reports" />
 					</StackPanel>
 				</Button>
-				<Button Classes="navButton" Command="{Binding SelectModelSettingsCommand}">
+				<Button Classes="navButton" Command="{Binding SelectSettingsCommand}">
 					<StackPanel>
 						<material:MaterialIcon Kind="Settings" Width="20" Height="20" />
 						<TextBlock VerticalAlignment="Center" Text="Settings" />
@@ -43,14 +43,14 @@
 				</Button>
 			</StackPanel>
 		</ExperimentalAcrylicBorder>
-
+		
 		<ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
 			<ContentControl.DataTemplates>
 				<DataTemplate DataType="{x:Type component-vms:MeterListingViewModel}">
 					<components:MeterListing />
 				</DataTemplate>
-				<DataTemplate DataType="{x:Type component-vms:ModelSettingsViewModel}">
-					<components:ModelSettings  />
+				<DataTemplate DataType="{x:Type component-vms:AppSettingsViewModel}">
+					<components:AppSettings  />
 				</DataTemplate>
 			</ContentControl.DataTemplates>
 		</ContentControl>

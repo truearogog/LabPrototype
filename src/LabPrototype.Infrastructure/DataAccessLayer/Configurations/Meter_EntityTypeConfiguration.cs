@@ -10,11 +10,11 @@ namespace LabPrototype.Infrastructure.DataAccessLayer.Configurations
             base.Configure(builder);
 
             builder
-                .HasOne(x => x.MeterType)
-                .WithMany(x => x.Meters);
+                .HasMany(x => x.MeasurementTypes)
+                .WithOne(x => x.Meter);
 
             builder
-                .HasMany(x => x.MeasurementGroupArchives)
+                .HasMany(x => x.Archives)
                 .WithOne(x => x.Meter);
         }
     }

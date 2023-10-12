@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LabPrototype.Domain\LabPrototype.Domain.csproj" />
+    <ProjectReference Include="..\LabPrototype.Infrastructure\LabPrototype.Infrastructure.csproj" />
+    <ProjectReference Include="..\LabPrototype.Modbus\LabPrototype.Modbus.csproj" />
   </ItemGroup>
 
 </Project>
