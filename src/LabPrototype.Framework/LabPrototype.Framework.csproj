@@ -10,8 +10,4 @@
     <PackageReference Include="Splat" Version="14.6.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
-
 </Project>

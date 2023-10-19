@@ -1,6 +1,6 @@
 ﻿using Splat;
 
-namespace LabPrototype.Framework.Extensions
+namespace LabPrototype.IoC
 {
     public static class MutableDependencyResolverExtensions
     {
@@ -8,9 +8,6 @@ namespace LabPrototype.Framework.Extensions
             where TService : class
             where IImplementation : class, TService
         {
-            var ctor = typeof(IImplementation).GetConstructors().Single();
-            var args = ctor.GetParameters();
-
 
         }
 

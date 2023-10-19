@@ -1,5 +1,6 @@
 ﻿using LabPrototype.Domain.IProviders;
 using LabPrototype.Domain.Models.Presentation;
+using LabPrototype.Framework.Core;
 
 namespace LabPrototype.AppManagers.Providers
 {
@@ -7,7 +8,16 @@ namespace LabPrototype.AppManagers.Providers
     {
         public IEnumerable<MeasurementType> GetMeasurementTypes()
         {
-            return new MeasurementType[] { new() { Name = "Q1", Unit = "m³/h", PrimaryColor =  } }
+            var colorSchemes = ColorScheme.All;
+            return new MeasurementType[] { 
+                new()
+                {
+                    Name = "Q1", 
+                    Unit = "m³/h", 
+                    PrimaryColor = colorSchemes.ElementAt(0).PrimaryColor, 
+                    SecondaryColor = colorSchemes.ElementAt(0).SecondaryColor 
+                }
+            };
         }
     }
 }

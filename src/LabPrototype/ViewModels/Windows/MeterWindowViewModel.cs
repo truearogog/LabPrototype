@@ -1,4 +1,6 @@
-﻿using LabPrototype.Domain.IServices;
+﻿using LabPrototype.AppManagers.Providers;
+using LabPrototype.Domain.IProviders;
+using LabPrototype.Domain.IServices;
 using LabPrototype.Domain.IStores;
 using LabPrototype.Domain.Models.Presentation;
 using LabPrototype.Models;
@@ -17,6 +19,8 @@ namespace LabPrototype.ViewModels.Main
         private readonly IArchiveService _measurementGroupArchiveService;
         private readonly IArchiveStore _measurementGroupArchiveStore;
         private readonly IMeterStore _meterStore;
+
+        private readonly IMeterConnectionProvider _meterConnectionProvider;
 
         private Meter? _meter = null;
         public Meter? Meter
@@ -80,6 +84,8 @@ namespace LabPrototype.ViewModels.Main
             _meterStore = GetRequiredService<IMeterStore>();
             _meterStore.ModelUpdated += _MeterUpdated;
             _meterStore.ModelDeleted += _MeterDeleted;
+
+            _meterConnectionProvider = new TestMeterConnectionProvider();
 
             FlowMeasurementListingViewModel = new FlowMeasurementListingViewModel();
             IntegralMeasurementListingViewModel = new IntegralMeasurementListingViewModel();
